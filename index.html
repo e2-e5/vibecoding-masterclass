@@ -424,14 +424,12 @@
     .cta-wrap h2 { margin: 16px 0 14px; font-size: clamp(34px, 5vw, 62px); line-height: .95; letter-spacing: -.05em; }
     .cta-wrap p { max-width: 760px; color: var(--muted); font-size: 20px; }
     .cta-grid { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; margin-top: 28px; }
-    .info-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
-    .info-chip {
-      padding: 12px 14px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.08);
-      color: var(--text);
-      font-weight: 700;
+
+    #calendarToggle {
+      font-size: 24px;
+      font-weight: 800;
+      min-height: 64px;
+      padding: 0 28px;
     }
 
     footer {
@@ -696,14 +694,7 @@
       <div class="container visible">
         <div class="cta-wrap reveal">
           <div class="eyebrow"><span class="dot"></span> Присоединяйтесь завтра</div>
-          <h2>Пятница · 11:00 · Онлайн</h2>
-          <p>Коротко, по-человечески и под реальные задачи предпринимателя. Без лишней техно-пены. С живым показом и нормальным первым маршрутом для старта.</p>
-          <div class="info-row">
-            <div class="info-chip">AI First</div>
-            <div class="info-chip">1 час</div>
-            <div class="info-chip">Новички welcome</div>
-            <div class="info-chip">Регистрация не нужна</div>
-          </div>
+          <h2>Пятница · 11:00</h2>
           <div class="cta-grid">
             <div></div>
             <div class="hero-cta" style="margin-top: 0; justify-content: flex-end;">
@@ -715,7 +706,6 @@
             <a class="calendar-link" id="googleCalendarLink" href="#" target="_blank" rel="noopener">Google Calendar</a>
             <a class="calendar-link" id="icsDownloadLink" href="#" download="ai-first-claude-code-masterclass.ics">Apple / Outlook / Яндекс (.ics)</a>
           </div>
-          <p class="calendar-hint">Событие: пятница, 11:00–12:00 МСК. Один клик — и встреча улетает в календарь.</p>
         </div>
       </div>
     </section>
