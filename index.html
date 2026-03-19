@@ -1,743 +1,1298 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Claude Code для предпринимателей — AI First</title>
-  <meta name="description" content="Онлайн-вебинар для предпринимателей, которые раньше не видели Claude Code. Покажем, как использовать ИИ для лендингов, MVP, автоматизации и быстрых проверок идей." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0A0A0B;
-      --bg-soft: #111217;
-      --panel: rgba(255,255,255,0.05);
-      --panel-strong: rgba(255,255,255,0.08);
-      --border: rgba(255,255,255,0.1);
-      --text: #F6F7FB;
-      --muted: rgba(246,247,251,0.68);
-      --soft: rgba(246,247,251,0.46);
-      --primary: #0066FF;
-      --accent: #00FFB7;
-      --secondary: #7B2FFF;
-      --danger: #FF6B6B;
-      --warning: #FFB84D;
-      --radius: 28px;
-      --shadow: 0 20px 60px rgba(0,0,0,.28);
-      --container: 1180px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code для предпринимателей — AI First</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=dm-sans@400,500,700&display=swap" rel="stylesheet">
+    <style>
+        /* ==========================================
+           THEME VARIABLES
+           ========================================== */
+        :root {
+            --bg-primary: #0A0A0B;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --primary: #0066FF;
+            --accent: #00FFB7;
+            --secondary: #7B2FFF;
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --text-muted: rgba(255, 255, 255, 0.35);
+            --glass: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --font-display: 'Clash Display', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --title-size: clamp(2rem, 5vw, 4rem);
+            --h2-size: clamp(1.4rem, 3.5vw, 2.75rem);
+            --h3-size: clamp(1rem, 2vw, 1.5rem);
+            --body-size: clamp(0.8rem, 1.5vw, 1.125rem);
+            --small-size: clamp(0.7rem, 1vw, 0.875rem);
+            --slide-padding: clamp(1.5rem, 5vw, 5rem);
+            --content-gap: clamp(0.75rem, 2vw, 2rem);
+            --element-gap: clamp(0.25rem, 1vw, 1rem);
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration-normal: 0.7s;
+        }
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: 'Manrope', system-ui, sans-serif;
-      background:
-        radial-gradient(circle at 10% 10%, rgba(0,102,255,.16), transparent 20%),
-        radial-gradient(circle at 85% 18%, rgba(123,47,255,.14), transparent 18%),
-        radial-gradient(circle at 75% 85%, rgba(0,255,183,.10), transparent 22%),
-        var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-    }
+        /* ==========================================
+           BASE RESET & VIEWPORT LOCK
+           ========================================== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: .22;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
-      mix-blend-mode: soft-light;
-    }
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
 
-    a { color: inherit; text-decoration: none; }
-    .container { width: min(var(--container), calc(100% - 40px)); margin: 0 auto; }
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.04);
-      font-size: 12px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 700;
-    }
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 18px rgba(0,255,183,.6);
-    }
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
 
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(18px);
-      background: rgba(10,10,11,.58);
-      border-bottom: 1px solid rgba(255,255,255,.06);
-    }
-    .nav {
-      min-height: 76px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 800;
-      letter-spacing: -.03em;
-    }
-    .brand-mark {
-      width: 38px;
-      height: 38px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      box-shadow: 0 10px 30px rgba(0,102,255,.35);
-    }
-    .brand small { display: block; color: var(--soft); font-weight: 600; letter-spacing: 0; }
+        /* ==========================================
+           SLIDE BASE
+           ========================================== */
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            padding: var(--slide-padding);
+        }
 
-    .nav-actions { display: flex; align-items: center; gap: 12px; }
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      min-height: 52px;
-      padding: 0 20px;
-      border-radius: 18px;
-      font-weight: 800;
-      transition: .25s ease;
-      border: 1px solid transparent;
-      cursor: pointer;
-    }
-    .button-primary {
-      background: linear-gradient(135deg, var(--primary), #1e7bff);
-      color: white;
-      box-shadow: 0 18px 40px rgba(0,102,255,.28);
-    }
-    .button-secondary {
-      background: rgba(255,255,255,.05);
-      border-color: var(--border);
-      color: var(--text);
-    }
-    .button:hover { transform: translateY(-2px); }
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            max-height: 100%;
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
 
-    .hero {
-      padding: 80px 0 46px;
-    }
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.08fr .92fr;
-      gap: 28px;
-      align-items: stretch;
-    }
-    .hero-copy {
-      padding: 12px 0;
-    }
-    h1 {
-      margin: 18px 0 18px;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(42px, 7vw, 84px);
-      line-height: .95;
-      letter-spacing: -.06em;
-      max-width: 760px;
-    }
-    .gradient {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .hero-lead {
-      max-width: 680px;
-      font-size: clamp(18px, 2.1vw, 24px);
-      line-height: 1.45;
-      color: var(--muted);
-    }
-    .hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 26px;
-    }
-    .meta-pill {
-      padding: 12px 14px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-weight: 700;
-    }
-    .hero-cta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 28px;
-    }
+        /* ==========================================
+           GHOSTLY AGENCY — BACKGROUND EFFECTS
+           ========================================== */
+        .slide::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0, 102, 255, 0.08) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 80% 20%, rgba(123, 47, 255, 0.06) 0%, transparent 60%),
+                radial-gradient(ellipse 30% 30% at 20% 80%, rgba(0, 255, 183, 0.04) 0%, transparent 60%);
+            z-index: 0;
+            pointer-events: none;
+        }
 
-    .hero-card {
-      position: relative;
-      padding: 28px;
-      border-radius: 34px;
-      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
-      border: 1px solid rgba(255,255,255,.1);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      min-height: 100%;
-    }
-    .hero-card::before {
-      content: "";
-      position: absolute;
-      inset: auto -15% -35% auto;
-      width: 240px;
-      height: 240px;
-      background: radial-gradient(circle, rgba(0,255,183,.28), transparent 62%);
-      filter: blur(8px);
-      pointer-events: none;
-    }
-    .hero-card .label {
-      color: var(--soft);
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: .14em;
-      font-weight: 700;
-    }
-    .hero-card h3 {
-      margin: 14px 0 16px;
-      font-size: clamp(24px, 3vw, 38px);
-      line-height: 1;
-      letter-spacing: -.05em;
-    }
-    .stack {
-      display: grid;
-      gap: 14px;
-      margin-top: 22px;
-    }
-    .stack-item {
-      padding: 16px 18px;
-      border-radius: 20px;
-      background: rgba(255,255,255,.045);
-      border: 1px solid rgba(255,255,255,.08);
-    }
-    .stack-item strong { display: block; margin-bottom: 6px; font-size: 18px; }
-    .stack-item span { color: var(--muted); line-height: 1.45; }
+        /* Noise overlay */
+        .slide::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.4;
+        }
 
-    section.block {
-      padding: 28px 0 10px;
-    }
-    .section-head {
-      display: grid;
-      grid-template-columns: .92fr 1.08fr;
-      gap: 24px;
-      align-items: end;
-      margin-bottom: 22px;
-    }
-    .section-head h2 {
-      margin: 14px 0 0;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(30px, 5vw, 56px);
-      line-height: .95;
-      letter-spacing: -.05em;
-    }
-    .section-head p {
-      color: var(--muted);
-      font-size: 18px;
-      line-height: 1.5;
-      max-width: 720px;
-      margin: 0;
-    }
+        /* ==========================================
+           TYPOGRAPHY
+           ========================================== */
+        h1 {
+            font-family: var(--font-display);
+            font-size: var(--title-size);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
 
-    .grid-3, .grid-4, .grid-2 {
-      display: grid;
-      gap: 18px;
-    }
-    .grid-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    .grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
-    .grid-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+        h2 {
+            font-family: var(--font-display);
+            font-size: var(--h2-size);
+            font-weight: 600;
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+        }
 
-    .card {
-      position: relative;
-      padding: 24px;
-      border-radius: 28px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-    .card h3, .card h4 { margin: 0 0 12px; letter-spacing: -.04em; }
-    .card p { margin: 0; color: var(--muted); line-height: 1.55; }
-    .card-number {
-      font-size: 13px;
-      color: var(--soft);
-      text-transform: uppercase;
-      letter-spacing: .14em;
-      font-weight: 800;
-      margin-bottom: 12px;
-    }
-    .icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 18px;
-      display: grid;
-      place-items: center;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.09);
-      margin-bottom: 16px;
-      font-size: 24px;
-    }
+        h3 {
+            font-family: var(--font-display);
+            font-size: var(--h3-size);
+            font-weight: 500;
+            line-height: 1.3;
+        }
 
-    .problem-card { min-height: 220px; }
-    .problem-card:nth-child(1) .icon { color: var(--danger); }
-    .problem-card:nth-child(2) .icon { color: var(--warning); }
-    .problem-card:nth-child(3) .icon { color: var(--primary); }
+        p, li {
+            font-family: var(--font-body);
+            font-size: var(--body-size);
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
 
-    .use-card { min-height: 240px; }
-    .use-card strong { color: var(--accent); }
+        .subtitle {
+            font-size: clamp(0.8rem, 1.4vw, 1.05rem);
+            color: var(--text-muted);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
 
-    .split-highlight {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
-    .good, .bad {
-      padding: 24px;
-      border-radius: 28px;
-      min-height: 100%;
-    }
-    .good {
-      background: linear-gradient(180deg, rgba(0,255,183,.1), rgba(0,255,183,.04));
-      border: 1px solid rgba(0,255,183,.18);
-    }
-    .bad {
-      background: linear-gradient(180deg, rgba(255,107,107,.09), rgba(255,107,107,.03));
-      border: 1px solid rgba(255,107,107,.16);
-    }
-    .good h3, .bad h3 { margin-top: 0; font-size: 28px; }
-    .list { display: grid; gap: 12px; margin-top: 14px; }
-    .list-item {
-      display: grid;
-      grid-template-columns: 18px 1fr;
-      gap: 12px;
-      align-items: start;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-    .tick, .cross {
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      margin-top: 3px;
-    }
-    .tick { background: linear-gradient(135deg, var(--accent), #44e4b9); }
-    .cross { background: linear-gradient(135deg, var(--danger), #ff8b8b); }
+        .accent-text { color: var(--accent); }
+        .primary-text { color: var(--primary); }
 
-    .demo-box {
-      display: grid;
-      grid-template-columns: .9fr 1.1fr;
-      gap: 18px;
-      align-items: stretch;
-    }
-    .terminal {
-      padding: 24px;
-      border-radius: 28px;
-      background: #0b1220;
-      border: 1px solid rgba(77,163,255,.18);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 20px 60px rgba(0,0,0,.35);
-      min-height: 100%;
-    }
-    .terminal-top {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 18px;
-    }
-    .terminal-top span {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.22);
-    }
-    .prompt-line {
-      color: var(--accent);
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 15px;
-      margin-bottom: 14px;
-      white-space: pre-wrap;
-    }
-    .result-list { display: grid; gap: 12px; }
-    .result-item {
-      padding: 14px 16px;
-      border-radius: 18px;
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.06);
-      color: var(--muted);
-    }
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-    .timeline {
-      display: grid;
-      gap: 14px;
-    }
-    .step {
-      display: grid;
-      grid-template-columns: 58px 1fr;
-      gap: 16px;
-      align-items: start;
-      padding: 18px 20px;
-      border-radius: 22px;
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.08);
-    }
-    .step-no {
-      width: 58px;
-      height: 58px;
-      border-radius: 18px;
-      display: grid;
-      place-items: center;
-      font-weight: 800;
-      font-size: 20px;
-      color: white;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      box-shadow: 0 14px 28px rgba(0,102,255,.25);
-    }
-    .step h4 { margin: 0 0 8px; font-size: 22px; letter-spacing: -.03em; }
+        .gradient-text-secondary {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-    .final-cta {
-      padding: 90px 0 110px;
-    }
-    .cta-wrap {
-      padding: 36px;
-      border-radius: 36px;
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
-      border: 1px solid rgba(255,255,255,.1);
-      box-shadow: var(--shadow);
-    }
-    .cta-wrap h2 { margin: 16px 0 14px; font-size: clamp(34px, 5vw, 62px); line-height: .95; letter-spacing: -.05em; }
-    .cta-wrap p { max-width: 760px; color: var(--muted); font-size: 20px; }
-    .cta-grid { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; margin-top: 28px; }
-    .info-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
-    .info-chip {
-      padding: 12px 14px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.08);
-      color: var(--text);
-      font-weight: 700;
-    }
+        /* ==========================================
+           GHOSTLY FLOATING ANIMATIONS
+           ========================================== */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
 
-    footer {
-      padding: 0 0 56px;
-      color: var(--soft);
-      font-size: 15px;
-    }
+        @keyframes float-delayed {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
 
-    .reveal {
-      opacity: 0;
-      transform: translateY(18px);
-      transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
-    }
-    .visible .reveal {
-      opacity: 1;
-      transform: translateY(0);
-    }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 102, 255, 0.2), 0 0 40px rgba(0, 102, 255, 0.05); }
+            50% { box-shadow: 0 0 30px rgba(0, 102, 255, 0.4), 0 0 60px rgba(0, 102, 255, 0.1); }
+        }
 
-    @media (max-width: 1024px) {
-      .hero-grid, .section-head, .grid-4, .grid-3, .grid-2, .split-highlight, .demo-box, .timeline, .cta-grid {
-        grid-template-columns: 1fr;
-      }
-      .hero { padding-top: 56px; }
-      header { position: relative; }
-      .nav { min-height: auto; padding: 16px 0; align-items: flex-start; flex-direction: column; }
-      .nav-actions { width: 100%; flex-wrap: wrap; }
-    }
+        @keyframes pulse-accent {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 183, 0.15); }
+            50% { box-shadow: 0 0 40px rgba(0, 255, 183, 0.3); }
+        }
 
-    @media (max-width: 640px) {
-      .container { width: min(var(--container), calc(100% - 24px)); }
-      .hero-cta, .nav-actions { flex-direction: column; align-items: stretch; }
-      .button { width: 100%; }
-      .hero-card, .card, .good, .bad, .terminal, .cta-wrap { padding: 22px; }
-      .step { grid-template-columns: 52px 1fr; }
-      .step-no { width: 52px; height: 52px; }
-    }
-  </style>
+        @keyframes halo-rotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.05); }
+        }
+
+        .floating { animation: float 4s ease-in-out infinite; }
+        .floating-delayed { animation: float-delayed 5s ease-in-out infinite; }
+
+        /* ==========================================
+           REVEAL ANIMATION SYSTEM
+           ========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal,
+        .slide.visible .reveal-scale {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .slide.visible .reveal:nth-child(1),
+        .slide.visible .reveal-scale:nth-child(1) { transition-delay: 0s; }
+        .slide.visible .reveal:nth-child(2),
+        .slide.visible .reveal-scale:nth-child(2) { transition-delay: 0.12s; }
+        .slide.visible .reveal:nth-child(3),
+        .slide.visible .reveal-scale:nth-child(3) { transition-delay: 0.24s; }
+        .slide.visible .reveal:nth-child(4),
+        .slide.visible .reveal-scale:nth-child(4) { transition-delay: 0.36s; }
+        .slide.visible .reveal:nth-child(5),
+        .slide.visible .reveal-scale:nth-child(5) { transition-delay: 0.48s; }
+        .slide.visible .reveal:nth-child(6),
+        .slide.visible .reveal-scale:nth-child(6) { transition-delay: 0.6s; }
+        .slide.visible .reveal:nth-child(7) { transition-delay: 0.72s; }
+
+        /* Card stagger within grid */
+        .slide.visible .card-grid .glass-card:nth-child(1) { transition-delay: 0.1s; }
+        .slide.visible .card-grid .glass-card:nth-child(2) { transition-delay: 0.2s; }
+        .slide.visible .card-grid .glass-card:nth-child(3) { transition-delay: 0.3s; }
+        .slide.visible .card-grid .glass-card:nth-child(4) { transition-delay: 0.4s; }
+        .slide.visible .card-grid .glass-card:nth-child(5) { transition-delay: 0.5s; }
+        .slide.visible .card-grid .glass-card:nth-child(6) { transition-delay: 0.6s; }
+
+        /* ==========================================
+           HALO ORBS (GHOSTLY AGENCY)
+           ========================================== */
+        .halo-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        .halo-orb.blue {
+            background: var(--primary);
+            width: clamp(150px, 25vw, 400px);
+            height: clamp(150px, 25vw, 400px);
+        }
+
+        .halo-orb.purple {
+            background: var(--secondary);
+            width: clamp(120px, 20vw, 350px);
+            height: clamp(120px, 20vw, 350px);
+        }
+
+        .halo-orb.green {
+            background: var(--accent);
+            width: clamp(100px, 15vw, 250px);
+            height: clamp(100px, 15vw, 250px);
+            opacity: 0.3;
+        }
+
+        /* ==========================================
+           GHOSTLY GLASS CARDS
+           ========================================== */
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: clamp(0.75rem, 2vw, 1.5rem);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .slide.visible .glass-card {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+        }
+
+        /* ==========================================
+           GRID LAYOUTS
+           ========================================== */
+        .card-grid-6 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(0.5rem, 1.2vw, 1rem);
+            width: 100%;
+            max-width: min(92vw, 960px);
+        }
+
+        .card-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(0.75rem, 1.5vw, 1.25rem);
+            width: 100%;
+            max-width: min(92vw, 960px);
+        }
+
+        .card-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: clamp(0.5rem, 1.2vw, 1rem);
+            width: 100%;
+            max-width: min(92vw, 900px);
+        }
+
+        /* ==========================================
+           BULLET LIST
+           ========================================== */
+        .bullet-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.4rem, 1vh, 0.85rem);
+            text-align: left;
+            max-width: min(90vw, 700px);
+        }
+
+        .bullet-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: clamp(0.5rem, 1vw, 0.75rem);
+        }
+
+        .bullet-list li::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            min-width: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            margin-top: 0.6em;
+            box-shadow: 0 0 8px rgba(0, 255, 183, 0.4);
+        }
+
+        /* ==========================================
+           CARD ELEMENTS
+           ========================================== */
+        .card-icon {
+            width: clamp(28px, 3.5vw, 44px);
+            height: clamp(28px, 3.5vw, 44px);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(0.9rem, 1.8vw, 1.4rem);
+            margin-bottom: clamp(0.4rem, 0.8vh, 0.65rem);
+        }
+
+        .card-icon.blue { background: rgba(0, 102, 255, 0.15); }
+        .card-icon.purple { background: rgba(123, 47, 255, 0.15); }
+        .card-icon.green { background: rgba(0, 255, 183, 0.15); }
+        .card-icon.mixed { background: rgba(0, 102, 255, 0.1); }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: clamp(0.8rem, 1.3vw, 1.05rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: clamp(0.2rem, 0.4vh, 0.4rem);
+        }
+
+        .card-desc {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* ==========================================
+           CASE CARD (Larger)
+           ========================================== */
+        .case-card {
+            text-align: left;
+            padding: clamp(1rem, 2.5vw, 1.75rem);
+        }
+
+        .case-card .case-quote {
+            font-family: var(--font-body);
+            font-size: clamp(0.75rem, 1.2vw, 0.95rem);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .case-card .case-label {
+            font-family: var(--font-display);
+            font-size: var(--small-size);
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: clamp(0.3rem, 0.6vh, 0.5rem);
+        }
+
+        /* ==========================================
+           CTA BUTTON
+           ========================================== */
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: clamp(0.85rem, 1.5vw, 1.15rem) clamp(2rem, 4vw, 3.5rem);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            font-family: var(--font-display);
+            font-size: clamp(0.95rem, 1.5vw, 1.25rem);
+            font-weight: 600;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s var(--ease-out-expo);
+            animation: pulse-glow 3s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 12px 40px rgba(0, 102, 255, 0.35);
+        }
+
+        .calendar-menu {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            width: 100%;
+            max-width: min(90vw, 720px);
+            margin-top: 16px;
+        }
+
+        .calendar-menu.open {
+            display: grid;
+        }
+
+        .calendar-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 56px;
+            padding: 12px 16px;
+            border-radius: 16px;
+            text-decoration: none;
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(12px);
+            font-size: var(--body-size);
+            font-weight: 600;
+            transition: transform 0.25s var(--ease-out-expo), border-color 0.25s var(--ease-out-expo), background 0.25s var(--ease-out-expo);
+        }
+
+        .calendar-link:hover {
+            transform: translateY(-2px);
+            border-color: rgba(0, 255, 183, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .calendar-hint {
+            margin-top: 12px;
+            color: var(--text-muted);
+            font-size: var(--small-size);
+            text-align: center;
+            max-width: 720px;
+        }
+
+        /* ==========================================
+           TAG / BADGE
+           ========================================== */
+        .tag {
+            display: inline-block;
+            padding: clamp(0.25rem, 0.5vw, 0.35rem) clamp(0.75rem, 1.5vw, 1rem);
+            border-radius: 100px;
+            font-size: var(--small-size);
+            font-weight: 500;
+            border: 1px solid var(--glass-border);
+            background: var(--glass);
+            backdrop-filter: blur(8px);
+            color: var(--text-secondary);
+        }
+
+        /* ==========================================
+           INFO GRID (CTA SLIDE)
+           ========================================== */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+            gap: clamp(0.75rem, 1.5vw, 1.25rem);
+            width: 100%;
+            max-width: min(90vw, 700px);
+            text-align: left;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .info-label {
+            font-size: var(--small-size);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .info-value {
+            font-family: var(--font-display);
+            font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* ==========================================
+           DECORATIVE ELEMENTS
+           ========================================== */
+        .divider {
+            width: clamp(40px, 8vw, 80px);
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+            margin: clamp(0.4rem, 0.8vh, 0.75rem) auto;
+        }
+
+        .stat-highlight {
+            font-family: var(--font-display);
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .quote-block {
+            position: relative;
+            padding-left: clamp(1rem, 2vw, 1.5rem);
+            border-left: 2px solid var(--accent);
+            text-align: left;
+            max-width: min(85vw, 600px);
+        }
+
+        .quote-block p {
+            font-style: italic;
+            font-size: clamp(0.9rem, 1.5vw, 1.15rem);
+            color: var(--accent);
+            line-height: 1.5;
+        }
+
+        /* Program list */
+        .program-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.5rem, 1.2vh, 1rem);
+            text-align: left;
+            max-width: min(90vw, 700px);
+        }
+
+        .program-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: clamp(0.5rem, 1vw, 0.75rem);
+            font-size: var(--body-size);
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .program-list .emoji-icon {
+            font-size: clamp(1rem, 1.8vw, 1.3rem);
+            min-width: clamp(1.2rem, 2vw, 1.5rem);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* For-who checkmarks */
+        .check-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.5rem, 1.2vh, 1rem);
+            text-align: left;
+            max-width: min(90vw, 700px);
+        }
+
+        .check-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: clamp(0.5rem, 1vw, 0.75rem);
+            font-size: var(--body-size);
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .check-list li::before {
+            content: '✓';
+            color: var(--accent);
+            font-weight: 700;
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+            min-width: 1.2em;
+        }
+
+        /* ==========================================
+           NAVIGATION DOTS
+           ========================================== */
+        .nav-dots {
+            position: fixed;
+            right: clamp(1rem, 2vw, 2rem);
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-out-expo);
+            padding: 0;
+        }
+
+        .nav-dot.active {
+            background: var(--primary);
+            box-shadow: 0 0 12px rgba(0, 102, 255, 0.5);
+            transform: scale(1.3);
+        }
+
+        .nav-dot:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* ==========================================
+           PROGRESS BAR
+           ========================================== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            z-index: 100;
+            transition: width 0.3s var(--ease-out-expo);
+            box-shadow: 0 0 10px rgba(0, 102, 255, 0.3);
+        }
+
+        /* ==========================================
+           SLIDE-SPECIFIC BACKGROUNDS
+           ========================================== */
+
+        /* Slide 1: Title — centered blue halo */
+        .slide-title .halo-orb.blue {
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: halo-rotate 20s linear infinite;
+            opacity: 0.3;
+        }
+
+        .slide-title .halo-orb.purple {
+            bottom: 10%;
+            right: 10%;
+            animation: float 8s ease-in-out infinite;
+            opacity: 0.2;
+        }
+
+        /* Slide 2: Why Now — dramatic blue/purple */
+        .slide-why::before {
+            background:
+                radial-gradient(ellipse 50% 50% at 30% 50%, rgba(0, 102, 255, 0.1) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 70% 30%, rgba(123, 47, 255, 0.06) 0%, transparent 60%);
+        }
+
+        /* Slide 3: Vibecoding — accent glow */
+        .slide-vibe::before {
+            background:
+                radial-gradient(ellipse 50% 50% at 40% 50%, rgba(0, 255, 183, 0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 70% 30%, rgba(0, 102, 255, 0.06) 0%, transparent 60%);
+        }
+
+        /* Slide 5: Cases — warm tones */
+        .slide-cases::before {
+            background:
+                radial-gradient(ellipse 50% 50% at 50% 50%, rgba(123, 47, 255, 0.08) 0%, transparent 70%),
+                radial-gradient(ellipse 30% 30% at 20% 70%, rgba(0, 255, 183, 0.04) 0%, transparent 60%);
+        }
+
+        /* Slide 8: Window — urgency */
+        .slide-window::before {
+            background:
+                radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0, 102, 255, 0.1) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 80% 80%, rgba(123, 47, 255, 0.08) 0%, transparent 60%);
+        }
+
+        /* Slide 9: CTA — max glow */
+        .slide-cta::before {
+            background:
+                radial-gradient(ellipse 60% 50% at 50% 60%, rgba(0, 102, 255, 0.12) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 30% 30%, rgba(123, 47, 255, 0.08) 0%, transparent 60%);
+        }
+
+        /* ==========================================
+           FOOTER LINE
+           ========================================== */
+        .slide-footer {
+            position: absolute;
+            bottom: clamp(1rem, 2vh, 2rem);
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            text-align: center;
+        }
+
+        .slide-footer p {
+            font-size: var(--small-size);
+            color: var(--text-muted);
+        }
+
+        /* ==========================================
+           RESPONSIVE BREAKPOINTS
+           ========================================== */
+        @media (max-height: 700px) {
+            :root {
+                --slide-padding: clamp(0.75rem, 3vw, 2rem);
+                --content-gap: clamp(0.4rem, 1.5vw, 1rem);
+                --title-size: clamp(1.5rem, 4.5vw, 2.5rem);
+                --h2-size: clamp(1.2rem, 3vw, 1.75rem);
+            }
+        }
+
+        @media (max-height: 600px) {
+            :root {
+                --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem);
+                --content-gap: clamp(0.3rem, 1vw, 0.75rem);
+                --title-size: clamp(1.1rem, 4vw, 2rem);
+                --body-size: clamp(0.7rem, 1.2vw, 0.95rem);
+            }
+            .nav-dots { display: none; }
+            .halo-orb { display: none; }
+        }
+
+        @media (max-height: 500px) {
+            :root {
+                --slide-padding: clamp(0.4rem, 2vw, 1rem);
+                --title-size: clamp(1rem, 3.5vw, 1.5rem);
+                --h2-size: clamp(0.9rem, 2.5vw, 1.25rem);
+                --body-size: clamp(0.65rem, 1vw, 0.85rem);
+            }
+        }
+
+        @media (max-width: 600px) {
+            :root {
+                --title-size: clamp(1.5rem, 8vw, 2.5rem);
+            }
+            .card-grid-6 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .card-grid-3 {
+                grid-template-columns: 1fr;
+            }
+            .card-grid-4 {
+                grid-template-columns: 1fr;
+            }
+            .nav-dots { display: none; }
+        }
+
+        @media (max-width: 480px) {
+            .card-grid-6 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.2s !important;
+            }
+            html { scroll-behavior: auto; }
+            .reveal, .reveal-scale { transform: none; }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="container nav">
-      <div class="brand">
-        <div class="brand-mark"></div>
-        <div>
-          AI First
-          <small>Claude Code для предпринимателей</small>
-        </div>
-      </div>
-      <div class="nav-actions">
-        <a class="button button-secondary" href="#program">Что будет</a>
-        <a class="button button-primary" href="https://telemost.yandex.ru/j/94314520240781" target="_blank" rel="noopener">Открыть эфир</a>
-      </div>
-    </div>
-  </header>
 
-  <main>
-    <section class="hero">
-      <div class="container hero-grid visible">
-        <div class="hero-copy">
-          <div class="eyebrow reveal"><span class="dot"></span> Пятница · 11:00 · Онлайн</div>
-          <h1 class="reveal"><span class="gradient">Claude Code</span><br>для предпринимателей</h1>
-          <p class="hero-lead reveal">Если вы ни разу не видели Claude Code, это нормально. На вебинаре разберём по-человечески: что это вообще такое, где это даёт деньги в бизнесе и как использовать это без айтишной боли.</p>
-          <div class="hero-meta reveal">
-            <div class="meta-pill">Для предпринимателей и CEO</div>
-            <div class="meta-pill">Новички welcome</div>
-            <div class="meta-pill">Без техно-жаргона</div>
-          </div>
-          <div class="hero-cta reveal">
-            <a class="button button-primary" href="https://telemost.yandex.ru/j/94314520240781" target="_blank" rel="noopener">Прийти на веб</a>
-            <a class="button button-secondary" href="#why">Зачем это мне?</a>
-          </div>
-        </div>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
 
-        <div class="hero-card reveal">
-          <div class="label">Что будет на выходе</div>
-          <h3>Не хайп. <br>А рабочая рамка.</h3>
-          <div class="stack">
-            <div class="stack-item">
-              <strong>Поймёте, где Claude Code реально полезен</strong>
-              <span>Лендинги, MVP, внутренние инструменты, автоматизация, быстрые проверки идей.</span>
+    <!-- Navigation Dots -->
+    <nav class="nav-dots" id="navDots" aria-label="Навигация по слайдам">
+        <button class="nav-dot active" data-slide="0" aria-label="Слайд 1"></button>
+        <button class="nav-dot" data-slide="1" aria-label="Слайд 2"></button>
+        <button class="nav-dot" data-slide="2" aria-label="Слайд 3"></button>
+        <button class="nav-dot" data-slide="3" aria-label="Слайд 4"></button>
+        <button class="nav-dot" data-slide="4" aria-label="Слайд 5"></button>
+        <button class="nav-dot" data-slide="5" aria-label="Слайд 6"></button>
+        <button class="nav-dot" data-slide="6" aria-label="Слайд 7"></button>
+        <button class="nav-dot" data-slide="7" aria-label="Слайд 8"></button>
+        <button class="nav-dot" data-slide="8" aria-label="Слайд 9"></button>
+    </nav>
+
+    <!-- ==========================================
+         SLIDE 1 — TITLE
+         ========================================== -->
+    <section class="slide slide-title" id="slide-0">
+        <div class="halo-orb blue floating"></div>
+        <div class="halo-orb purple floating-delayed"></div>
+        <div class="slide-content">
+            <div class="reveal subtitle" style="margin-bottom: var(--content-gap);">
+                Первый мастер-класс · Только для участников AI First
             </div>
-            <div class="stack-item">
-              <strong>Увидите живой сценарий</strong>
-              <span>Не презентацию про ИИ, а нормальную демонстрацию: задача → результат.</span>
+            <h1 class="reveal" style="margin-bottom: var(--content-gap); max-width: min(90vw, 850px);">
+                <span class="gradient-text">Claude Code</span> для предпринимателей
+            </h1>
+            <div class="divider reveal"></div>
+            <p class="reveal" style="color: var(--text-secondary); max-width: min(80vw, 500px); margin-top: var(--element-gap);">
+                Научитесь создавать продукты силой ИИ — без единой строки кода
+            </p>
+            <div class="slide-footer">
+                <p>Пятница · 11:00 · Онлайн</p>
             </div>
-            <div class="stack-item">
-              <strong>Сможете начать в тот же день</strong>
-              <span>Без “сначала выучите программирование” и прочей тоски.</span>
-            </div>
-          </div>
         </div>
-      </div>
     </section>
 
-    <section class="block" id="why">
-      <div class="container">
-        <div class="section-head visible">
-          <div>
-            <div class="eyebrow reveal">Почему это важно</div>
-            <h2 class="reveal">Идеи умирают<br>ещё до старта</h2>
-          </div>
-          <p class="reveal">У большинства предпринимателей проблема не в отсутствии идей. Проблема в том, что путь от идеи до проверки слишком длинный, дорогой и завязан на чужих руках.</p>
+    <!-- ==========================================
+         SLIDE 2 — ПОЧЕМУ СЕЙЧАС
+         ========================================== -->
+    <section class="slide slide-why" id="slide-1">
+        <div class="halo-orb blue" style="top: 30%; left: 15%; animation: breathe 6s ease-in-out infinite;"></div>
+        <div class="slide-content">
+            <div class="reveal tag" style="margin-bottom: var(--content-gap);">Почему сейчас</div>
+            <h2 class="reveal" style="margin-bottom: var(--content-gap); max-width: min(90vw, 750px);">
+                2026 — год, когда код перестал быть <span class="gradient-text">барьером</span>
+            </h2>
+            <ul class="bullet-list reveal" style="margin-top: var(--element-gap);">
+                <li>
+                    <span><span class="stat-highlight">73%</span> стартапов Y Combinator используют ИИ для генерации кода</span>
+                </li>
+                <li>
+                    <span>Стоимость MVP упала с <span style="color: var(--text-primary); text-decoration: line-through; opacity: 0.5;">500K</span> до <span class="accent-text">5K рублей</span></span>
+                </li>
+                <li>
+                    <span>Предприниматели, которые не освоят это сейчас, будут догонять через год</span>
+                </li>
+            </ul>
+            <div class="quote-block reveal" style="margin-top: var(--content-gap);">
+                <p>«Код — это новая грамотность для бизнеса»</p>
+            </div>
         </div>
-
-        <div class="grid-3 visible">
-          <div class="card problem-card reveal">
-            <div class="icon">⏳</div>
-            <h3>Слишком долго</h3>
-            <p>Идея превращается в цепочку из ТЗ, созвонов, правок и “вернёмся на следующей неделе”.</p>
-          </div>
-          <div class="card problem-card reveal">
-            <div class="icon">💸</div>
-            <h3>Слишком дорого</h3>
-            <p>Чтобы проверить простую гипотезу, часто нужно тратить деньги так, как будто вы уже строите полноценный продукт.</p>
-          </div>
-          <div class="card problem-card reveal">
-            <div class="icon">🧱</div>
-            <h3>Слишком много зависимости</h3>
-            <p>Подрядчик, разработчик, дизайнер, аналитик — и всё это ещё до того, как стало понятно, нужна ли вообще эта идея рынку.</p>
-          </div>
-        </div>
-      </div>
     </section>
 
-    <section class="block" id="what">
-      <div class="container">
-        <div class="section-head visible">
-          <div>
-            <div class="eyebrow reveal">Что это вообще</div>
-            <h2 class="reveal">Не программист.<br>Не чатик.<br>Не магия.</h2>
-          </div>
-          <p class="reveal">Claude Code — это инструмент, который помогает через нормальный язык быстрее собирать рабочие штуки: страницы, прототипы, сервисные куски, автоматизации и внутренние инструменты.</p>
+    <!-- ==========================================
+         SLIDE 3 — ЧТО ТАКОЕ ВАЙБКОДИНГ
+         ========================================== -->
+    <section class="slide slide-vibe" id="slide-2">
+        <div class="halo-orb green" style="top: 30%; left: 10%; animation: float 6s ease-in-out infinite;"></div>
+        <div class="slide-content">
+            <div class="reveal tag" style="margin-bottom: var(--content-gap);">Вайбкодинг</div>
+            <h2 class="reveal" style="margin-bottom: var(--content-gap); max-width: min(90vw, 750px);">
+                Вы говорите на русском — <span class="accent-text">ИИ пишет код</span>
+            </h2>
+            <ul class="bullet-list reveal" style="margin-top: var(--element-gap);">
+                <li><span>Описываете что хотите обычными словами</span></li>
+                <li><span>Claude Code генерирует <span class="stat-highlight">рабочий продукт</span></span></li>
+                <li><span>Правите результат диалогом, не кодом</span></li>
+                <li><span>Это как иметь <span class="accent-text">senior-разработчика</span>, который работает за секунды</span></li>
+            </ul>
         </div>
-
-        <div class="split-highlight visible">
-          <div class="good reveal">
-            <h3>Что это на самом деле</h3>
-            <div class="list">
-              <div class="list-item"><div class="tick"></div><div>Вы объясняете задачу обычными словами.</div></div>
-              <div class="list-item"><div class="tick"></div><div>Получаете первый рабочий результат, а не только текст “как было бы классно”.</div></div>
-              <div class="list-item"><div class="tick"></div><div>Докручиваете это в диалоге короткими итерациями.</div></div>
-            </div>
-          </div>
-          <div class="bad reveal">
-            <h3>Чем это не является</h3>
-            <div class="list">
-              <div class="list-item"><div class="cross"></div><div>Это не волшебная кнопка “сделай мне бизнес”.</div></div>
-              <div class="list-item"><div class="cross"></div><div>Это не замена мышлению, продуктовой логике и здравому смыслу.</div></div>
-              <div class="list-item"><div class="cross"></div><div>Это не игрушка, если вы правда что-то строите.</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
 
-    <section class="block" id="use-cases">
-      <div class="container">
-        <div class="section-head visible">
-          <div>
-            <div class="eyebrow reveal">Под ваши задачи</div>
-            <h2 class="reveal">Где это уже даёт пользу предпринимателю</h2>
-          </div>
-          <p class="reveal">Без айтишной романтики. Только вещи, которые помогают быстрее проверять идеи, разгружать себя и не вязнуть в бесконечных согласованиях.</p>
+    <!-- ==========================================
+         SLIDE 4 — ЧТО ВЫ НАУЧИТЕСЬ ДЕЛАТЬ
+         ========================================== -->
+    <section class="slide" id="slide-3">
+        <div class="slide-content">
+            <div class="reveal tag" style="margin-bottom: var(--content-gap);">Результат</div>
+            <h2 class="reveal" style="margin-bottom: var(--content-gap);">
+                После мастер-класса вы <span class="gradient-text">сможете</span>
+            </h2>
+            <div class="card-grid-6 reveal">
+                <div class="glass-card">
+                    <div class="card-icon blue">🌐</div>
+                    <div class="card-title">Сайты за 20 минут</div>
+                    <div class="card-desc">Создавать лендинги и сайты без дизайнера</div>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon purple">📊</div>
+                    <div class="card-title">Презентации</div>
+                    <div class="card-desc">Как эта — с анимациями и дизайном</div>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon green">🤖</div>
+                    <div class="card-title">AI-боты</div>
+                    <div class="card-desc">Собирать ботов для своего бизнеса</div>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon mixed">📱</div>
+                    <div class="card-title">Прототипы</div>
+                    <div class="card-desc">Приложения без программистов</div>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon blue">📈</div>
+                    <div class="card-title">Автоматизация</div>
+                    <div class="card-desc">Отчёты, парсинг, аналитика</div>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon green">💰</div>
+                    <div class="card-title">Экономия</div>
+                    <div class="card-desc">Сотни тысяч на разработке</div>
+                </div>
+            </div>
         </div>
-
-        <div class="grid-4 visible">
-          <div class="card use-card reveal">
-            <div class="card-number">01</div>
-            <h3>Лендинг под новый оффер</h3>
-            <p>Не ждать дизайнера и верстальщика неделями, а собрать первую версию за вечер и показать её миру.</p>
-          </div>
-          <div class="card use-card reveal">
-            <div class="card-number">02</div>
-            <h3>MVP для проверки идеи</h3>
-            <p>Сделать не “большой продукт”, а достаточно живую версию, чтобы проверить, нужен ли он вообще.</p>
-          </div>
-          <div class="card use-card reveal">
-            <div class="card-number">03</div>
-            <h3>Внутренние инструменты</h3>
-            <p>Калькуляторы, мини-сервисы, рабочие страницы, быстрые интерфейсы под свою команду.</p>
-          </div>
-          <div class="card use-card reveal">
-            <div class="card-number">04</div>
-            <h3>Автоматизация рутины</h3>
-            <p>Отчёты, сводки, обработка входящих, сбор данных — всё, что жрёт время, но не даёт жизни.</p>
-          </div>
-        </div>
-      </div>
     </section>
 
-    <section class="block" id="program">
-      <div class="container">
-        <div class="section-head visible">
-          <div>
-            <div class="eyebrow reveal">Что будет на вебинаре</div>
-            <h2 class="reveal">Покажем, а не просто поговорим</h2>
-          </div>
-          <p class="reveal">Сделаем это так, чтобы было понятно человеку, который раньше не видел Claude Code вообще. Цель — не впечатлить сложностью, а дать ясность.</p>
+    <!-- ==========================================
+         SLIDE 5 — КЕЙСЫ
+         ========================================== -->
+    <section class="slide slide-cases" id="slide-4">
+        <div class="halo-orb purple" style="top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.12; animation: breathe 8s ease-in-out infinite;"></div>
+        <div class="slide-content">
+            <div class="reveal tag" style="margin-bottom: var(--content-gap);">Кейсы</div>
+            <h2 class="reveal" style="margin-bottom: var(--content-gap);">
+                Реальные кейсы <span class="gradient-text-secondary">предпринимателей</span>
+            </h2>
+            <div class="card-grid-3 reveal">
+                <div class="glass-card case-card">
+                    <div class="case-label">Аналитика продаж</div>
+                    <div class="case-quote">«Собственник сети салонов создал систему аналитики продаж за 2 дня. Раньше это стоило бы <span class="stat-highlight">300K</span> у подрядчика.»</div>
+                </div>
+                <div class="glass-card case-card">
+                    <div class="case-label">Автоматизация</div>
+                    <div class="case-quote">«CEO IT-компании автоматизировал отчётность — 4 часа работы бухгалтера заменил скриптом за <span class="accent-text">15 минут</span>.»</div>
+                </div>
+                <div class="glass-card case-card">
+                    <div class="case-label">MVP за выходные</div>
+                    <div class="case-quote">«Основатель стартапа собрал MVP и получил первые заявки за выходные. <span class="stat-highlight">Без единого программиста</span> в команде.»</div>
+                </div>
+            </div>
         </div>
-
-        <div class="demo-box visible">
-          <div class="terminal reveal">
-            <div class="terminal-top"><span></span><span></span><span></span></div>
-            <div class="prompt-line">&gt; Сделай простую страницу под оффер для предпринимателей,
-&gt; объясни пользу без техно-жаргона,
-&gt; добавь CTA и выведи рабочую версию.</div>
-            <div class="result-list">
-              <div class="result-item">Появляется первый экран</div>
-              <div class="result-item">Докручиваются блоки под задачу</div>
-              <div class="result-item">Получаем то, что уже можно показывать</div>
-            </div>
-          </div>
-
-          <div class="timeline">
-            <div class="step reveal">
-              <div class="step-no">1</div>
-              <div>
-                <h4>Объясним простым языком, что это вообще такое</h4>
-                <p>Без разговора сверху вниз и без ощущения, что вы опоздали в цифровой поезд.</p>
-              </div>
-            </div>
-            <div class="step reveal">
-              <div class="step-no">2</div>
-              <div>
-                <h4>Покажем живой сценарий</h4>
-                <p>Одна понятная задача. От запроса до рабочего результата, который уже можно применять.</p>
-              </div>
-            </div>
-            <div class="step reveal">
-              <div class="step-no">3</div>
-              <div>
-                <h4>Разберём, как начать новичку без боли</h4>
-                <p>Что брать первым, чего не делать и как не превратить хороший инструмент в дорогую игрушку.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
 
-    <section class="block" id="fit">
-      <div class="container">
-        <div class="section-head visible">
-          <div>
-            <div class="eyebrow reveal">Для кого</div>
-            <h2 class="reveal">Если вы предприниматель-новичок — вам сюда</h2>
-          </div>
-          <p class="reveal">Не надо уже уметь кодить. Не надо “быть технарём”. Нужно только одно: желание быстрее проверять свои идеи и меньше зависеть от очередей, согласований и магии подрядчиков.</p>
+    <!-- ==========================================
+         SLIDE 6 — ПРОГРАММА
+         ========================================== -->
+    <section class="slide" id="slide-5">
+        <div class="slide-content">
+            <div class="reveal tag" style="margin-bottom: var(--content-gap);">Программа</div>
+            <h2 class="reveal" style="margin-bottom: var(--content-gap);">Что будет</h2>
+            <ul class="program-list reveal" style="margin-top: var(--element-gap);">
+                <li>
+                    <span class="emoji-icon">🔴</span>
+                    <span><span class="stat-highlight">Живое кодирование:</span> создаём рабочий продукт прямо на ваших глазах</span>
+                </li>
+                <li>
+                    <span class="emoji-icon">🧰</span>
+                    <span><span class="stat-highlight">Полный стек инструментов:</span> Claude Code, Cursor, Windsurf — что выбрать</span>
+                </li>
+                <li>
+                    <span class="emoji-icon">🎯</span>
+                    <span><span class="stat-highlight">Практика:</span> каждый участник попробует сам</span>
+                </li>
+                <li>
+                    <span class="emoji-icon">❓</span>
+                    <span><span class="stat-highlight">Q&A:</span> разберём ваши идеи и задачи</span>
+                </li>
+            </ul>
         </div>
-
-        <div class="grid-2 visible">
-          <div class="card reveal">
-            <h3>Вам точно подойдёт, если:</h3>
-            <div class="list">
-              <div class="list-item"><div class="tick"></div><div>У вас постоянно есть идеи, но до проверки доезжают единицы.</div></div>
-              <div class="list-item"><div class="tick"></div><div>Вы устали платить за простые вещи так, как будто строите космический корабль.</div></div>
-              <div class="list-item"><div class="tick"></div><div>Хотите за один вечер почувствовать механику, а не слушать очередную лекцию про будущее.</div></div>
-            </div>
-          </div>
-          <div class="card reveal">
-            <h3>Главная мысль</h3>
-            <p style="font-size: clamp(24px, 3vw, 38px); line-height: 1.12; letter-spacing: -.04em; color: var(--text); margin-top: 6px;">Claude Code нужен не тем, кто хочет выглядеть современно.</p>
-            <p style="font-size: clamp(24px, 3vw, 38px); line-height: 1.12; letter-spacing: -.04em; color: var(--accent); margin-top: 14px;">Он нужен тем, кто реально что-то строит.</p>
-          </div>
-        </div>
-      </div>
     </section>
 
-    <section class="final-cta" id="cta">
-      <div class="container visible">
-        <div class="cta-wrap reveal">
-          <div class="eyebrow"><span class="dot"></span> Присоединяйтесь завтра</div>
-          <h2>Пятница · 11:00 · Онлайн</h2>
-          <p>Коротко, по-человечески и под реальные задачи предпринимателя. Без лишней техно-пены. С живым показом и нормальным первым маршрутом для старта.</p>
-          <div class="info-row">
-            <div class="info-chip">AI First</div>
-            <div class="info-chip">1 час</div>
-            <div class="info-chip">Новички welcome</div>
-            <div class="info-chip">Регистрация не нужна</div>
-          </div>
-          <div class="cta-grid">
-            <div></div>
-            <div class="hero-cta" style="margin-top: 0; justify-content: flex-end;">
-              <a class="button button-secondary" href="#what">Сначала понять</a>
-              <a class="button button-primary" href="https://telemost.yandex.ru/j/94314520240781" target="_blank" rel="noopener">Открыть эфир</a>
-            </div>
-          </div>
+    <!-- ==========================================
+         SLIDE 7 — ДЛЯ КОГО
+         ========================================== -->
+    <section class="slide" id="slide-6">
+        <div class="slide-content">
+            <div class="reveal tag" style="margin-bottom: var(--content-gap);">Для кого</div>
+            <h2 class="reveal" style="margin-bottom: var(--content-gap);">
+                Этот мастер-класс <span class="accent-text">для вас</span>, если:
+            </h2>
+            <ul class="check-list reveal" style="margin-top: var(--element-gap);">
+                <li><span>Вы предприниматель, CEO или основатель</span></li>
+                <li><span>Хотите быстро тестировать идеи без зависимости от разработчиков</span></li>
+                <li><span>Устали платить за простые вещи, которые можно сделать за час</span></li>
+                <li><span>Хотите понимать, что реально может ИИ — без хайпа и маркетинговой воды</span></li>
+            </ul>
         </div>
-      </div>
     </section>
-  </main>
 
-  <footer>
-    <div class="container">AI First · Сообщество предпринимателей, которые строят будущее</div>
-  </footer>
+    <!-- ==========================================
+         SLIDE 8 — ОКНО ВОЗМОЖНОСТЕЙ
+         ========================================== -->
+    <section class="slide slide-window" id="slide-7">
+        <div class="halo-orb blue" style="top: 40%; left: 60%; animation: breathe 7s ease-in-out infinite; opacity: 0.2;"></div>
+        <div class="halo-orb green" style="bottom: 20%; left: 20%; animation: float 5s ease-in-out infinite;"></div>
+        <div class="slide-content">
+            <div class="reveal tag" style="margin-bottom: var(--content-gap);">Сейчас или никогда</div>
+            <h2 class="reveal" style="margin-bottom: var(--content-gap);">
+                Окно <span class="gradient-text">возможностей</span>
+            </h2>
+            <ul class="bullet-list reveal" style="margin-top: var(--element-gap);">
+                <li><span>Через год это будет уметь каждый — <span class="accent-text">сейчас это конкурентное преимущество</span></span></li>
+                <li><span>Предприниматель с Claude Code = предприниматель <span class="stat-highlight">× 10</span></span></li>
+                <li><span>Вы сможете проверить идею за <span class="accent-text">вечер</span>, а не за месяц</span></li>
+                <li><span>Это не про замену программистов — это про <span class="stat-highlight">скорость принятия решений</span></span></li>
+            </ul>
+        </div>
+    </section>
 
-  <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.14 });
+    <!-- ==========================================
+         SLIDE 9 — CTA
+         ========================================== -->
+    <section class="slide slide-cta" id="slide-8">
+        <div class="halo-orb blue" style="top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.15;"></div>
+        <div class="halo-orb purple" style="top: 20%; right: 15%; animation: float 7s ease-in-out infinite; opacity: 0.15;"></div>
+        <div class="slide-content">
+            <div class="reveal subtitle" style="margin-bottom: var(--element-gap);">
+                Присоединяйтесь
+            </div>
+            <h2 class="reveal" style="margin-bottom: var(--content-gap);">
+                Пятница · 11:00 · <span class="gradient-text">Онлайн</span>
+            </h2>
+            <div class="info-grid reveal" style="margin-bottom: var(--content-gap);">
+                <div class="info-item">
+                    <span class="info-label">Доступ</span>
+                    <span class="info-value">AI First + подписчики канала</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Длительность</span>
+                    <span class="info-value">1 час</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Регистрация</span>
+                    <span class="info-value">Не нужна ⏰</span>
+                </div>
+            </div>
+            <button class="cta-button reveal" id="calendarToggle" type="button">
+                Поставить напоминание 🔔
+            </button>
+            <div class="calendar-menu reveal" id="calendarMenu">
+                <a class="calendar-link" id="googleCalendarLink" href="#" target="_blank" rel="noopener">Google Calendar</a>
+                <a class="calendar-link" id="icsDownloadLink" href="#" download="ai-first-claude-code-masterclass.ics">Apple / Outlook / Яндекс (.ics)</a>
+                <a class="calendar-link" href="https://telemost.yandex.ru/j/94314520240781" target="_blank" rel="noopener">Открыть эфир</a>
+            </div>
+            <p class="calendar-hint reveal">Событие: пятница, 11:00–12:00 МСК. Один клик — и встреча улетает в календарь.</p>
+            <div class="slide-footer">
+                <p style="color: var(--text-muted);">AI First · Сообщество предпринимателей, которые строят будущее</p>
+            </div>
+        </div>
+    </section>
 
-    document.querySelectorAll('.hero-grid, .section-head, .grid-2, .grid-3, .grid-4, .split-highlight, .demo-box, .timeline, .cta-wrap').forEach(el => {
-      observer.observe(el);
-    });
-  </script>
+    <!-- ==========================================
+         JAVASCRIPT
+         ========================================== -->
+    <script>
+        class SlidePresentation {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.dots = document.querySelectorAll('.nav-dot');
+                this.progressBar = document.getElementById('progressBar');
+                this.currentSlide = 0;
+                this.totalSlides = this.slides.length;
+                this.isScrolling = false;
+                this.touchStartY = 0;
+
+                this.init();
+            }
+
+            init() {
+                // Intersection Observer for reveal animations
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            const idx = Array.from(this.slides).indexOf(entry.target);
+                            if (idx !== -1) {
+                                this.currentSlide = idx;
+                                this.updateUI();
+                            }
+                        }
+                    });
+                }, { threshold: 0.5 });
+
+                this.slides.forEach(slide => observer.observe(slide));
+
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => this.handleKeyboard(e));
+
+                // Touch navigation
+                document.addEventListener('touchstart', (e) => {
+                    this.touchStartY = e.touches[0].clientY;
+                }, { passive: true });
+
+                document.addEventListener('touchend', (e) => {
+                    const diff = this.touchStartY - e.changedTouches[0].clientY;
+                    if (Math.abs(diff) > 50) {
+                        diff > 0 ? this.next() : this.prev();
+                    }
+                }, { passive: true });
+
+                // Mouse wheel with debounce
+                document.addEventListener('wheel', (e) => {
+                    if (this.isScrolling) return;
+                    this.isScrolling = true;
+                    if (e.deltaY > 0) this.next();
+                    else this.prev();
+                    setTimeout(() => this.isScrolling = false, 800);
+                }, { passive: true });
+
+                // Dot clicks
+                this.dots.forEach(dot => {
+                    dot.addEventListener('click', () => {
+                        this.goTo(parseInt(dot.dataset.slide));
+                    });
+                });
+
+                // Initial state
+                this.slides[0].classList.add('visible');
+                this.updateUI();
+            }
+
+            handleKeyboard(e) {
+                switch(e.key) {
+                    case 'ArrowDown':
+                    case 'ArrowRight':
+                    case ' ':
+                        e.preventDefault();
+                        this.next();
+                        break;
+                    case 'ArrowUp':
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        this.prev();
+                        break;
+                    case 'Home':
+                        e.preventDefault();
+                        this.goTo(0);
+                        break;
+                    case 'End':
+                        e.preventDefault();
+                        this.goTo(this.totalSlides - 1);
+                        break;
+                }
+            }
+
+            next() {
+                if (this.currentSlide < this.totalSlides - 1) {
+                    this.goTo(this.currentSlide + 1);
+                }
+            }
+
+            prev() {
+                if (this.currentSlide > 0) {
+                    this.goTo(this.currentSlide - 1);
+                }
+            }
+
+            goTo(index) {
+                if (index < 0 || index >= this.totalSlides) return;
+                this.currentSlide = index;
+                this.slides[index].scrollIntoView({ behavior: 'smooth' });
+                this.updateUI();
+            }
+
+            updateUI() {
+                // Update dots
+                this.dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === this.currentSlide);
+                });
+                // Update progress bar
+                const progress = ((this.currentSlide + 1) / this.totalSlides) * 100;
+                this.progressBar.style.width = progress + '%';
+            }
+        }
+
+        function setupCalendarLinks() {
+            const eventTitle = 'Claude Code для предпринимателей — мастер-класс AI First';
+            const eventDetails = [
+                'Первый мастер-класс по Claude Code для предпринимателей.',
+                'Только для участников AI First и подписчиков канала.',
+                'Регистрация не нужна — просто подключайтесь по ссылке.',
+                'Эфир: https://telemost.yandex.ru/j/94314520240781'
+            ].join('\n');
+            const eventLocation = 'Yandex Telemost';
+            const startUtc = '20260320T080000Z';
+            const endUtc = '20260320T090000Z';
+
+            const googleUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+                + '&text=' + encodeURIComponent(eventTitle)
+                + '&dates=' + startUtc + '/' + endUtc
+                + '&details=' + encodeURIComponent(eventDetails)
+                + '&location=' + encodeURIComponent(eventLocation);
+
+            const icsContent = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//AI First//Claude Code Masterclass//RU',
+                'CALSCALE:GREGORIAN',
+                'BEGIN:VEVENT',
+                'UID:ai-first-claude-code-20260320T080000Z',
+                'DTSTAMP:20260319T134000Z',
+                'DTSTART:20260320T080000Z',
+                'DTEND:20260320T090000Z',
+                'SUMMARY:' + eventTitle,
+                'DESCRIPTION:' + eventDetails.replace(/\n/g, '\\n'),
+                'LOCATION:' + eventLocation + ' — https://telemost.yandex.ru/j/94314520240781',
+                'URL:https://telemost.yandex.ru/j/94314520240781',
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].join('\r\n');
+
+            const googleLink = document.getElementById('googleCalendarLink');
+            const icsLink = document.getElementById('icsDownloadLink');
+            const toggle = document.getElementById('calendarToggle');
+            const menu = document.getElementById('calendarMenu');
+
+            if (googleLink) googleLink.href = googleUrl;
+            if (icsLink) {
+                const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+                icsLink.href = URL.createObjectURL(blob);
+            }
+
+            if (toggle && menu) {
+                toggle.addEventListener('click', () => {
+                    menu.classList.toggle('open');
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!menu.contains(e.target) && !toggle.contains(e.target)) {
+                        menu.classList.remove('open');
+                    }
+                });
+            }
+        }
+
+        // Initialize on DOM ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new SlidePresentation();
+            setupCalendarLinks();
+        });
+    </script>
 </body>
 </html>
