@@ -3,150 +3,469 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Claude Code для предпринимателей — кейсы | AI First</title>
-  <meta name="description" content="Сайт-презентация для встречи: Claude Code для предпринимателей. 10 практических кейсов, где это даёт скорость, деньги и рычаг в бизнесе." />
+  <title>Claude Code для предпринимателей — AI First</title>
+  <meta name="description" content="Онлайн-вебинар для предпринимателей, которые раньше не видели Claude Code. Покажем, как использовать ИИ для лендингов, MVP, автоматизации и быстрых проверок идей." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #08090d;
-      --bg-soft: #11141b;
+      --bg: #0A0A0B;
+      --bg-soft: #111217;
       --panel: rgba(255,255,255,0.05);
       --panel-strong: rgba(255,255,255,0.08);
       --border: rgba(255,255,255,0.1);
       --text: #F6F7FB;
-      --muted: rgba(246,247,251,0.70);
+      --muted: rgba(246,247,251,0.68);
       --soft: rgba(246,247,251,0.46);
       --primary: #0066FF;
       --accent: #00FFB7;
       --secondary: #7B2FFF;
       --danger: #FF6B6B;
       --warning: #FFB84D;
-      --container: 1180px;
-      --radius: 30px;
+      --radius: 28px;
       --shadow: 0 20px 60px rgba(0,0,0,.28);
+      --container: 1180px;
     }
+
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
       font-family: 'Manrope', system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(0,102,255,.16), transparent 20%),
+        radial-gradient(circle at 85% 18%, rgba(123,47,255,.14), transparent 18%),
+        radial-gradient(circle at 75% 85%, rgba(0,255,183,.10), transparent 22%),
+        var(--bg);
       color: var(--text);
       overflow-x: hidden;
-      background:
-        radial-gradient(circle at 10% 8%, rgba(0,102,255,.16), transparent 22%),
-        radial-gradient(circle at 88% 18%, rgba(123,47,255,.16), transparent 18%),
-        radial-gradient(circle at 80% 88%, rgba(0,255,183,.10), transparent 22%),
-        var(--bg);
     }
+
     body::before {
       content: "";
       position: fixed;
       inset: 0;
       pointer-events: none;
       opacity: .22;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.05' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
       mix-blend-mode: soft-light;
     }
+
     a { color: inherit; text-decoration: none; }
     .container { width: min(var(--container), calc(100% - 40px)); margin: 0 auto; }
     .eyebrow {
-      display: inline-flex; align-items: center; gap: 10px; padding: 10px 14px;
-      border-radius: 999px; border: 1px solid var(--border); background: rgba(255,255,255,.04);
-      font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 700;
     }
-    .dot { width: 8px; height: 8px; border-radius: 999px; background: var(--accent); box-shadow: 0 0 18px rgba(0,255,183,.6); }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 18px rgba(0,255,183,.6);
+    }
+
     header {
-      position: sticky; top: 0; z-index: 20; backdrop-filter: blur(18px);
-      background: rgba(8,9,13,.58); border-bottom: 1px solid rgba(255,255,255,.06);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: rgba(10,10,11,.58);
+      border-bottom: 1px solid rgba(255,255,255,.06);
     }
-    .nav { min-height: 76px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
-    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: -.03em; }
+    .nav {
+      min-height: 76px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+    }
     .brand-mark {
-      width: 38px; height: 38px; border-radius: 14px; background: linear-gradient(135deg, var(--primary), var(--accent));
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
       box-shadow: 0 10px 30px rgba(0,102,255,.35);
     }
     .brand small { display: block; color: var(--soft); font-weight: 600; letter-spacing: 0; }
+
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
     .button {
-      display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 20px;
-      border-radius: 18px; font-weight: 800; transition: .25s ease; border: 1px solid transparent; cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 52px;
+      padding: 0 20px;
+      border-radius: 18px;
+      font-weight: 800;
+      transition: .25s ease;
+      border: 1px solid transparent;
+      cursor: pointer;
     }
-    .button-primary { background: linear-gradient(135deg, var(--primary), #1e7bff); color: white; box-shadow: 0 18px 40px rgba(0,102,255,.28); }
-    .button-secondary { background: rgba(255,255,255,.05); border-color: var(--border); color: var(--text); }
+    .button-primary {
+      background: linear-gradient(135deg, var(--primary), #1e7bff);
+      color: white;
+      box-shadow: 0 18px 40px rgba(0,102,255,.28);
+    }
+    .button-secondary {
+      background: rgba(255,255,255,.05);
+      border-color: var(--border);
+      color: var(--text);
+    }
     .button:hover { transform: translateY(-2px); }
-    .hero { padding: 84px 0 42px; }
-    .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 28px; align-items: stretch; }
+
+    .hero {
+      padding: 80px 0 46px;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+    .hero-copy {
+      padding: 12px 0;
+    }
     h1 {
-      margin: 18px 0; font-family: 'Space Grotesk', sans-serif; font-size: clamp(44px, 7vw, 88px);
-      line-height: .95; letter-spacing: -.06em; max-width: 820px;
+      margin: 18px 0 18px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(42px, 7vw, 84px);
+      line-height: .95;
+      letter-spacing: -.06em;
+      max-width: 760px;
     }
-    .gradient { background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .hero-lead { max-width: 760px; font-size: clamp(18px, 2.1vw, 24px); line-height: 1.48; color: var(--muted); }
-    .hero-card, .card {
-      position: relative; padding: 28px; border-radius: 32px; background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
-      border: 1px solid rgba(255,255,255,.1); box-shadow: var(--shadow); overflow: hidden;
+    .gradient {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
-    .hero-card::before, .card::before {
-      content: ""; position: absolute; inset: auto -10% -35% auto; width: 220px; height: 220px;
-      background: radial-gradient(circle, rgba(0,255,183,.18), transparent 62%); filter: blur(8px); pointer-events: none;
+    .hero-lead {
+      max-width: 680px;
+      font-size: clamp(18px, 2.1vw, 24px);
+      line-height: 1.45;
+      color: var(--muted);
     }
-    .hero-card h3 { margin: 14px 0 16px; font-size: clamp(24px, 3vw, 38px); line-height: 1; letter-spacing: -.05em; }
-    .stack { display: grid; gap: 14px; margin-top: 22px; }
-    .stack-item { padding: 16px 18px; border-radius: 20px; background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.08); }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+    .meta-pill {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-weight: 700;
+    }
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .hero-card {
+      position: relative;
+      padding: 28px;
+      border-radius: 34px;
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border: 1px solid rgba(255,255,255,.1);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      min-height: 100%;
+    }
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: auto -15% -35% auto;
+      width: 240px;
+      height: 240px;
+      background: radial-gradient(circle, rgba(0,255,183,.28), transparent 62%);
+      filter: blur(8px);
+      pointer-events: none;
+    }
+    .hero-card .label {
+      color: var(--soft);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      font-weight: 700;
+    }
+    .hero-card h3 {
+      margin: 14px 0 16px;
+      font-size: clamp(24px, 3vw, 38px);
+      line-height: 1;
+      letter-spacing: -.05em;
+    }
+    .stack {
+      display: grid;
+      gap: 14px;
+      margin-top: 22px;
+    }
+    .stack-item {
+      padding: 16px 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.045);
+      border: 1px solid rgba(255,255,255,.08);
+    }
     .stack-item strong { display: block; margin-bottom: 6px; font-size: 18px; }
     .stack-item span { color: var(--muted); line-height: 1.45; }
-    section.block { padding: 26px 0 10px; }
-    .section-head { display: grid; grid-template-columns: .9fr 1.1fr; gap: 24px; align-items: end; margin-bottom: 22px; }
-    .section-head h2 { margin: 14px 0 0; font-family: 'Space Grotesk', sans-serif; font-size: clamp(32px, 5vw, 58px); line-height: .95; letter-spacing: -.05em; }
-    .section-head p { color: var(--muted); font-size: 18px; line-height: 1.5; max-width: 740px; margin: 0; }
-    .grid-2, .grid-3 { display: grid; gap: 18px; }
+
+    section.block {
+      padding: 28px 0 10px;
+    }
+    .section-head {
+      display: grid;
+      grid-template-columns: .92fr 1.08fr;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 22px;
+    }
+    .section-head h2 {
+      margin: 14px 0 0;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(30px, 5vw, 56px);
+      line-height: .95;
+      letter-spacing: -.05em;
+    }
+    .section-head p {
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.5;
+      max-width: 720px;
+      margin: 0;
+    }
+
+    .grid-3, .grid-4, .grid-2 {
+      display: grid;
+      gap: 18px;
+    }
     .grid-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
     .grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
-    .problem-card { min-height: 200px; }
-    .icon { width: 52px; height: 52px; border-radius: 18px; display: grid; place-items: center; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.09); margin-bottom: 16px; font-size: 24px; }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+
+    .card {
+      position: relative;
+      padding: 24px;
+      border-radius: 28px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
     .card h3, .card h4 { margin: 0 0 12px; letter-spacing: -.04em; }
     .card p { margin: 0; color: var(--muted); line-height: 1.55; }
-    .case-grid { display: grid; gap: 18px; }
-    .case-card {
-      display: grid; grid-template-columns: 120px 1fr .9fr; gap: 22px; align-items: start;
-      padding: 24px; border-radius: 30px; background: var(--panel); border: 1px solid var(--border); box-shadow: var(--shadow);
+    .card-number {
+      font-size: 13px;
+      color: var(--soft);
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      font-weight: 800;
+      margin-bottom: 12px;
     }
-    .case-no {
-      width: 120px; height: 120px; border-radius: 28px; display: grid; place-items: center;
-      font-family: 'Space Grotesk', sans-serif; font-size: 42px; font-weight: 700; letter-spacing: -.06em;
-      background: linear-gradient(135deg, rgba(0,102,255,.22), rgba(123,47,255,.18)); border: 1px solid rgba(255,255,255,.1);
+    .icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.09);
+      margin-bottom: 16px;
+      font-size: 24px;
+    }
+
+    .problem-card { min-height: 220px; }
+    .problem-card:nth-child(1) .icon { color: var(--danger); }
+    .problem-card:nth-child(2) .icon { color: var(--warning); }
+    .problem-card:nth-child(3) .icon { color: var(--primary); }
+
+    .use-card { min-height: 240px; }
+    .use-card strong { color: var(--accent); }
+
+    .split-highlight {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    .good, .bad {
+      padding: 24px;
+      border-radius: 28px;
+      min-height: 100%;
+    }
+    .good {
+      background: linear-gradient(180deg, rgba(0,255,183,.1), rgba(0,255,183,.04));
+      border: 1px solid rgba(0,255,183,.18);
+    }
+    .bad {
+      background: linear-gradient(180deg, rgba(255,107,107,.09), rgba(255,107,107,.03));
+      border: 1px solid rgba(255,107,107,.16);
+    }
+    .good h3, .bad h3 { margin-top: 0; font-size: 28px; }
+    .list { display: grid; gap: 12px; margin-top: 14px; }
+    .list-item {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 12px;
+      align-items: start;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .tick, .cross {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      margin-top: 3px;
+    }
+    .tick { background: linear-gradient(135deg, var(--accent), #44e4b9); }
+    .cross { background: linear-gradient(135deg, var(--danger), #ff8b8b); }
+
+    .demo-box {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    .terminal {
+      padding: 24px;
+      border-radius: 28px;
+      background: #0b1220;
+      border: 1px solid rgba(77,163,255,.18);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 20px 60px rgba(0,0,0,.35);
+      min-height: 100%;
+    }
+    .terminal-top {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .terminal-top span {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.22);
+    }
+    .prompt-line {
+      color: var(--accent);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 15px;
+      margin-bottom: 14px;
+      white-space: pre-wrap;
+    }
+    .result-list { display: grid; gap: 12px; }
+    .result-item {
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.06);
+      color: var(--muted);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+    }
+    .step {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      gap: 16px;
+      align-items: start;
+      padding: 18px 20px;
+      border-radius: 22px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .step-no {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 20px;
       color: white;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      box-shadow: 0 14px 28px rgba(0,102,255,.25);
     }
-    .case-title { font-size: clamp(28px, 3vw, 38px); line-height: .98; letter-spacing: -.05em; margin: 0 0 12px; }
-    .case-sub { color: var(--muted); font-size: 18px; line-height: 1.55; }
-    .case-boxes { display: grid; gap: 12px; }
-    .mini-box { padding: 16px 18px; border-radius: 20px; background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.08); }
-    .mini-box strong { display: block; margin-bottom: 6px; font-size: 14px; text-transform: uppercase; letter-spacing: .12em; color: var(--soft); }
-    .mini-box span { color: var(--text); line-height: 1.5; }
-    .quote-card { padding: 30px; border-radius: 32px; background: linear-gradient(180deg, rgba(0,255,183,.08), rgba(0,255,183,.03)); border: 1px solid rgba(0,255,183,.16); }
-    .quote-card p { font-size: clamp(24px, 3vw, 40px); line-height: 1.08; letter-spacing: -.05em; color: var(--text); margin: 0; }
-    .timeline { display: grid; gap: 14px; }
-    .step { display: grid; grid-template-columns: 58px 1fr; gap: 16px; align-items: start; padding: 18px 20px; border-radius: 22px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); }
-    .step-no { width: 58px; height: 58px; border-radius: 18px; display: grid; place-items: center; font-weight: 800; font-size: 20px; color: white; background: linear-gradient(135deg, var(--primary), var(--secondary)); box-shadow: 0 14px 28px rgba(0,102,255,.25); }
     .step h4 { margin: 0 0 8px; font-size: 22px; letter-spacing: -.03em; }
-    .final-cta { padding: 90px 0 110px; }
-    .cta-wrap { padding: 36px; border-radius: 36px; background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); border: 1px solid rgba(255,255,255,.1); box-shadow: var(--shadow); }
+
+    .final-cta {
+      padding: 90px 0 110px;
+    }
+    .cta-wrap {
+      padding: 36px;
+      border-radius: 36px;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.1);
+      box-shadow: var(--shadow);
+    }
     .cta-wrap h2 { margin: 16px 0 14px; font-size: clamp(34px, 5vw, 62px); line-height: .95; letter-spacing: -.05em; }
     .cta-wrap p { max-width: 760px; color: var(--muted); font-size: 20px; }
     .cta-grid { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; margin-top: 28px; }
-    footer { padding: 0 0 56px; color: var(--soft); font-size: 15px; }
-    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
-    .visible .reveal { opacity: 1; transform: translateY(0); }
-    @media (max-width: 1100px) {
-      .hero-grid, .section-head, .grid-2, .grid-3, .cta-grid, .case-card { grid-template-columns: 1fr; }
-      .case-no { width: 84px; height: 84px; font-size: 30px; }
+
+
+    #calendarToggle {
+      font-size: 24px;
+      font-weight: 800;
+      min-height: 64px;
+      padding: 0 28px;
     }
+
+    footer {
+      padding: 0 0 56px;
+      color: var(--soft);
+      font-size: 15px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
+    }
+    .visible .reveal {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1024px) {
+      .hero-grid, .section-head, .grid-4, .grid-3, .grid-2, .split-highlight, .demo-box, .timeline, .cta-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero { padding-top: 56px; }
+      header { position: relative; }
+      .nav { min-height: auto; padding: 16px 0; align-items: flex-start; flex-direction: column; }
+      .nav-actions { width: 100%; flex-wrap: wrap; }
+    }
+
     @media (max-width: 640px) {
       .container { width: min(var(--container), calc(100% - 24px)); }
-      .hero-card, .card, .quote-card, .cta-wrap, .case-card { padding: 22px; }
+      .hero-cta, .nav-actions { flex-direction: column; align-items: stretch; }
       .button { width: 100%; }
-      .cta-grid { grid-template-columns: 1fr; }
+      .hero-card, .card, .good, .bad, .terminal, .cta-wrap { padding: 22px; }
+      .step { grid-template-columns: 52px 1fr; }
+      .step-no { width: 52px; height: 52px; }
     }
   </style>
 </head>
@@ -155,260 +474,237 @@
     <div class="container nav">
       <div class="brand">
         <div class="brand-mark"></div>
-        <div>AI First<small>Landing-deck для встречи</small></div>
+        <div>
+          AI First
+          <small>Claude Code для предпринимателей</small>
+        </div>
       </div>
-      <a class="button button-secondary" href="#cases">К кейсам</a>
     </div>
   </header>
 
   <main>
     <section class="hero">
       <div class="container hero-grid visible">
-        <div>
-          <div class="eyebrow reveal"><span class="dot"></span> Встреча для предпринимателей · новички welcome</div>
+        <div class="hero-copy">
+          <div class="eyebrow reveal"><span class="dot"></span> Пятница · 11:00 · Онлайн</div>
           <h1 class="reveal"><span class="gradient">Claude Code</span><br>для предпринимателей</h1>
-          <p class="hero-lead reveal">Не через абстрактные разговоры про ИИ, а через реальные кейсы. Где это уже даёт скорость, деньги, разгрузку и новый рычаг для бизнеса.</p>
-        </div>
+          <p class="hero-lead reveal">Если вы ни разу не видели Claude Code, это нормально. На вебинаре разберём по-человечески: что это вообще такое, где это даёт деньги в бизнесе и как использовать это без айтишной боли.</p>
+          <div class="hero-meta reveal">
+            <div class="meta-pill">Для предпринимателей и CEO</div>
+            <div class="meta-pill">Новички welcome</div>
+            <div class="meta-pill">Без техно-жаргона</div>
+          </div>
+</div>
+
         <div class="hero-card reveal">
-          <h3>Главное на этой встрече</h3>
+          <div class="label">Что будет на выходе</div>
+          <h3>Не хайп. <br>А рабочая рамка.</h3>
           <div class="stack">
-            <div class="stack-item"><strong>Меньше теории</strong><span>Не будем долго объяснять “что такое ИИ”.</span></div>
-            <div class="stack-item"><strong>Больше кейсов</strong><span>Покажем, где это уже полезно именно предпринимателю.</span></div>
-            <div class="stack-item"><strong>Простой вход</strong><span>Даже если вы раньше не видели Claude Code вообще.</span></div>
+            <div class="stack-item">
+              <strong>Поймёте, где Claude Code реально полезен</strong>
+              <span>Лендинги, MVP, внутренние инструменты, автоматизация, быстрые проверки идей.</span>
+            </div>
+            <div class="stack-item">
+              <strong>Увидите живой сценарий</strong>
+              <span>Не презентацию про ИИ, а нормальную демонстрацию: задача → результат.</span>
+            </div>
+            <div class="stack-item">
+              <strong>Сможете начать в тот же день</strong>
+              <span>Без “сначала выучите программирование” и прочей тоски.</span>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="block" id="base">
-      <div class="container">
-        <div class="section-head visible">
-          <div>
-            <div class="eyebrow reveal">База</div>
-            <h2 class="reveal">Что это вообще такое — простым языком</h2>
-          </div>
-          <p class="reveal">Claude Code — это не “магия для айтишников” и не чатик ради чатика. Это инструмент, который помогает через обычный язык быстрее собирать рабочие штуки: страницы, прототипы, сервисные куски, автоматизации и внутренние инструменты.</p>
-        </div>
-        <div class="grid-3 visible">
-          <div class="card reveal"><h3>Что это даёт</h3><p>Снижает трение между мыслью “а что если...” и первой рабочей версией, которую уже можно показать, потрогать и проверить.</p></div>
-          <div class="card reveal"><h3>Где граница</h3><p>Он не заменяет мышление, продуктовую логику и здравый смысл. Если в задаче туман — он не спасёт, а только ускорит туман.</p></div>
-          <div class="card reveal"><h3>Почему это важно</h3><p>Предприниматель выигрывает не потому, что “умеет кодить”, а потому, что начинает быстрее проверять идеи и меньше зависеть от очередей и согласований.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="block">
+    <section class="block" id="why">
       <div class="container">
         <div class="section-head visible">
           <div>
             <div class="eyebrow reveal">Почему это важно</div>
-            <h2 class="reveal">Идея в бизнесе сейчас умирает не от конкуренции. А от трения.</h2>
+            <h2 class="reveal">Идеи умирают<br>ещё до старта</h2>
           </div>
-          <p class="reveal">Слишком долго. Слишком дорого. Слишком много зависимости от людей, очередей, согласований и “оценим на следующей неделе”.</p>
+          <p class="reveal">У большинства предпринимателей проблема не в отсутствии идей. Проблема в том, что путь от идеи до проверки слишком длинный, дорогой и завязан на чужих руках.</p>
         </div>
+
         <div class="grid-3 visible">
-          <div class="card problem-card reveal"><div class="icon">⏳</div><h3>Долго</h3><p>Пока вы только доходите до первой версии, рынок уже проверил три похожие идеи.</p></div>
-          <div class="card problem-card reveal"><div class="icon">💸</div><h3>Дорого</h3><p>Даже простая гипотеза начинает стоить так, как будто вы строите полноценный продукт.</p></div>
-          <div class="card problem-card reveal"><div class="icon">🧱</div><h3>Зависимо</h3><p>Подрядчик, разработчик, дизайнер, аналитик — и всё это ещё до проверки самой сути.</p></div>
+          <div class="card problem-card reveal">
+            <div class="icon">⏳</div>
+            <h3>Слишком долго</h3>
+            <p>Идея превращается в цепочку из ТЗ, созвонов, правок и “вернёмся на следующей неделе”.</p>
+          </div>
+          <div class="card problem-card reveal">
+            <div class="icon">💸</div>
+            <h3>Слишком дорого</h3>
+            <p>Чтобы проверить простую гипотезу, часто нужно тратить деньги так, как будто вы уже строите полноценный продукт.</p>
+          </div>
+          <div class="card problem-card reveal">
+            <div class="icon">🧱</div>
+            <h3>Слишком много зависимости</h3>
+            <p>Подрядчик, разработчик, дизайнер, аналитик — и всё это ещё до того, как стало понятно, нужна ли вообще эта идея рынку.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="block" id="cases">
+    <section class="block" id="what">
       <div class="container">
         <div class="section-head visible">
           <div>
-            <div class="eyebrow reveal">Главный блок</div>
-            <h2 class="reveal">10 кейсов, где это уже полезно предпринимателю</h2>
+            <div class="eyebrow reveal">Что это вообще</div>
+            <h2 class="reveal">Не программист.<br>Не чатик.<br>Не магия.</h2>
           </div>
-          <p class="reveal">Не “когда-нибудь в будущем”, а прямо сейчас. Мы идём не от технологии, а от задач бизнеса.</p>
+          <p class="reveal">Claude Code — это инструмент, который помогает через нормальный язык быстрее собирать рабочие штуки: страницы, прототипы, сервисные куски, автоматизации и внутренние инструменты.</p>
         </div>
 
-        <div class="case-grid visible">
-          <article class="case-card reveal">
-            <div class="case-no">01</div>
-            <div>
-              <h3 class="case-title">Лендинг под новый оффер</h3>
-              <p class="case-sub">Когда нужно быстро собрать первую страницу, а не превращать это в отдельный проект на две недели.</p>
+        <div class="split-highlight visible">
+          <div class="good reveal">
+            <h3>Что это на самом деле</h3>
+            <div class="list">
+              <div class="list-item"><div class="tick"></div><div>Вы объясняете задачу обычными словами.</div></div>
+              <div class="list-item"><div class="tick"></div><div>Получаете первый рабочий результат, а не только текст “как было бы классно”.</div></div>
+              <div class="list-item"><div class="tick"></div><div>Докручиваете это в диалоге короткими итерациями.</div></div>
             </div>
-            <div class="case-boxes">
-              <div class="mini-box"><strong>Боль</strong><span>Нужен дизайнер, верстальщик, правки, согласования.</span></div>
-              <div class="mini-box"><strong>Что даёт Claude Code</strong><span>Первая рабочая версия страницы за вечер, чтобы уже показывать и тестировать.</span></div>
+          </div>
+          <div class="bad reveal">
+            <h3>Чем это не является</h3>
+            <div class="list">
+              <div class="list-item"><div class="cross"></div><div>Это не волшебная кнопка “сделай мне бизнес”.</div></div>
+              <div class="list-item"><div class="cross"></div><div>Это не замена мышлению, продуктовой логике и здравому смыслу.</div></div>
+              <div class="list-item"><div class="cross"></div><div>Это не игрушка, если вы правда что-то строите.</div></div>
             </div>
-          </article>
-
-          <article class="case-card reveal">
-            <div class="case-no">02</div>
-            <div>
-              <h3 class="case-title">MVP для проверки идеи</h3>
-              <p class="case-sub">Не “строить продукт”, а быстро понять: вообще надо это рынку или нет.</p>
-            </div>
-            <div class="case-boxes">
-              <div class="mini-box"><strong>Боль</strong><span>Пока делаете “правильно”, теряете месяцы и деньги.</span></div>
-              <div class="mini-box"><strong>Что даёт Claude Code</strong><span>Живая черновая версия, которой достаточно для первой проверки спроса.</span></div>
-            </div>
-          </article>
-
-          <article class="case-card reveal">
-            <div class="case-no">03</div>
-            <div>
-              <h3 class="case-title">Внутренний калькулятор для команды</h3>
-              <p class="case-sub">Калькулятор экономики, расчёта цены, бюджета, ROMI, юнит-экономики — чего угодно, что вы сейчас считаете руками.</p>
-            </div>
-            <div class="case-boxes">
-              <div class="mini-box"><strong>Боль</strong><span>Формулы живут по разным файлам и в голове у одного человека.</span></div>
-              <div class="mini-box"><strong>Что даёт Claude Code</strong><span>Собственный рабочий инструмент под свою логику, а не костыль из табличек.</span></div>
-            </div>
-          </article>
-
-          <article class="case-card reveal">
-            <div class="case-no">04</div>
-            <div>
-              <h3 class="case-title">Автоматизация рутины собственника</h3>
-              <p class="case-sub">Сводки, письма, повторяющиеся отчёты, структура встреч, фиксация задач и решений.</p>
-            </div>
-            <div class="case-boxes">
-              <div class="mini-box"><strong>Боль</strong><span>Сотни мелких действий жрут внимание, а не деньги.</span></div>
-              <div class="mini-box"><strong>Что даёт Claude Code</strong><span>Маленькие полезные штуки, которые не окупалось делать классической разработкой.</span></div>
-            </div>
-          </article>
-
-          <article class="case-card reveal">
-            <div class="case-no">05</div>
-            <div>
-              <h3 class="case-title">Страница под мероприятие или запуск</h3>
-              <p class="case-sub">Когда нужен анонс, регистрация, короткий прогрев и внятный CTA — без цирка и затяжки.</p>
-            </div>
-            <div class="case-boxes">
-              <div class="mini-box"><strong>Боль</strong><span>Каждый запуск как будто начинается с нуля.</span></div>
-              <div class="mini-box"><strong>Что даёт Claude Code</strong><span>Быстрая упаковка идеи в страницу, которую уже можно крутить и докручивать.</span></div>
-            </div>
-          </article>
-
-          <article class="case-card reveal">
-            <div class="case-no">06</div>
-            <div>
-              <h3 class="case-title">Мини-сервис под конкретную задачу</h3>
-              <p class="case-sub">Например: трекер, база, внутренняя страница, загрузка данных, форма, инструмент для клиента.</p>
-            </div>
-            <div class="case-boxes">
-              <div class="mini-box"><strong>Боль</strong><span>Под простую задачу никто не хочет писать софт — “невыгодно”.</span></div>
-              <div class="mini-box"><strong>Что даёт Claude Code</strong><span>Теперь эту задачу можно всё-таки закрыть — быстро и без IT-эпопеи.</span></div>
-            </div>
-          </article>
-
-          <article class="case-card reveal">
-            <div class="case-no">07</div>
-            <div>
-              <h3 class="case-title">Прототип для клиента / инвестора / партнёра</h3>
-              <p class="case-sub">Не объяснять на пальцах, а показать: вот как это может выглядеть и работать.</p>
-            </div>
-            <div class="case-boxes">
-              <div class="mini-box"><strong>Боль</strong><span>Смыслы в голове есть, а показать нечего — только слова и обещания.</span></div>
-              <div class="mini-box"><strong>Что даёт Claude Code</strong><span>Возможность быстро упаковать идею в то, что можно открыть, кликнуть и увидеть.</span></div>
-            </div>
-          </article>
-
-          <article class="case-card reveal">
-            <div class="case-no">08</div>
-            <div>
-              <h3 class="case-title">Сайт под новое направление</h3>
-              <p class="case-sub">Когда у компании есть сильная компетенция, но она вообще не упакована, и продавать её нечем.</p>
-            </div>
-            <div class="case-boxes">
-              <div class="mini-box"><strong>Боль</strong><span>Направление есть, а маркетинга и упаковки нет.</span></div>
-              <div class="mini-box"><strong>Что даёт Claude Code</strong><span>Быстрый первый слой упаковки: страница, структура, презентация, интерфейс.</span></div>
-            </div>
-          </article>
-
-          <article class="case-card reveal">
-            <div class="case-no">09</div>
-            <div>
-              <h3 class="case-title">Экспресс-проверка гипотезы за вечер</h3>
-              <p class="case-sub">Без созвонов, без сложной команды, без ощущения, что ради идеи надо собрать маленькую компанию.</p>
-            </div>
-            <div class="case-boxes">
-              <div class="mini-box"><strong>Боль</strong><span>Слишком много мыслей остаются просто мыслями.</span></div>
-              <div class="mini-box"><strong>Что даёт Claude Code</strong><span>Снижение трения между “а что если” и “вот, уже можно проверить”.</span></div>
-            </div>
-          </article>
-
-          <article class="case-card reveal">
-            <div class="case-no">10</div>
-            <div>
-              <h3 class="case-title">Разгрузка самого предпринимателя</h3>
-              <p class="case-sub">Не только про деньги и скорость. Ещё и про возврат внимания туда, где оно реально должно быть — в решения, а не в мелочёвку.</p>
-            </div>
-            <div class="case-boxes">
-              <div class="mini-box"><strong>Боль</strong><span>Даже когда бизнес растёт, голова занята не теми вещами.</span></div>
-              <div class="mini-box"><strong>Что даёт Claude Code</strong><span>Не заменяет предпринимателя, а снимает часть лишнего давления с его внимания.</span></div>
-            </div>
-          </article>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="block">
-      <div class="container">
-        <div class="quote-card visible reveal">
-          <p>Главный вопрос не в том, “умеете ли вы кодить”. Главный вопрос — <span class="gradient">хотите ли вы двигать свои идеи быстрее</span>, чем рынок успевает их у вас украсть.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="block">
+    <section class="block" id="use-cases">
       <div class="container">
         <div class="section-head visible">
           <div>
-            <div class="eyebrow reveal">Как начать</div>
-            <h2 class="reveal">Первый маршрут для новичка</h2>
+            <div class="eyebrow reveal">Под ваши задачи</div>
+            <h2 class="reveal">Где это уже даёт пользу предпринимателю</h2>
           </div>
-          <p class="reveal">Без перегруза. Без “надо стать программистом”. Без желания построить идеальный продукт с первого касания.</p>
+          <p class="reveal">Без айтишной романтики. Только вещи, которые помогают быстрее проверять идеи, разгружать себя и не вязнуть в бесконечных согласованиях.</p>
         </div>
-        <div class="timeline visible">
-          <div class="step reveal"><div class="step-no">1</div><div><h4>Взять одну простую задачу</h4><p>Не весь бизнес. Не “новую платформу”. Одну понятную боль или идею.</p></div></div>
-          <div class="step reveal"><div class="step-no">2</div><div><h4>Описать результат нормальным языком</h4><p>Не ТЗ на 10 страниц, а человеческое объяснение того, что вы хотите получить.</p></div></div>
-          <div class="step reveal"><div class="step-no">3</div><div><h4>Идти короткими итерациями</h4><p>Собрали → посмотрели → докрутили. Не пытаться сразу сделать “идеально”.</p></div></div>
+
+        <div class="grid-4 visible">
+          <div class="card use-card reveal">
+            <div class="card-number">01</div>
+            <h3>Лендинг под новый оффер</h3>
+            <p>Не ждать дизайнера и верстальщика неделями, а собрать первую версию за вечер и показать её миру.</p>
+          </div>
+          <div class="card use-card reveal">
+            <div class="card-number">02</div>
+            <h3>MVP для проверки идеи</h3>
+            <p>Сделать не “большой продукт”, а достаточно живую версию, чтобы проверить, нужен ли он вообще.</p>
+          </div>
+          <div class="card use-card reveal">
+            <div class="card-number">03</div>
+            <h3>Внутренние инструменты</h3>
+            <p>Калькуляторы, мини-сервисы, рабочие страницы, быстрые интерфейсы под свою команду.</p>
+          </div>
+          <div class="card use-card reveal">
+            <div class="card-number">04</div>
+            <h3>Автоматизация рутины</h3>
+            <p>Отчёты, сводки, обработка входящих, сбор данных — всё, что жрёт время, но не даёт жизни.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="block" id="practice">
+    <section class="block" id="program">
       <div class="container">
         <div class="section-head visible">
           <div>
-            <div class="eyebrow reveal">Практика</div>
-            <h2 class="reveal">Что покажем руками на встрече</h2>
+            <div class="eyebrow reveal">Что будет на вебинаре</div>
+            <h2 class="reveal">Покажем, а не просто поговорим</h2>
           </div>
-          <p class="reveal">Не презентацию про технологии, а нормальный живой сценарий: берём понятную задачу предпринимателя и проводим её от запроса до рабочего результата.</p>
+          <p class="reveal">Сделаем это так, чтобы было понятно человеку, который раньше не видел Claude Code вообще. Цель — не впечатлить сложностью, а дать ясность.</p>
         </div>
+
+        <div class="demo-box visible">
+          <div class="terminal reveal">
+            <div class="terminal-top"><span></span><span></span><span></span></div>
+            <div class="prompt-line">&gt; Сделай простую страницу под оффер для предпринимателей,
+&gt; объясни пользу без техно-жаргона,
+&gt; добавь CTA и выведи рабочую версию.</div>
+            <div class="result-list">
+              <div class="result-item">Появляется первый экран</div>
+              <div class="result-item">Докручиваются блоки под задачу</div>
+              <div class="result-item">Получаем то, что уже можно показывать</div>
+            </div>
+          </div>
+
+          <div class="timeline">
+            <div class="step reveal">
+              <div class="step-no">1</div>
+              <div>
+                <h4>Объясним простым языком, что это вообще такое</h4>
+                <p>Без разговора сверху вниз и без ощущения, что вы опоздали в цифровой поезд.</p>
+              </div>
+            </div>
+            <div class="step reveal">
+              <div class="step-no">2</div>
+              <div>
+                <h4>Покажем живой сценарий</h4>
+                <p>Одна понятная задача. От запроса до рабочего результата, который уже можно применять.</p>
+              </div>
+            </div>
+            <div class="step reveal">
+              <div class="step-no">3</div>
+              <div>
+                <h4>Разберём, как начать новичку без боли</h4>
+                <p>Что брать первым, чего не делать и как не превратить хороший инструмент в дорогую игрушку.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="fit">
+      <div class="container">
+        <div class="section-head visible">
+          <div>
+            <div class="eyebrow reveal">Для кого</div>
+            <h2 class="reveal">Если вы предприниматель-новичок — вам сюда</h2>
+          </div>
+          <p class="reveal">Не надо уже уметь кодить. Не надо “быть технарём”. Нужно только одно: желание быстрее проверять свои идеи и меньше зависеть от очередей, согласований и магии подрядчиков.</p>
+        </div>
+
         <div class="grid-2 visible">
           <div class="card reveal">
-            <h3>Живая задача</h3>
-            <p>Например: собрать страницу под оффер, прототип MVP или внутренний инструмент под конкретную боль команды. Чтобы было понятно не “в теории”, а глазами.</p>
+            <h3>Вам точно подойдёт, если:</h3>
+            <div class="list">
+              <div class="list-item"><div class="tick"></div><div>У вас постоянно есть идеи, но до проверки доезжают единицы.</div></div>
+              <div class="list-item"><div class="tick"></div><div>Вы устали платить за простые вещи так, как будто строите космический корабль.</div></div>
+              <div class="list-item"><div class="tick"></div><div>Хотите за один вечер почувствовать механику, а не слушать очередную лекцию про будущее.</div></div>
+            </div>
           </div>
           <div class="card reveal">
-            <h3>Что человек увидит</h3>
-            <p>Как ставится задача, как Claude Code отвечает, как выглядит первый результат и что делать дальше, чтобы не утонуть в лишней сложности.</p>
+            <h3>Главная мысль</h3>
+            <p style="font-size: clamp(24px, 3vw, 38px); line-height: 1.12; letter-spacing: -.04em; color: var(--text); margin-top: 6px;">Claude Code нужен не тем, кто хочет выглядеть современно.</p>
+            <p style="font-size: clamp(24px, 3vw, 38px); line-height: 1.12; letter-spacing: -.04em; color: var(--accent); margin-top: 14px;">Он нужен тем, кто реально что-то строит.</p>
           </div>
-        </div>
-        <div class="timeline visible" style="margin-top:18px;">
-          <div class="step reveal"><div class="step-no">1</div><div><h4>Берём простую задачу</h4><p>Не “новую платформу”, а один понятный сценарий, который близок бизнесу.</p></div></div>
-          <div class="step reveal"><div class="step-no">2</div><div><h4>Собираем первую рабочую версию</h4><p>Чтобы сразу увидеть механику и не потеряться в техно-шуме.</p></div></div>
-          <div class="step reveal"><div class="step-no">3</div><div><h4>Показываем, как начать самому</h4><p>С чего стартовать после веба, если вы раньше не трогали это вообще.</p></div></div>
         </div>
       </div>
     </section>
 
-    <section class="final-cta">
+    <section class="final-cta" id="cta">
       <div class="container visible">
         <div class="cta-wrap reveal">
-          <div class="eyebrow"><span class="dot"></span> Финал</div>
-          <h2>Это не встреча “про технологии”. Это встреча про рычаг.</h2>
-          <p>Если предприниматель понимает, где такой инструмент уместен, он начинает двигаться в другом темпе. Не умнее. Быстрее.</p>
+          <div class="eyebrow"><span class="dot"></span> Присоединяйтесь завтра</div>
+          <h2>Пятница · 11:00</h2>
           <div class="cta-grid">
             <div></div>
-            <a class="button button-primary" href="https://e2-e5.github.io/vibecoding-masterclass/" target="_blank" rel="noopener">Открыть основной лендинг</a>
+            <div class="hero-cta" style="margin-top: 0; justify-content: flex-end;">
+              <a class="button button-secondary" id="googleCalendarLink" href="#" target="_blank" rel="noopener">Напомнить</a>
+              <a class="button button-primary" href="https://telemost.yandex.ru/j/94314520240781" target="_blank" rel="noopener">Зайти на эфир</a>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:flex-end; margin-top:12px;">
+            <a id="icsDownloadLink" href="#" download="ai-first-claude-code-masterclass.ics" style="color: rgba(246,247,251,0.56); font-size:14px;">Apple / Outlook / Яндекс (.ics)</a>
           </div>
         </div>
       </div>
@@ -416,7 +712,7 @@
   </main>
 
   <footer>
-    <div class="container">AI First · Сайт-презентация для встречи</div>
+    <div class="container">AI First · Сообщество предпринимателей, которые строят будущее</div>
   </footer>
 
   <script>
@@ -426,9 +722,56 @@
       });
     }, { threshold: 0.14 });
 
-    document.querySelectorAll('.hero-grid, .section-head, .grid-2, .grid-3, .case-grid, .quote-card, .timeline, .cta-wrap').forEach(el => {
+    document.querySelectorAll('.hero-grid, .section-head, .grid-2, .grid-3, .grid-4, .split-highlight, .demo-box, .timeline, .cta-wrap').forEach(el => {
       observer.observe(el);
     });
+
+    function setupCalendarLinks() {
+      const eventTitle = 'Claude Code для предпринимателей — мастер-класс AI First';
+      const eventDetails = [
+        'Вебинар для предпринимателей-новичков по Claude Code.',
+        'Что это такое, где это полезно в бизнесе и как начать без айтишной боли.',
+        'Эфир: https://telemost.yandex.ru/j/94314520240781'
+      ].join('\n');
+      const eventLocation = 'Yandex Telemost';
+      const startUtc = '20260320T080000Z';
+      const endUtc = '20260320T090000Z';
+
+      const googleUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+        + '&text=' + encodeURIComponent(eventTitle)
+        + '&dates=' + startUtc + '/' + endUtc
+        + '&details=' + encodeURIComponent(eventDetails)
+        + '&location=' + encodeURIComponent(eventLocation);
+
+      const icsContent = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//AI First//Claude Code Masterclass//RU',
+        'CALSCALE:GREGORIAN',
+        'BEGIN:VEVENT',
+        'UID:ai-first-claude-code-20260320T080000Z',
+        'DTSTAMP:20260319T150000Z',
+        'DTSTART:20260320T080000Z',
+        'DTEND:20260320T090000Z',
+        'SUMMARY:' + eventTitle,
+        'DESCRIPTION:' + eventDetails.replace(/\n/g, '\\n'),
+        'LOCATION:' + eventLocation + ' — https://telemost.yandex.ru/j/94314520240781',
+        'URL:https://telemost.yandex.ru/j/94314520240781',
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ].join('\r\n');
+
+      const googleLink = document.getElementById('googleCalendarLink');
+      const icsLink = document.getElementById('icsDownloadLink');
+      if (googleLink) googleLink.href = googleUrl;
+      if (icsLink) {
+        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+        icsLink.href = URL.createObjectURL(blob);
+      }
+
+    }
+
+    setupCalendarLinks();
   </script>
 </body>
 </html>
