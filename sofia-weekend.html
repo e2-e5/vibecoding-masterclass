@@ -3,110 +3,76 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Софа, приезжай! — поэтический манифест выходных</title>
+  <title>Софа, приезжай — манифест выходных</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#070b16;
-      --bg2:#0f1630;
-      --panel:rgba(13,20,40,.68);
-      --panel-2:rgba(255,255,255,.06);
-      --border:rgba(145,194,255,.18);
-      --text:#f5f7ff;
-      --muted:rgba(245,247,255,.78);
-      --soft:rgba(245,247,255,.48);
-      --cyan:#50e6ff;
-      --blue:#5b8cff;
-      --violet:#9b5cff;
-      --pink:#ff5fd2;
-      --green:#7dffa1;
-      --shadow:0 24px 80px rgba(0,0,0,.38);
-      --radius:28px;
+      --bg:#060914; --bg2:#0d1430; --panel:rgba(12,18,38,.72); --border:rgba(119,196,255,.2);
+      --text:#f7f8ff; --muted:rgba(247,248,255,.76); --soft:rgba(247,248,255,.48);
+      --cyan:#54e7ff; --violet:#9d63ff; --pink:#ff61cf; --green:#7effac;
+      --shadow:0 24px 80px rgba(0,0,0,.4);
     }
     *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      font-family:'Manrope',system-ui,sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(circle at 10% 10%, rgba(80,230,255,.14), transparent 24%),
-        radial-gradient(circle at 85% 15%, rgba(155,92,255,.18), transparent 28%),
-        radial-gradient(circle at 20% 100%, rgba(255,95,210,.12), transparent 24%),
-        linear-gradient(180deg,var(--bg) 0%, var(--bg2) 100%);
-      min-height:100vh;
-      overflow-x:hidden;
-    }
-    body::before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.25;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='white' stroke-opacity='.18'%3E%3Cpath d='M0 40h160M0 80h160M0 120h160M40 0v160M80 0v160M120 0v160'/%3E%3C/g%3E%3C/svg%3E");background-size:160px 160px}
-    .wrap{width:min(1180px,calc(100vw - 32px));margin:0 auto;padding:24px 0 56px}
-    .card,.hero-card,.quote,.cta{background:var(--panel);border:1px solid var(--border);backdrop-filter:blur(16px);box-shadow:var(--shadow)}
-    .hero-card{display:grid;grid-template-columns:1.04fr .96fr;gap:28px;align-items:center;border-radius:34px;padding:28px;position:relative;overflow:hidden}
-    .hero-card::after{content:'';position:absolute;inset:auto -10% -35% auto;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle, rgba(80,230,255,.24), transparent 70%);filter:blur(24px)}
-    .eyebrow{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.05);font-size:12px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
-    .eyebrow::before{content:'';width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--pink));box-shadow:0 0 16px rgba(80,230,255,.6)}
-    h1,h2,h3{font-family:'Space Grotesk',sans-serif;line-height:1;letter-spacing:-.045em}
-    h1{font-size:clamp(2.7rem,6vw,5.5rem);margin:18px 0 16px;text-transform:uppercase}
-    h2{font-size:clamp(1.9rem,4vw,3.2rem);margin-bottom:14px;text-transform:uppercase}
-    h3{font-size:clamp(1.08rem,2vw,1.4rem);margin-bottom:10px;text-transform:uppercase}
-    p,li{font-size:clamp(1rem,1.5vw,1.1rem);line-height:1.62;color:var(--muted)}
-    .lead{font-size:clamp(1.1rem,1.9vw,1.34rem);max-width:60ch}
-    .accent-cyan{color:var(--cyan)} .accent-pink{color:var(--pink)} .accent-green{color:var(--green)} .accent-violet{color:#bca7ff}
-    .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:24px}
+    body{font-family:'Manrope',system-ui,sans-serif;color:var(--text);background:radial-gradient(circle at 10% 10%, rgba(84,231,255,.14), transparent 24%),radial-gradient(circle at 85% 15%, rgba(157,99,255,.18), transparent 28%),linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);min-height:100vh;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.18;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='white' stroke-opacity='.18'%3E%3Cpath d='M0 40h160M0 80h160M0 120h160M40 0v160M80 0v160M120 0v160'/%3E%3C/g%3E%3C/svg%3E");background-size:160px 160px}
+    .wrap{width:min(1160px,calc(100vw - 32px));margin:0 auto;padding:24px 0 56px}
+    .hero,.card,.cta{background:var(--panel);border:1px solid var(--border);backdrop-filter:blur(16px);box-shadow:var(--shadow);border-radius:30px}
+    .hero{display:grid;grid-template-columns:1.02fr .98fr;gap:28px;align-items:center;padding:28px;overflow:hidden;position:relative}
+    .hero::after{content:'';position:absolute;right:-80px;bottom:-120px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle, rgba(84,231,255,.24), transparent 70%);filter:blur(24px)}
+    .eyebrow{display:inline-flex;gap:10px;align-items:center;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--border);font-size:12px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+    .eyebrow::before{content:'';width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--pink))}
+    h1,h2,h3{font-family:'Space Grotesk',sans-serif;line-height:.98;letter-spacing:-.05em;text-transform:uppercase}
+    h1{font-size:clamp(2.8rem,6vw,5.8rem);margin:18px 0 16px}
+    h2{font-size:clamp(1.9rem,4vw,3rem);margin-bottom:14px}
+    h3{font-size:clamp(1.08rem,2vw,1.35rem);margin-bottom:10px}
+    p{font-size:clamp(1rem,1.45vw,1.08rem);line-height:1.58;color:var(--muted)}
+    .lead{font-size:clamp(1.1rem,1.8vw,1.28rem)}
+    .accent-cyan{color:var(--cyan)} .accent-green{color:var(--green)} .accent-pink{color:var(--pink)}
+    .actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px}
     .btn{display:inline-flex;padding:14px 22px;border-radius:999px;text-decoration:none;font-weight:800;border:1px solid var(--border)}
-    .btn.primary{background:linear-gradient(135deg,var(--cyan),var(--violet));color:#06101f;box-shadow:0 12px 30px rgba(80,230,255,.24)}
+    .btn.primary{background:linear-gradient(135deg,var(--cyan),var(--violet));color:#06101f}
     .btn.secondary{background:rgba(255,255,255,.06);color:var(--text)}
-    .hero-image{position:relative;min-height:480px;border-radius:28px;overflow:hidden;border:1px solid var(--border);background:#0c1428}
-    .hero-image img{width:100%;height:100%;display:block;object-fit:cover;filter:saturate(1.05) contrast(1.02)}
-    .hero-chip{position:absolute;left:18px;bottom:18px;padding:10px 14px;border-radius:999px;background:rgba(7,11,22,.72);border:1px solid var(--border);font-weight:800;color:var(--text)}
-    section{padding:14px 0}.section-head{margin:8px 0 18px}
+    .hero-image{min-height:480px;border-radius:24px;overflow:hidden;border:1px solid var(--border);position:relative}
+    .hero-image img{width:100%;height:100%;object-fit:cover;display:block}
+    .chip{position:absolute;left:18px;bottom:18px;padding:10px 14px;border-radius:999px;background:rgba(6,9,20,.75);border:1px solid var(--border);font-weight:800}
+    section{padding:14px 0}
     .grid-2,.grid-3{display:grid;gap:18px}.grid-2{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(3,1fr)}
-    .card{padding:22px;border-radius:26px;position:relative;overflow:hidden}.card::before{content:'';position:absolute;inset:-20% auto auto -10%;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle, rgba(91,140,255,.18), transparent 70%);pointer-events:none}
-    .icon{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;margin-bottom:14px;font-size:24px;background:linear-gradient(135deg,rgba(80,230,255,.18),rgba(155,92,255,.18));border:1px solid var(--border)}
-    .quote{padding:30px;border-radius:28px;text-align:center}.quote p{font-size:clamp(1.35rem,3vw,2.2rem);line-height:1.18;color:var(--text);font-weight:800}
-    .cta{padding:30px;border-radius:30px;background:linear-gradient(135deg,rgba(80,230,255,.11),rgba(155,92,255,.14))}
-    .footer{padding-top:26px;text-align:center}.tiny{font-size:.92rem;color:var(--soft)}
-    .poem{white-space:pre-line;font-size:clamp(1.05rem,1.7vw,1.2rem);line-height:1.55;color:var(--text)}
-    .poem strong{color:var(--cyan)}
-    .manifesto{font-weight:800;color:var(--text);line-height:1.24;max-width:17ch;font-size:clamp(1.4rem,2.9vw,2.5rem);text-transform:uppercase}
-    @media(max-width:900px){.hero-card,.grid-2,.grid-3{grid-template-columns:1fr}.hero-image{min-height:320px}.manifesto{max-width:none}}
+    .card{padding:22px;position:relative;overflow:hidden}.card::before{content:'';position:absolute;left:-30px;top:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle, rgba(93,140,255,.18), transparent 70%)}
+    .icon{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;font-size:24px;margin-bottom:14px;background:linear-gradient(135deg,rgba(84,231,255,.18),rgba(157,99,255,.18));border:1px solid var(--border)}
+    .poem{white-space:pre-line;font-size:clamp(1.08rem,1.7vw,1.18rem);line-height:1.45;color:var(--text);font-weight:700}
+    .quote{font-size:clamp(1.4rem,3vw,2.1rem);line-height:1.14;font-weight:800;text-align:center;color:var(--text)}
+    .cta{padding:28px;background:linear-gradient(135deg,rgba(84,231,255,.1),rgba(157,99,255,.14))}
+    .tiny{text-align:center;padding-top:26px;color:var(--soft);font-size:.92rem}
+    @media(max-width:900px){.hero,.grid-2,.grid-3{grid-template-columns:1fr}.hero-image{min-height:320px}}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <header>
-      <div class="hero-card">
-        <div>
-          <div class="eyebrow">семейный футуризм • стихотворная версия</div>
-          <h1>Софа,<br><span class="accent-cyan">приезжай</span><br>чаще.</h1>
-          <p class="lead">Не просто страница. <span class="accent-pink">Манифест</span>. Для Софы, которой семнадцать, у которой первый курс, и у которой есть дом, где ждут Настя, Лёша, Ева и Шинджу.</p>
-          <div class="hero-actions">
-            <a class="btn primary" href="#poems">Читать строфы</a>
-            <a class="btn secondary" href="#cta">Сразу к главному</a>
-          </div>
+    <header class="hero">
+      <div>
+        <div class="eyebrow">ударная версия • для софы</div>
+        <h1>Софа,<br><span class="accent-cyan">домой.</span></h1>
+        <p class="lead">Первый курс — давит. Город — шумит. Денег — как у студента. Поэтому ответ простой: <span class="accent-green">ехать к своим</span>. К Насте. К Лёше. К Еве. К Шинджу.</p>
+        <div class="actions">
+          <a class="btn primary" href="#poems">Читать манифест</a>
+          <a class="btn secondary" href="#cta">Сразу согласиться</a>
         </div>
-        <div class="hero-image">
-          <img src="sofia-weekend-assets/hero.jpg" alt="Софа, ура, выходные!">
-          <div class="hero-chip">Домашний космос • Настя / Лёша / Ева / Шинджу</div>
-        </div>
+      </div>
+      <div class="hero-image">
+        <img src="sofia-weekend-assets/hero.jpg" alt="Софа, ура, выходные!">
+        <div class="chip">Настя • Лёша • Ева • Шинджу</div>
       </div>
     </header>
 
     <section>
-      <div class="grid-2">
-        <div class="quote"><p>Выходной —<br>не дырка<br>между буднями.<br>Выходной — сцена.<br><span class="accent-cyan">И Софа должна быть в кадре.</span></p></div>
-        <div class="card"><p class="manifesto">Первый курс — шумит. Город — ест силы. Поэтому особенно важно приезжать туда, где тебя любят без условий и кормят без счёта.</p></div>
-      </div>
+      <div class="card"><p class="quote">Выходной — не пауза.<br>Выходной — шанс<br><span class="accent-cyan">быть со своими.</span></p></div>
     </section>
 
     <section id="poems">
-      <div class="section-head">
-        <h2>Строфы<br><span class="accent-violet">по существу</span></h2>
-      </div>
       <div class="grid-2">
-        <article class="card">
-          <div class="icon">⚡</div>
-          <h3>Открывающий удар</h3>
-          <p class="poem">Соф!
+        <article class="card"><div class="icon">⚡</div><h3>Удар</h3><p class="poem">Соф!
 Хватит
 жрать дошираки!
 Дом —
@@ -117,14 +83,9 @@
 Лёша
 котлеты жарит,
 а ты
-сидишь
 в общаге
-и голодаешь!</p>
-        </article>
-        <article class="card">
-          <div class="icon">🏠</div>
-          <h3>Семейный расклад</h3>
-          <p class="poem">Выходные —
+голодаешь!</p></article>
+        <article class="card"><div class="icon">🏠</div><h3>Состав</h3><p class="poem">Выходные —
 не для
 Netflix'а и слёз!
 Ева
@@ -132,142 +93,72 @@ Netflix'а и слёз!
 Шинджу
 хвостом метёт,
 мама
-пирожки
-лепит
-специально для тебя,
-а отчим
-уже
-стол накрывает!</p>
-        </article>
-        <article class="card">
-          <div class="icon">💸</div>
-          <h3>Экономический блок</h3>
-          <p class="poem">Студент!
-Считай
-экономию:
+печёт,
+отчим
+стол накрывает!</p></article>
+        <article class="card"><div class="icon">💸</div><h3>Экономика</h3><p class="poem">Студент!
+Считай:
 завтрак —
-300 рублей,
-обед —
-500,
-ужин —
-400!
-За выходные
-сэкономишь
-1200 рублей —
-почти
-стипендия!</p>
-        </article>
-        <article class="card">
-          <div class="icon">💛</div>
-          <h3>Эмоциональный крючок</h3>
-          <p class="poem">Дом —
-это не место,
-где спишь,
-дом —
-где Настя
-обнимает
-так крепко,
-что
-все проблемы
-первого курса
-растворяются
-в материнских
-объятиях!</p>
-        </article>
-        <article class="card">
-          <div class="icon">🚆</div>
-          <h3>Призыв к действию</h3>
-          <p class="poem">Собирай
-рюкзак
-прямо
-сейчас!
-Электричка
-в 18:40
-довезёт
-до счастья!
+300.
+Обед —
+500.
+Ужин —
+400.
+За выходные —
+1200.
+Почти
+стипендия!
+А дома —
+бесплатно.
+И вкусно.</p></article>
+        <article class="card"><div class="icon">💛</div><h3>Смысл</h3><p class="poem">Дом —
+это не стены.
+Дом —
+это где
+Настя
+обнимает,
+Лёша
+рядом,
+Ева
+смеётся,
 Шинджу
-уже
-у двери
-сидит
-и ждёт
-твоих
-шагов
-по лестнице!</p>
-        </article>
-        <article class="card">
-          <div class="icon">✨</div>
-          <h3>Финальный аккорд</h3>
-          <p class="poem">Соф,
-ты —
-не просто
-студентка,
-ты —
-дочь,
-сестра,
-часть семьи!
-Дом
-без тебя —
-как борщ
-без сметаны:
-вроде
-съедобно,
-но
-чего-то
-не хватает!</p>
-        </article>
+носится,
+а тебе
+легче.</p></article>
       </div>
     </section>
 
     <section>
       <div class="grid-3">
-        <article class="card"><div class="icon">🍲</div><h3>Бесплатно и вкусно</h3><p>Да, это надо проговорить отдельно: <strong>можно приехать бесплатно и поесть у родителей</strong>. Для студента первого курса это не мелочь. Это подарок вселенной.</p></article>
-        <article class="card"><div class="icon">🛸</div><h3>Футуризм по-домашнему</h3><p>Можно тащить взрослую жизнь и всё равно иметь точку, где не надо никому ничего доказывать.</p></article>
-        <article class="card"><div class="icon">🐕</div><h3>Полный состав сильнее</h3><p>Настя, Лёша, Ева, Шинджу и Софа — это уже не просто семья. Это система, которая красиво работает в полном комплекте.</p></article>
+        <article class="card"><div class="icon">🍲</div><h3>Бесплатный вход</h3><p>Да, это отдельный плюс: приехать домой <strong>бесплатно</strong>, поесть у родителей и не думать, сколько стоит очередной перекус. Для студента — бесценно.</p></article>
+        <article class="card"><div class="icon">🛸</div><h3>Не надо играть роль</h3><p>У своих не нужно быть “удобной”, “собранной” и “эффективной”. Можно просто быть Софой.</p></article>
+        <article class="card"><div class="icon">🐕</div><h3>Полный комплект</h3><p>Когда все в сборе, выходной звучит громче. Без Софы — не тот состав.</p></article>
       </div>
     </section>
 
     <section>
-      <div class="quote"><p>Софа —<br>не гость.<br><span class="accent-green">Софа — важная часть сюжета.</span></p></div>
+      <div class="card"><p class="quote">Софа — не гость.<br><span class="accent-pink">Софа — часть дома.</span></p></div>
     </section>
 
     <section>
-      <div class="section-head">
-        <h2>Бонус-строфа</h2>
-      </div>
-      <div class="card">
-        <p class="poem">Настя
+      <div class="grid-2">
+        <article class="card"><div class="icon">📣</div><h3>Бонус</h3><p class="poem">Настя
 уже
-третий раз
-за день
 спрашивает:
 «А Софка
-когда
-приедет?»
+когда?»
 Лёша
 молчит,
-но
-холодильник
-набивает
+но холодильник
+заполняется
 твоими
 любимыми
-вкусностями!</p>
+вкусностями.</p></article>
+        <article id="cta" class="cta"><h2>Вывод</h2><p class="lead">Софа, приезжай чаще. Потому что дома тебя ждут. Потому что это тепло. Потому что это еда. Потому что это любовь. Потому что для студента такой уикенд — <span class="accent-green">роскошь высшей пробы.</span></p><div class="actions"><a class="btn primary" href="#top">Принять решение</a><a class="btn secondary" href="#poems">Перечитать</a></div></article>
       </div>
     </section>
 
-    <section id="cta">
-      <div class="cta">
-        <h2>Финальный призыв</h2>
-        <p class="lead">Софа, приезжай к Насте, Лёше, Еве и Шинджу <span class="accent-cyan">почаще</span>. Потому что это и тепло, и еда, и семья, и отдых, и то самое чувство дома, которое никакой общагой не заменишь.</p>
-        <div class="hero-actions">
-          <a class="btn primary" href="#top">Принять как сильное решение</a>
-          <a class="btn secondary" href="#poems">Перечитать строфы</a>
-        </div>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <p class="tiny">Сделано с футуризмом, любовью и уважением к великой силе семейного выходного.</p>
-    </footer>
+    <div class="tiny">Сделано жёстче, короче и ближе к ударному ритму.</div>
   </div>
 </body>
 </html>
