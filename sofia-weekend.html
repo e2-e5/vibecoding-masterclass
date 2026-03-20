@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Софа, приезжай! — футуристический манифест выходных</title>
+  <title>Софа, приезжай! — поэтический манифест выходных</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -11,12 +11,12 @@
     :root{
       --bg:#070b16;
       --bg2:#0f1630;
-      --panel:rgba(13,20,40,.64);
+      --panel:rgba(13,20,40,.68);
       --panel-2:rgba(255,255,255,.06);
       --border:rgba(145,194,255,.18);
       --text:#f5f7ff;
-      --muted:rgba(245,247,255,.74);
-      --soft:rgba(245,247,255,.46);
+      --muted:rgba(245,247,255,.78);
+      --soft:rgba(245,247,255,.48);
       --cyan:#50e6ff;
       --blue:#5b8cff;
       --violet:#9b5cff;
@@ -37,11 +37,7 @@
       min-height:100vh;
       overflow-x:hidden;
     }
-    body::before{
-      content:'';position:fixed;inset:0;pointer-events:none;opacity:.25;
-      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='white' stroke-opacity='.18'%3E%3Cpath d='M0 40h160M0 80h160M0 120h160M40 0v160M80 0v160M120 0v160'/%3E%3C/g%3E%3C/svg%3E");
-      background-size:160px 160px;
-    }
+    body::before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.25;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='white' stroke-opacity='.18'%3E%3Cpath d='M0 40h160M0 80h160M0 120h160M40 0v160M80 0v160M120 0v160'/%3E%3C/g%3E%3C/svg%3E");background-size:160px 160px}
     .wrap{width:min(1180px,calc(100vw - 32px));margin:0 auto;padding:24px 0 56px}
     .card,.hero-card,.quote,.cta{background:var(--panel);border:1px solid var(--border);backdrop-filter:blur(16px);box-shadow:var(--shadow)}
     .hero-card{display:grid;grid-template-columns:1.04fr .96fr;gap:28px;align-items:center;border-radius:34px;padding:28px;position:relative;overflow:hidden}
@@ -62,22 +58,17 @@
     .hero-image{position:relative;min-height:480px;border-radius:28px;overflow:hidden;border:1px solid var(--border);background:#0c1428}
     .hero-image img{width:100%;height:100%;display:block;object-fit:cover;filter:saturate(1.05) contrast(1.02)}
     .hero-chip{position:absolute;left:18px;bottom:18px;padding:10px 14px;border-radius:999px;background:rgba(7,11,22,.72);border:1px solid var(--border);font-weight:800;color:var(--text)}
-    section{padding:14px 0}
-    .section-head{margin:8px 0 18px}
-    .grid-3,.grid-2{display:grid;gap:18px}
-    .grid-3{grid-template-columns:repeat(3,1fr)} .grid-2{grid-template-columns:repeat(2,1fr)}
-    .card{padding:22px;border-radius:26px;position:relative;overflow:hidden}
-    .card::before{content:'';position:absolute;inset:-20% auto auto -10%;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle, rgba(91,140,255,.18), transparent 70%);pointer-events:none}
+    section{padding:14px 0}.section-head{margin:8px 0 18px}
+    .grid-2,.grid-3{display:grid;gap:18px}.grid-2{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(3,1fr)}
+    .card{padding:22px;border-radius:26px;position:relative;overflow:hidden}.card::before{content:'';position:absolute;inset:-20% auto auto -10%;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle, rgba(91,140,255,.18), transparent 70%);pointer-events:none}
     .icon{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;margin-bottom:14px;font-size:24px;background:linear-gradient(135deg,rgba(80,230,255,.18),rgba(155,92,255,.18));border:1px solid var(--border)}
-    .quote{padding:30px;border-radius:28px;text-align:center}
-    .quote p{font-size:clamp(1.35rem,3vw,2.2rem);line-height:1.18;color:var(--text);font-weight:800}
-    ul.clean{list-style:none;display:grid;gap:10px;margin-top:10px}
-    ul.clean li{position:relative;padding-left:20px}
-    ul.clean li::before{content:'▸';position:absolute;left:0;top:0;color:var(--cyan);font-weight:900}
+    .quote{padding:30px;border-radius:28px;text-align:center}.quote p{font-size:clamp(1.35rem,3vw,2.2rem);line-height:1.18;color:var(--text);font-weight:800}
     .cta{padding:30px;border-radius:30px;background:linear-gradient(135deg,rgba(80,230,255,.11),rgba(155,92,255,.14))}
     .footer{padding-top:26px;text-align:center}.tiny{font-size:.92rem;color:var(--soft)}
+    .poem{white-space:pre-line;font-size:clamp(1.05rem,1.7vw,1.2rem);line-height:1.55;color:var(--text)}
+    .poem strong{color:var(--cyan)}
     .manifesto{font-weight:800;color:var(--text);line-height:1.24;max-width:17ch;font-size:clamp(1.4rem,2.9vw,2.5rem);text-transform:uppercase}
-    @media(max-width:900px){.hero-card,.grid-3,.grid-2{grid-template-columns:1fr}.hero-image{min-height:320px}.manifesto{max-width:none}}
+    @media(max-width:900px){.hero-card,.grid-2,.grid-3{grid-template-columns:1fr}.hero-image{min-height:320px}.manifesto{max-width:none}}
   </style>
 </head>
 <body>
@@ -85,147 +76,191 @@
     <header>
       <div class="hero-card">
         <div>
-          <div class="eyebrow">семейный футуризм • версия для софы</div>
+          <div class="eyebrow">семейный футуризм • стихотворная версия</div>
           <h1>Софа,<br><span class="accent-cyan">приезжай</span><br>чаще.</h1>
-          <p class="lead">Не вяло. Не когда-нибудь. Не по остаточному принципу. А <span class="accent-pink">по-настоящему</span>. Потому что выходные с <strong>Настей</strong>, <strong>Лёшей</strong>, <strong>Евой</strong> и собакой <strong>Шинджу</strong> — это не бытовая опция. Это <span class="accent-green">сильный жизненный апгрейд</span> для девушки семнадцати лет, которая уже учится на первом курсе и заслуживает не серый уикенд, а живой.</p>
+          <p class="lead">Не просто страница. <span class="accent-pink">Манифест</span>. Для Софы, которой семнадцать, у которой первый курс, и у которой есть дом, где ждут Настя, Лёша, Ева и Шинджу.</p>
           <div class="hero-actions">
-            <a class="btn primary" href="#cta">Даёшь семейный weekend</a>
-            <a class="btn secondary" href="#benefits">Разобрать преимущества</a>
+            <a class="btn primary" href="#poems">Читать строфы</a>
+            <a class="btn secondary" href="#cta">Сразу к главному</a>
           </div>
         </div>
         <div class="hero-image">
           <img src="sofia-weekend-assets/hero.jpg" alt="Софа, ура, выходные!">
-          <div class="hero-chip">Домашний космос • состав команды: Настя / Лёша / Ева / Шинджу</div>
+          <div class="hero-chip">Домашний космос • Настя / Лёша / Ева / Шинджу</div>
         </div>
       </div>
     </header>
 
     <section>
-      <div class="section-head">
-        <h2>Манифест</h2>
-      </div>
       <div class="grid-2">
-        <div class="quote"><p>Выходной — не дырка между буднями.<br>Выходной — это сцена.<br>И на этой сцене<br><span class="accent-cyan">Софа должна быть среди своих.</span></p></div>
-        <div class="card"><p class="manifesto">Чтоб смех — не в чате. Чтоб чай — не на бегу. Чтоб Ева рядом. Чтоб Шинджу носилась. Чтоб Настя — мама. Чтоб Лёша — отчим. Чтоб дом — не адрес, а место, куда хочется.</p></div>
+        <div class="quote"><p>Выходной —<br>не дырка<br>между буднями.<br>Выходной — сцена.<br><span class="accent-cyan">И Софа должна быть в кадре.</span></p></div>
+        <div class="card"><p class="manifesto">Первый курс — шумит. Город — ест силы. Поэтому особенно важно приезжать туда, где тебя любят без условий и кормят без счёта.</p></div>
       </div>
     </section>
 
-    <section id="benefits">
+    <section id="poems">
       <div class="section-head">
-        <h2>Преимущества<br><span class="accent-violet">по существу</span></h2>
-        <p>Сухим языком отчётов было бы скучно. Поэтому — прямо: почему приезжать к своим это круто, полезно и вообще красиво.</p>
+        <h2>Строфы<br><span class="accent-violet">по существу</span></h2>
       </div>
+      <div class="grid-2">
+        <article class="card">
+          <div class="icon">⚡</div>
+          <h3>Открывающий удар</h3>
+          <p class="poem">Соф!
+Хватит
+жрать дошираки!
+Дом —
+твоя
+студенческая халява!
+Настя
+борщ варит,
+Лёша
+котлеты жарит,
+а ты
+сидишь
+в общаге
+и голодаешь!</p>
+        </article>
+        <article class="card">
+          <div class="icon">🏠</div>
+          <h3>Семейный расклад</h3>
+          <p class="poem">Выходные —
+не для
+Netflix'а и слёз!
+Ева
+соскучилась,
+Шинджу
+хвостом метёт,
+мама
+пирожки
+лепит
+специально для тебя,
+а отчим
+уже
+стол накрывает!</p>
+        </article>
+        <article class="card">
+          <div class="icon">💸</div>
+          <h3>Экономический блок</h3>
+          <p class="poem">Студент!
+Считай
+экономию:
+завтрак —
+300 рублей,
+обед —
+500,
+ужин —
+400!
+За выходные
+сэкономишь
+1200 рублей —
+почти
+стипендия!</p>
+        </article>
+        <article class="card">
+          <div class="icon">💛</div>
+          <h3>Эмоциональный крючок</h3>
+          <p class="poem">Дом —
+это не место,
+где спишь,
+дом —
+где Настя
+обнимает
+так крепко,
+что
+все проблемы
+первого курса
+растворяются
+в материнских
+объятиях!</p>
+        </article>
+        <article class="card">
+          <div class="icon">🚆</div>
+          <h3>Призыв к действию</h3>
+          <p class="poem">Собирай
+рюкзак
+прямо
+сейчас!
+Электричка
+в 18:40
+довезёт
+до счастья!
+Шинджу
+уже
+у двери
+сидит
+и ждёт
+твоих
+шагов
+по лестнице!</p>
+        </article>
+        <article class="card">
+          <div class="icon">✨</div>
+          <h3>Финальный аккорд</h3>
+          <p class="poem">Соф,
+ты —
+не просто
+студентка,
+ты —
+дочь,
+сестра,
+часть семьи!
+Дом
+без тебя —
+как борщ
+без сметаны:
+вроде
+съедобно,
+но
+чего-то
+не хватает!</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
       <div class="grid-3">
-        <article class="card"><div class="icon">⚡</div><h3>Эмоциональная зарядка</h3><p>После учёбы, дедлайнов, людей и города нужен не просто отдых, а <strong>тёплый перезапуск</strong>. У своих это происходит быстрее и глубже.</p></article>
-        <article class="card"><div class="icon">🍲</div><h3>Студенческий superpower</h3><p>Можно <strong>приехать бесплатно</strong> и <strong>поесть у родителей</strong> — а для человека с первого курса это уже не просто бонус, а актив стратегического значения и почти бесценная форма поддержки.</p></article>
-        <article class="card"><div class="icon">🐕</div><h3>Полный состав сильнее</h3><p>Настя, Лёша, Ева, Шинджу и Софа — это уже не просто семья, это почти маленькая вселенная. А вселенные лучше работают в полном комплекте.</p></article>
+        <article class="card"><div class="icon">🍲</div><h3>Бесплатно и вкусно</h3><p>Да, это надо проговорить отдельно: <strong>можно приехать бесплатно и поесть у родителей</strong>. Для студента первого курса это не мелочь. Это подарок вселенной.</p></article>
+        <article class="card"><div class="icon">🛸</div><h3>Футуризм по-домашнему</h3><p>Можно тащить взрослую жизнь и всё равно иметь точку, где не надо никому ничего доказывать.</p></article>
+        <article class="card"><div class="icon">🐕</div><h3>Полный состав сильнее</h3><p>Настя, Лёша, Ева, Шинджу и Софа — это уже не просто семья. Это система, которая красиво работает в полном комплекте.</p></article>
       </div>
+    </section>
+
+    <section>
+      <div class="quote"><p>Софа —<br>не гость.<br><span class="accent-green">Софа — важная часть сюжета.</span></p></div>
     </section>
 
     <section>
       <div class="section-head">
-        <h2>Проблемы,<br><span class="accent-pink">если не приезжать</span></h2>
+        <h2>Бонус-строфа</h2>
       </div>
-      <div class="grid-3">
-        <article class="card"><div class="icon">📉</div><h3>Падает индекс уютности</h3><p>Выходной без встречи рискует стать набором случайных часов. Вроде день был. А следа не оставил.</p></article>
-        <article class="card"><div class="icon">💸</div><h3>Студент теряет редкий ресурс</h3><p>Когда можно приехать домой, ничего не платить за вход и получить нормальную еду, тепло и заботу — это надо не игнорировать, а использовать как одно из лучших изобретений семейной экономики.</p></article>
-        <article class="card"><div class="icon">🌫️</div><h3>Истории не происходят сами</h3><p>Самые любимые семейные моменты не падают с неба. Их надо иногда просто прийти и прожить.</p></article>
-      </div>
-    </section>
-
-    <section>
-      <div class="quote"><p>Софа — не гость. <span class="accent-green">Софа — важная часть сюжета.</span></p></div>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <h2>Кейсы реального применения выходных</h2>
-      </div>
-      <div class="grid-2">
-        <article class="card">
-          <h3>Кейс 01 — «приеду ненадолго»</h3>
-          <ul class="clean">
-            <li>Заезжает Софа.</li>
-            <li>Через двадцать минут — уже нормальный живой ритм.</li>
-            <li>Через час — разговоры, чай, шутки, собака, Ева, домашний космос.</li>
-            <li>Результат: «ненадолго» неожиданно становится очень правильно.</li>
-          </ul>
-        </article>
-        <article class="card">
-          <h3>Кейс 02 — «я устала»</h3>
-          <ul class="clean">
-            <li>Первый курс утомляет. Мир шумит.</li>
-            <li>Но именно поэтому нужно приезжать не в пустоту, а к своим.</li>
-            <li>Там можно не играть роль. Можно просто быть.</li>
-            <li>Результат: усталость не исчезает магически, но сердце становится легче.</li>
-          </ul>
-        </article>
-        <article class="card">
-          <h3>Кейс 03 — семейный состав в сборе</h3>
-          <ul class="clean">
-            <li>Настя даёт тепло.</li>
-            <li>Лёша добавляет опору и вайб.</li>
-            <li>Ева усиливает живость сцены.</li>
-            <li>Шинджу закрывает вопрос по радости окончательно — и делает это как настоящая звезда.</li>
-          </ul>
-        </article>
-        <article class="card">
-          <h3>Кейс 04 — регулярность, а не редкость</h3>
-          <ul class="clean">
-            <li>Когда встречи не случайны, а повторяются, семья становится ближе не теоретически, а реально.</li>
-            <li>Меньше «давно не виделись».</li>
-            <li>Больше общего воздуха, памяти и чувства дома.</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <h2>Преимущества для каждого участника системы</h2>
-      </div>
-      <div class="grid-2">
-        <article class="card">
-          <h3>Для Софы</h3>
-          <ul class="clean">
-            <li>перезагрузка после учёбы и ритма первого курса;</li>
-            <li>живое чувство семьи, а не абстрактное знание о ней;</li>
-            <li>дом, где тебя ждут не для отчёта, а по любви;</li>
-            <li>возможность приехать бесплатно и поесть дома — а для студента это вообще-то роскошь высшей пробы;</li>
-            <li>истории, которые потом будут вспоминаться годами.</li>
-          </ul>
-        </article>
-        <article class="card">
-          <h3>Для Насти, Лёши, Евы и Шинджу</h3>
-          <ul class="clean">
-            <li>дом становится полнее;</li>
-            <li>выходные ярче и теплее;</li>
-            <li>семья звучит не на половину голоса, а во весь рост;</li>
-            <li>Шинджу, вероятно, вообще в полном восторге и полностью поддерживает стратегию частых приездов.</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <h2>FAQ</h2>
-      </div>
-      <div class="grid-2">
-        <article class="card"><h3>«А если я хочу просто выдохнуть?»</h3><p>Так это и есть выдохнуть. Не в одиночку в стену, а рядом с теми, с кем тепло.</p></article>
-        <article class="card"><h3>«А если дел много?»</h3><p>Тем более нужен остров. Даже самым взрослым и занятым иногда надо приезжать туда, где они не функция, а любимый человек.</p></article>
-        <article class="card"><h3>«А если неудобно часто?»</h3><p>Часто — это не проблема. Часто — это вообще-то роскошь для семьи, которая хочет быть ближе.</p></article>
-        <article class="card"><h3>«Это не слишком пафосно?»</h3><p>Немного да. Но хорошие вещи иногда и должны звучать с размахом.</p></article>
+      <div class="card">
+        <p class="poem">Настя
+уже
+третий раз
+за день
+спрашивает:
+«А Софка
+когда
+приедет?»
+Лёша
+молчит,
+но
+холодильник
+набивает
+твоими
+любимыми
+вкусностями!</p>
       </div>
     </section>
 
     <section id="cta">
       <div class="cta">
         <h2>Финальный призыв</h2>
-        <p class="lead">Софа, приезжай к Насте, Лёше, Еве и Шинджу <span class="accent-cyan">почаще</span>. Не по формальности. Не «когда будет окно». А потому что это твои люди, твой смех, твой воздух, твой дом и твой правильный сценарий выходных.</p>
+        <p class="lead">Софа, приезжай к Насте, Лёше, Еве и Шинджу <span class="accent-cyan">почаще</span>. Потому что это и тепло, и еда, и семья, и отдых, и то самое чувство дома, которое никакой общагой не заменишь.</p>
         <div class="hero-actions">
           <a class="btn primary" href="#top">Принять как сильное решение</a>
-          <a class="btn secondary" href="#benefits">Перечитать аргументы</a>
+          <a class="btn secondary" href="#poems">Перечитать строфы</a>
         </div>
       </div>
     </section>
