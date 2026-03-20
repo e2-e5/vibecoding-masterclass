@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI First — AI-система управления для собственника бизнеса</title>
+    <meta name="description" content="Ставите управляющему — отчёт получаете сами. AI мониторинг команды, исполнения решений и отдела продаж. Бесплатный аудит за 3 дня.">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=dm-sans@400,500,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0A0A0B;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --primary: #0066FF;
+            --accent: #00FFB7;
+            --secondary: #7B2FFF;
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --text-muted: rgba(255, 255, 255, 0.35);
+            --glass: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --danger: #FF4D4D;
+            --warning: #FFB84D;
+            --success: #00FFB7;
+            --font-display: 'Clash Display', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --title-size: clamp(2.5rem, 6vw, 4.5rem);
+            --h2-size: clamp(1.8rem, 4.5vw, 3.2rem);
+            --h3-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            --body-size: clamp(1rem, 1.8vw, 1.25rem);
+            --small-size: clamp(0.875rem, 1.2vw, 1rem);
+            --slide-padding: clamp(2rem, 5vw, 6rem);
+            --content-gap: clamp(1.5rem, 3vw, 3rem);
+            --element-gap: clamp(0.75rem, 1.5vw, 1.5rem);
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration-normal: 0.7s;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow-x: hidden; font-family: var(--font-body); background: var(--bg-primary); color: var(--text-primary); }
+        html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+
+        .slide {
+            width: 100vw; height: 100vh; height: 100dvh;
+            overflow: hidden; scroll-snap-align: start;
+            display: flex; flex-direction: column; justify-content: center;
+            position: relative; padding: var(--slide-padding);
+        }
+        .slide-content {
+            flex: 1; display: flex; flex-direction: column; justify-content: center;
+            align-items: center; max-height: 100%; overflow: hidden;
+            text-align: center; position: relative; z-index: 2;
+        }
+        .slide-content.left { align-items: flex-start; text-align: left; }
+
+        .slide::before {
+            content: ''; position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0, 102, 255, 0.08) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 80% 20%, rgba(123, 47, 255, 0.06) 0%, transparent 60%),
+                radial-gradient(ellipse 30% 30% at 20% 80%, rgba(0, 255, 183, 0.04) 0%, transparent 60%);
+            z-index: 0; pointer-events: none;
+        }
+        .slide::after {
+            content: ''; position: absolute; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            z-index: 1; pointer-events: none; opacity: 0.4;
+        }
+
+        h1 { font-family: var(--font-display); font-size: var(--title-size); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; }
+        h2 { font-family: var(--font-display); font-size: var(--h2-size); font-weight: 600; line-height: 1.15; letter-spacing: -0.01em; }
+        h3 { font-family: var(--font-display); font-size: var(--h3-size); font-weight: 500; line-height: 1.3; }
+        p, li { font-family: var(--font-body); font-size: var(--body-size); line-height: 1.6; color: var(--text-secondary); }
+
+        .subtitle { font-size: clamp(0.9rem, 1.4vw, 1.1rem); color: var(--text-muted); letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; }
+        .accent-text { color: var(--accent); }
+        .primary-text { color: var(--primary); }
+        .gradient-text { background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+        .divider { width: min(30vw, 180px); height: 3px; border-radius: 99px; background: linear-gradient(90deg, var(--primary), var(--accent)); margin: var(--content-gap) auto; }
+
+        .tag { display: inline-block; padding: clamp(0.3rem, 0.6vw, 0.4rem) clamp(0.9rem, 1.8vw, 1.2rem); border-radius: 100px; font-size: var(--small-size); font-weight: 500; border: 1px solid var(--glass-border); background: var(--glass); backdrop-filter: blur(8px); color: var(--text-secondary); }
+
+        .glass-card {
+            background: var(--glass); border: 1px solid var(--glass-border);
+            border-radius: clamp(12px, 2vw, 20px); padding: clamp(1rem, 2vw, 2rem);
+            backdrop-filter: blur(8px); position: relative; overflow: hidden;
+            transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s;
+        }
+        .glass-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); }
+        .glass-card h3 { color: var(--text-primary); margin-bottom: var(--element-gap); }
+        .glass-card p { color: var(--text-secondary); }
+
+        .card-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: var(--element-gap); }
+        .card-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr)); gap: var(--element-gap); }
+
+        .cta-button {
+            display: inline-block;
+            padding: clamp(1rem, 2vw, 1.25rem) clamp(2rem, 4vw, 3rem);
+            border: none; border-radius: 100px; cursor: pointer;
+            font-family: var(--font-display); font-size: clamp(1rem, 1.8vw, 1.2rem); font-weight: 600;
+            background: linear-gradient(135deg, var(--primary), #1a8aff);
+            color: white; box-shadow: 0 8px 32px rgba(0, 102, 255, 0.3);
+            transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s;
+            text-decoration: none; text-transform: none;
+            margin-top: var(--content-gap);
+        }
+        .cta-button:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 12px 40px rgba(0, 102, 255, 0.35); }
+
+        .comparison-table {
+            width: 100%; max-width: 800px; margin: var(--content-gap) auto;
+            border-collapse: collapse; background: var(--glass);
+            border-radius: clamp(12px, 2vw, 16px); overflow: hidden;
+            backdrop-filter: blur(8px);
+        }
+        .comparison-table th,
+        .comparison-table td {
+            padding: clamp(0.75rem, 1.5vw, 1.25rem);
+            border-bottom: 1px solid var(--glass-border);
+            text-align: left;
+        }
+        .comparison-table th {
+            background: rgba(0, 102, 255, 0.1);
+            color: var(--text-primary);
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: var(--small-size);
+        }
+        .comparison-table td {
+            color: var(--text-secondary);
+        }
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+            gap: var(--element-gap);
+            margin-top: var(--content-gap);
+            max-width: 700px;
+        }
+
+        .price-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: clamp(12px, 2vw, 20px);
+            padding: clamp(1.5rem, 2.5vw, 2.5rem);
+            backdrop-filter: blur(8px);
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s;
+        }
+
+        .price-card.featured {
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.15), rgba(0, 255, 183, 0.1));
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .price-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .price-card.featured:hover {
+            transform: translateY(-4px) scale(1.07);
+        }
+
+        .price-amount {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+            color: var(--accent);
+            margin: var(--element-gap) 0;
+        }
+
+        .price-card.featured .price-amount {
+            color: var(--primary);
+        }
+
+        .price-features {
+            list-style: none;
+            text-align: left;
+            margin-top: var(--element-gap);
+        }
+
+        .price-features li {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .price-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .briefing-mock {
+            max-width: 600px;
+            margin: var(--content-gap) auto;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: clamp(12px, 2vw, 16px);
+            padding: clamp(1.25rem, 2vw, 2rem);
+            backdrop-filter: blur(8px);
+            font-family: 'SF Pro Text', system-ui, sans-serif;
+            text-align: left;
+        }
+
+        .briefing-header {
+            background: linear-gradient(135deg, var(--primary), #1a8aff);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px 8px 0 0;
+            margin: calc(-1 * clamp(1.25rem, 2vw, 2rem)) calc(-1 * clamp(1.25rem, 2vw, 2rem)) 1rem calc(-1 * clamp(1.25rem, 2vw, 2rem));
+        }
+
+        .briefing-header .title {
+            font-weight: 600;
+            font-size: var(--body-size);
+            margin-bottom: 0.25rem;
+        }
+
+        .briefing-header .time {
+            font-size: var(--small-size);
+            opacity: 0.9;
+        }
+
+        .briefing-section {
+            margin-bottom: 1rem;
+        }
+
+        .briefing-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .status-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .status-icon {
+            font-size: 1.2rem;
+        }
+
+        .status-items {
+            color: var(--text-secondary);
+            padding-left: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .briefing-footer {
+            border-top: 1px solid var(--glass-border);
+            padding-top: 1rem;
+            margin-top: 1rem;
+            font-size: var(--small-size);
+            color: var(--text-muted);
+        }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes breathe { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.05); } }
+
+        .halo-orb { position: absolute; width: clamp(120px, 20vw, 250px); height: clamp(120px, 20vw, 250px); border-radius: 50%; filter: blur(60px); z-index: 0; pointer-events: none; }
+        .halo-orb.blue { background: rgba(0, 102, 255, 0.15); top: 20%; left: 10%; }
+        .halo-orb.purple { background: rgba(123, 47, 255, 0.12); top: 10%; right: 10%; }
+        .halo-orb.green { background: rgba(0, 255, 183, 0.10); bottom: 20%; left: 15%; }
+        .floating { animation: float 4s ease-in-out infinite; }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity var(--duration-normal) var(--ease-out-expo), transform var(--duration-normal) var(--ease-out-expo); }
+        .slide.visible .reveal { opacity: 1; transform: translateY(0); }
+        .slide.visible .reveal:nth-child(2) { transition-delay: 0.12s; }
+        .slide.visible .reveal:nth-child(3) { transition-delay: 0.24s; }
+        .slide.visible .reveal:nth-child(4) { transition-delay: 0.36s; }
+        .slide.visible .reveal:nth-child(5) { transition-delay: 0.48s; }
+
+        .nav-dots { position: fixed; right: clamp(1rem, 2vw, 2rem); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 12px; z-index: 10; }
+        .nav-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.2); cursor: pointer; border: none; transition: all 0.3s; padding: 0; }
+        .nav-dot.active { background: var(--primary); transform: scale(1.3); box-shadow: 0 0 12px rgba(0,102,255,0.5); }
+
+        .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent)); z-index: 10; transition: width 0.3s; }
+
+        .max-content {
+            max-width: min(90vw, 1000px);
+            width: 100%;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .card-grid-3, .card-grid-2 { grid-template-columns: 1fr; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .comparison-table { font-size: var(--small-size); }
+            .slide-content { align-items: stretch; text-align: center; }
+            .comparison-table th, .comparison-table td { padding: 0.75rem; }
+        }
+
+        @media (max-height: 600px) {
+            .nav-dots { display: none; }
+            :root {
+                --slide-padding: clamp(1rem, 3vw, 2rem);
+                --content-gap: clamp(1rem, 2vw, 1.5rem);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    <nav class="nav-dots" id="navDots">
+        <button class="nav-dot active" data-slide="0"></button>
+        <button class="nav-dot" data-slide="1"></button>
+        <button class="nav-dot" data-slide="2"></button>
+        <button class="nav-dot" data-slide="3"></button>
+        <button class="nav-dot" data-slide="4"></button>
+        <button class="nav-dot" data-slide="5"></button>
+        <button class="nav-dot" data-slide="6"></button>
+        <button class="nav-dot" data-slide="7"></button>
+        <button class="nav-dot" data-slide="8"></button>
+        <button class="nav-dot" data-slide="9"></button>
+    </nav>
+
+    <!-- SLIDE 1: HERO -->
+    <section class="slide" id="slide-0">
+        <div class="halo-orb blue floating"></div>
+        <div class="halo-orb purple" style="animation: breathe 6s ease-in-out infinite;"></div>
+        <div class="slide-content">
+            <div class="reveal subtitle" style="margin-bottom: var(--content-gap);">AI First</div>
+            <h1 class="reveal" style="margin-bottom: var(--content-gap); max-width: min(90vw, 900px);">
+                Вы управляете компанией.<br>
+                Но видите ли вы, что в ней <span class="gradient-text">происходит?</span>
+            </h1>
+            <div class="divider reveal"></div>
+            <p class="reveal" style="margin-bottom: var(--content-gap); color: var(--text-secondary); font-size: var(--body-size); max-width: 700px;">
+                AI First — система, которую вы ставите управляющему,<br>
+                а отчёт получаете сами. Каждое утро. Без вопросов.
+            </p>
+            <a href="https://t.me/urlexx" class="cta-button reveal">
+                Бесплатный аудит за 3 дня
+            </a>
+            <p class="reveal" style="margin-top: 1rem; color: var(--text-muted); font-size: var(--small-size);">
+                Подключим 2 рабочих чата → покажем, что вы не видите
+            </p>
+        </div>
+    </section>
+
+    <!-- SLIDE 2: ПРОБЛЕМА -->
+    <section class="slide" id="slide-1">
+        <div class="halo-orb green" style="top: 40%; left: 60%; animation: breathe 7s ease-in-out infinite; opacity: 0.2;"></div>
+        <div class="slide-content">
+            <div class="reveal tag" style="margin-bottom: var(--content-gap);">Проблема</div>
+            <h2 class="reveal" style="margin-bottom: var(--content-gap); max-width: min(90vw, 800px);">
+                Вы принимаете решения — но не знаете,<br>
+                <span class="accent-text">дошли ли они до исполнения</span>
+            </h2>
+            <div class="card-grid-3 reveal max-content" style="margin-top: var(--content-gap);">
+                <div class="glass-card">
+                    <h3>① Решения испаряются</h3>
+                    <p>Обсудили на планёрке, зафиксировали, ушли. Через неделю — ничего не сделано. И никто не скажет вам об этом сам.</p>
+                </div>
+                <div class="glass-card">
+                    <h3>② Информация искажена</h3>
+                    <p>Управляющий докладывает «всё по плану». Но в чатах команда буксует, задачи переносят, клиенты ждут ответа третий день.</p>
+                </div>
+                <div class="glass-card">
+                    <h3>③ Нет времени копать</h3>
+                    <p>Вы не полезете читать 47 чатов. А именно там — реальная картина вашего бизнеса.</p>
+                </div>
+            </div>
+            <p class="reveal" style="margin-top: var(--content-gap); color: var(--accent); font-weight: 600; font-size: var(--body-size); text-align: center;">
+                Спросите себя: <strong>сколько решений с прошлой планёрки выполнено?</strong>
+            </p>
+        </div>
+    </section>
+
+    <!-- SLIDE 3: ИНСАЙТ -->
+    <section class="slide" id="slide-2">
+        <div class="halo-orb blue" style="top: 60%; right: 20%; animation: float 5s ease-in-out infinite;"></div>
+        <div class="slide-content">
+            <div class="reveal tag" style="margin-bottom: var(--content-gap);">Инсайт</div>
+            <h2 class="reveal" style="margin-bottom: var(--content-gap); max-width: min(90vw, 850px);">
+                Честно: вы не хотите<br>
+                это делать сами.<br>
+                <span class="primary-text">И правильно.</span>
+            </h2>
+            <div class="max-content">
+                <div class="reveal" style="color: var(--text-secondary); font-size: var(--body-size); line-height: 1.6; text-align: center; max-width: 700px; margin: 0 auto;">
+                    <p style="margin-bottom: var(--element-gap);">Мы провели десятки встреч с собственниками. Каждый говорит: 
+                    «Классная система — поставьте моему управляющему».</p>
+                    
+                    <p style="margin-bottom: var(--element-gap); color: var(--text-primary); font-weight: 600;"><strong>И они правы.</strong> Собственник не должен лезть в операционку. 
+                    Он должен <strong>видеть результат</strong>.</p>
+                    
+                    <p>Поэтому AI First работает так: <strong style="color: var(--text-primary);">система стоит у вашего COO/управляющего. 
+                    Он работает с ней. А вы — просто читаете отчёт.</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 4: КАК РАБОТАЕТ -->
+    <section class="slide" id="slide-3">
+        <div class="halo-orb purple" style="bottom: 40%; left: 30%; animation: breathe 8s ease-in-out infinite;"></div>
+        <div class="slide-content">
+            <div class="reveal tag" style="margin-bottom: var(--content-gap);">Как работает</div>
+            <h2 class="reveal" style="margin-bottom: var(--content-gap); max-width: min(90vw, 750px);">
+                Вам ничего не нужно делать.<br>
+                <span class="gradient-text">Буквально.</span>
+            </h2>
+            <div class="card-grid-3 reveal max-content" style="margin-top: var(--content-gap);">
+                <div class="glass-card">
+                    <h3>1. Подключаем</h3>
+                    <p>Рабочие чаты, почту, CRM, задачники — всё, что есть. Без перестройки процессов.</p>
+                </div>
+                <div class="glass-card">
+                    <h3>2. Анализируем 24/7</h3>
+                    <p>AI мониторит коммуникации: кто что обсуждает, что обещано, что сделано, где молчат, где буксуют.</p>
+                </div>
+                <div class="glass-card">
+                    <h3>3. Вы получаете</h3>
+                    <p>Каждое утро — 5-минутный брифинг в личку. Ваш управляющий — рабочую панель с сигналами и рекомендациями.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 5: MOCK БРИФИНГА -->
+    <section class="slide" id="slide-4">
+        <div class="halo-orb green floating" style="top: 30%; right: 15%;"></div>
+        <div class="slide-content">
+            <div class="reveal tag" style="margin-bottom: var(--content-gap);">Результат</div>
+            <h2 class="reveal" style="margin-bottom: var(--content-gap); max-width: min(90vw, 700px);">
+                Так выглядит ваш<br>
+                <span class="accent-text">утренний брифинг</span>
+            </h2>
+            
+            <div class="briefing-mock reveal">
+                <div class="briefing-header">
+                    <div class="title">📱 AI First — Сводка дня</div>
+                    <div class="time">Сегодня, 08:00</div>
+                </div>
+                
+                <div class="briefing-section">
+                    <div class="status-header">
+                        <span class="status-icon" style="color: var(--success);">🟢</span>
+                        <span>Выполнено</span>
+                    </div>
+                    <div class="status-items">• Интеграция с CRM завершена<br>• Презентация клиенту отправлена</div>
+                </div>
+                
+                <div class="briefing-section">
+                    <div class="status-header">
+                        <span class="status-icon" style="color: var(--warning);">🟡</span>
+                        <span>Внимание</span>
+                    </div>
+                    <div class="status-items">• Проект А: задержка 2 дня<br>• Иванов не отвечает в чате 18 часов</div>
+                </div>
+                
+                <div class="briefing-section">
+                    <div class="status-header">
+                        <span class="status-icon" style="color: var(--danger);">🔴</span>
+                        <span>Критично</span>
+                    </div>
+                    <div class="status-items">• Клиент ВТБ ждёт ответ 3-й день<br>• Менеджер Петров потерял лид на 2М</div>
+                </div>
+                
+                <div class="briefing-footer">
+                    💡 Рекомендация: позвонить Иванову, срочно связаться с ВТБ
+                </div>
+            </div>
+            
+            <p class="reveal" style="text-align: center; margin-top: var(--content-gap); max-width: 500px; margin-left: auto; margin-right: auto; color: var(--text-secondary);">
+                <strong style="color: var(--text-primary);">Одно сообщение</strong> = вся картина компании.<br>
+                <strong style="color: var(--text-primary);">5 минут</strong> = понимание где действовать.
+            </p>
+        </div>
+    </section>
+
+    <!-- SLIDE 6: ДВА ПОЛЬЗОВАТЕЛЯ -->
+    <section class="slide" id="slide-5">
+        <div class="halo-orb blue" style="top: 20%; left: 20%; animation: breathe 6s ease-in-out infinite;"></div>
+        <div class="slide-content">
+            <div class="reveal tag" style="margin-bottom: var(--content-gap);">Архитектура</div>
+            <h2 class="reveal" style="margin-bottom: var(--content-gap); max-width: min(90vw, 800px);">
+                <span class="primary-text">Собственник</span> видит картину.<br>
+                <span class="accent-text">Управляющий</span> получает инструмент.
+            </h2>
+            
+            <table class="comparison-table reveal">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Собственник</th>
+                        <th>COO / Управляющий</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Что получает</strong></td>
+                        <td>Утренний брифинг в мессенджер</td>
+                        <td>Рабочая панель с сигналами</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Формат</strong></td>
+                        <td>5 минут чтения</td>
+                        <td>Ежедневная работа</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ценность</strong></td>
+                        <td>Контроль без микроменеджмента</td>
+                        <td>Видимость по команде + рекомендации</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Усилие</strong></td>
+                        <td>Ноль. Открыл — прочитал</td>
+                        <td>Интегрирован в работу</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- SLIDE 7: USE CASES -->
+    <section class="slide" id="slide-6">
+        <div class="halo-orb purple floating" style="top: 50%; right: 10%;"></div>
+        <div class="slide-content">
+            <div class="reveal tag" style="margin-bottom: var(--content-gap);">Применение</div>
+            <h2 class="reveal" style="margin-bottom: var(--content-gap); max-width: min(90vw, 750px);">
+                Два сценария,<br>
+                которые <span class="accent-text">уже работают</span>
+            </h2>
+            <div class="card-grid-2 reveal max-content" style="margin-top: var(--content-gap);">
+                <div class="glass-card">
+                    <h3 style="color: var(--accent);">Use case 1: Мониторинг исполнения</h3>
+                    <ul class="price-features" style="margin-top: var(--element-gap);">
+                        <li>Подключаем рабочие чаты команды</li>
+                        <li>Отслеживаем: решение принято → выполнено или забыто</li>
+                        <li>Сигналы: просрочки, молчуны, повторяющиеся сбои</li>
+                    </ul>
+                    <p style="margin-top: var(--element-gap);"><strong style="color: var(--text-primary);">Результат:</strong> вы видите, что 40% задач спринта буксуют — до того, как сорвётся дедлайн</p>
+                </div>
+                
+                <div class="glass-card">
+                    <h3 style="color: var(--primary);">Use case 2: Мониторинг отдела продаж</h3>
+                    <ul class="price-features" style="margin-top: var(--element-gap);">
+                        <li>Анализ переписок с клиентами + CRM + звонки</li>
+                        <li>Сигналы: потерянные лиды, долгие ответы, слабые менеджеры</li>
+                    </ul>
+                    <p style="margin-top: var(--element-gap);"><strong style="color: var(--text-primary);">Результат:</strong> через неделю вы знаете, кто из менеджеров теряет клиентов и почему</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 8: ВОЗРАЖЕНИЯ -->
+    <section class="slide" id="slide-7">
+        <div class="halo-orb green" style="bottom: 30%; right: 25%; animation: breathe 7s ease-in-out infinite;"></div>
+        <div class="slide-content">
+            <div class="reveal tag" style="margin-bottom: var(--content-gap);">FAQ</div>
+            <h2 class="reveal" style="margin-bottom: var(--content-gap); max-width: min(90vw, 700px);">
+                Вопросы,<br>
+                которые нам <span class="primary-text">задают</span>
+            </h2>
+            
+            <div class="max-content" style="display: grid; gap: var(--element-gap);">
+                <div class="glass-card reveal">
+                    <h3 style="color: var(--accent);">«А что с безопасностью данных?»</h3>
+                    <p>Данные обрабатываются на выделенном сервере. Мы не храним переписки — только аналитические сигналы. NDA подписываем до начала.</p>
+                </div>
+                
+                <div class="glass-card reveal">
+                    <h3 style="color: var(--primary);">«Мне не нужна ещё одна система»</h3>
+                    <p>Вам — не нужна. Вы получаете сообщение в Telegram. Система нужна вашему управляющему — и она упрощает его работу, а не усложняет.</p>
+                </div>
+                
+                <div class="glass-card reveal">
+                    <h3 style="color: var(--secondary);">«У нас уже есть CRM / задачник / планёрки»</h3>
+                    <p>Отлично. Мы подключаемся поверх. Не заменяем, а видим то, чего CRM не видит — реальное поведение команды.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 9: ТАРИФЫ -->
+    <section class="slide" id="slide-8">
+        <div class="halo-orb blue floating" style="top: 40%; left: 15%;"></div>
+        <div class="slide-content">
+            <div class="reveal tag" style="margin-bottom: var(--content-gap);">Стоимость</div>
+            <h2 class="reveal" style="margin-bottom: var(--content-gap);">
+                <span class="gradient-text">Тарифы</span>
+            </h2>
+            
+            <div class="pricing-grid reveal">
+                <div class="price-card">
+                    <h3>Видимость</h3>
+                    <div class="price-amount">60 000 ₽<span style="font-size: 0.6em; color: var(--text-secondary);">/мес</span></div>
+                    <ul class="price-features">
+                        <li>Утренний брифинг + сигналы</li>
+                        <li>Для собственника который хочет видеть</li>
+                        <li>Интеграция от 100 000 ₽</li>
+                    </ul>
+                </div>
+                
+                <div class="price-card featured">
+                    <h3>Видимость + Действие</h3>
+                    <div class="price-amount">120 000 ₽<span style="font-size: 0.6em; color: var(--text-secondary);">/мес</span></div>
+                    <ul class="price-features">
+                        <li>+ рекомендации, черновики, настройка триггеров</li>
+                        <li>Собственник + управляющий работают с системой</li>
+                        <li>Интеграция включена</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 10: CTA -->
+    <section class="slide" id="slide-9">
+        <div class="halo-orb purple" style="top: 30%; left: 30%; animation: float 6s ease-in-out infinite;"></div>
+        <div class="halo-orb green" style="bottom: 40%; right: 20%; animation: breathe 8s ease-in-out infinite;"></div>
+        <div class="slide-content">
+            <div class="reveal subtitle" style="margin-bottom: var(--content-gap);">AI First</div>
+            <h2 class="reveal" style="margin-bottom: var(--content-gap); max-width: min(90vw, 800px);">
+                Бесплатный аудит<br>
+                <span class="gradient-text">за 3 дня</span>
+            </h2>
+            
+            <div class="divider reveal"></div>
+            
+            <p class="reveal" style="max-width: 600px; margin: 0 auto var(--content-gap); color: var(--text-secondary); font-size: var(--body-size); text-align: center;">
+                Подключим 2 рабочих чата вашей команды. 
+                Через 3 дня покажем, что вы не видели — и сколько это вам стоит.
+            </p>
+            
+            <p class="reveal" style="margin-bottom: var(--content-gap); color: var(--text-primary); font-weight: 600;">
+                <strong>Без обязательств. Без внедрения. Просто результат.</strong>
+            </p>
+            
+            <a href="https://t.me/urlexx" class="cta-button reveal" style="font-size: var(--h3-size); padding: clamp(1.25rem, 2.5vw, 1.75rem) clamp(2.5rem, 5vw, 4rem);">
+                Начать бесплатный аудит
+            </a>
+            
+            <p class="reveal" style="margin-top: 1.5rem; color: var(--text-muted); font-size: var(--small-size);">
+                Обычно записываемся на 3–5 дней вперёд
+            </p>
+        </div>
+    </section>
+
+<script>
+// Navigation and animations
+const slides = document.querySelectorAll('.slide');
+const navDots = document.querySelectorAll('.nav-dot');
+const progressBar = document.getElementById('progressBar');
+
+let currentSlide = 0;
+
+function updateSlide(index) {
+    slides.forEach((slide, i) => {
+        slide.classList.toggle('visible', i === index);
+    });
+    
+    navDots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+    });
+    
+    progressBar.style.width = `${((index + 1) / slides.length) * 100}%`;
+    currentSlide = index;
+}
+
+// Initialize first slide
+updateSlide(0);
+
+// Dot navigation
+navDots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+        slides[index].scrollIntoView({ behavior: 'smooth' });
+    });
+});
+
+// Scroll detection
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const slideIndex = Array.from(slides).indexOf(entry.target);
+            updateSlide(slideIndex);
+        }
+    });
+}, { threshold: 0.5 });
+
+slides.forEach(slide => observer.observe(slide));
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === ' ') {
+        e.preventDefault();
+        const nextIndex = Math.min(currentSlide + 1, slides.length - 1);
+        slides[nextIndex].scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const prevIndex = Math.max(currentSlide - 1, 0);
+        slides[prevIndex].scrollIntoView({ behavior: 'smooth' });
+    }
+});
+
+// External links
+document.querySelectorAll('a[href^="https://"]').forEach(link => {
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+});
+</script>
+
+</body>
+</html>
