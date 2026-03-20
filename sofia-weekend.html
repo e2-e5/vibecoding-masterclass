@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>София, ура, выходные! — спецсайт</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#fff6a8;
+      --bg2:#ffd85a;
+      --panel:rgba(255,255,255,.56);
+      --panel-strong:rgba(255,255,255,.74);
+      --border:rgba(43,38,16,.12);
+      --text:#2c2208;
+      --muted:rgba(44,34,8,.72);
+      --red:#ef4d3e;
+      --blue:#4aa7ff;
+      --green:#44c46b;
+      --orange:#ff9f1c;
+      --shadow:0 20px 50px rgba(103,74,0,.14);
+      --radius:24px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Manrope',system-ui,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(255,255,255,.55), transparent 28%),
+        radial-gradient(circle at 100% 0%, rgba(255,154,28,.24), transparent 28%),
+        linear-gradient(180deg,var(--bg) 0%, var(--bg2) 100%);
+      min-height:100vh;
+    }
+    .wrap{width:min(1160px,calc(100vw - 32px));margin:0 auto}
+    .hero{padding:36px 0 26px}
+    .hero-card,.card{
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+    }
+    .hero-card{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;padding:28px;align-items:center}
+    .eyebrow{display:inline-flex;gap:10px;align-items:center;padding:10px 14px;border-radius:999px;background:var(--panel-strong);border:1px solid var(--border);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+    .eyebrow::before{content:'';width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--orange))}
+    h1,h2,h3{font-family:'Space Grotesk',sans-serif;line-height:1.02;letter-spacing:-.03em}
+    h1{font-size:clamp(2.6rem,6vw,5rem);margin:18px 0 14px}
+    h2{font-size:clamp(1.8rem,3.7vw,3rem);margin-bottom:14px}
+    h3{font-size:clamp(1.1rem,2vw,1.45rem);margin-bottom:10px}
+    p,li{font-size:clamp(1rem,1.6vw,1.12rem);line-height:1.6;color:var(--muted)}
+    .lead{font-size:clamp(1.1rem,1.9vw,1.3rem);max-width:60ch}
+    .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px}
+    .btn{display:inline-flex;padding:14px 20px;border-radius:999px;text-decoration:none;font-weight:800;border:1px solid var(--border);box-shadow:var(--shadow)}
+    .btn.primary{background:linear-gradient(135deg,var(--red),var(--orange));color:#fff}
+    .btn.secondary{background:rgba(255,255,255,.72);color:var(--text)}
+    .hero-image{position:relative;overflow:hidden;border-radius:22px;min-height:440px;border:1px solid var(--border);background:#ffe37b}
+    .hero-image img{width:100%;height:100%;object-fit:cover;display:block}
+    .hero-badge{position:absolute;left:18px;bottom:18px;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,.84);font-weight:800;border:1px solid var(--border)}
+    section{padding:12px 0}
+    .grid-3,.grid-2{display:grid;gap:18px}
+    .grid-3{grid-template-columns:repeat(3,1fr)}
+    .grid-2{grid-template-columns:repeat(2,1fr)}
+    .card{padding:22px}
+    .icon{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;font-size:24px;font-weight:800;margin-bottom:14px;background:linear-gradient(135deg,rgba(239,77,62,.18),rgba(255,159,28,.22))}
+    .section-head{margin:18px 0 18px}
+    .quote{padding:28px;border-radius:26px;background:linear-gradient(135deg,rgba(255,255,255,.76),rgba(255,249,220,.72));border:1px solid var(--border);box-shadow:var(--shadow);text-align:center}
+    .quote p{font-size:clamp(1.35rem,3vw,2.1rem);line-height:1.2;color:var(--text);font-weight:800}
+    ul.clean{list-style:none;display:grid;gap:10px;margin-top:10px}
+    ul.clean li{padding-left:20px;position:relative}
+    ul.clean li::before{content:'•';position:absolute;left:0;top:0;color:var(--red);font-weight:800}
+    .cta{padding:28px;background:linear-gradient(135deg,rgba(239,77,62,.16),rgba(255,159,28,.18));border:1px solid rgba(239,77,62,.18);border-radius:28px;box-shadow:var(--shadow)}
+    .footer{padding:24px 0 40px;text-align:center}
+    .tiny{font-size:.92rem;color:rgba(44,34,8,.56)}
+    .accent-red{color:var(--red)}
+    .accent-blue{color:#277de0}
+    .accent-green{color:#229549}
+    @media (max-width:900px){.hero-card,.grid-3,.grid-2{grid-template-columns:1fr}.hero-image{min-height:320px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="hero-card">
+        <div>
+          <div class="eyebrow">спецпроект выходного дня</div>
+          <h1>София, ура, выходные!</h1>
+          <p class="lead">Официально подтверждено независимыми экспертами: выходные с <span class="accent-red">Настей</span> и <span class="accent-blue">Лёшей</span> — это стратегически сильное решение, эмоционально выгодная инвестиция и просто очень смешной кейс на два дня.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#cta">Приезжать почаще</a>
+            <a class="btn secondary" href="#cases">Сначала изучить кейсы</a>
+          </div>
+        </div>
+        <div class="hero-image">
+          <img src="sofia-weekend-assets/hero.jpg" alt="София, ура, выходные!">
+          <div class="hero-badge">Weekend experience • версия 1.0</div>
+        </div>
+      </div>
+    </header>
+
+    <section>
+      <div class="section-head">
+        <h2>В чём оффер</h2>
+        <p>Не абстрактное «ну приезжай как-нибудь», а чёткое value proposition: тёплая компания, живой юмор, совместные штуки, меньше скуки, больше историй, которые потом ещё долго вспоминаются.</p>
+      </div>
+      <div class="grid-3">
+        <article class="card"><div class="icon">🎉</div><h3>Мгновенный апгрейд настроения</h3><p>Приезжаешь — и обычные выходные сразу становятся событием, а не фоном между делами и «потом как-нибудь отдохну».</p></article>
+        <article class="card"><div class="icon">🍳</div><h3>Контент лучше, чем дома одной</h3><p>Еда вкуснее, разговоры смешнее, чай теплее, мемы уместнее. Всё это уже многократно подтверждено практикой.</p></article>
+        <article class="card"><div class="icon">💛</div><h3>Редкая роскошь — быть среди своих</h3><p>Без пафоса, без напряжения, без необходимости «быть удобной». Просто хорошо, спокойно и по-настоящему вместе.</p></article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Главные проблемы, если <span class="accent-red">не приезжать</span></h2>
+      </div>
+      <div class="grid-3">
+        <article class="card"><div class="icon">😐</div><h3>Выходные проходят слишком обычно</h3><p>Сценарий «немножко отдохнула, немножко дела, немножко залипла» объективно проигрывает сценарию «было классно и есть что вспомнить».</p></article>
+        <article class="card"><div class="icon">📉</div><h3>Падает уровень смешных моментов</h3><p>А это уже серьёзный показатель. Без совместных встреч рынок внутренних шуток сжимается и теряет ликвидность.</p></article>
+        <article class="card"><div class="icon">🥲</div><h3>Настя и Лёша недополучают Софию</h3><p>Что, мягко говоря, обидно для всех заинтересованных сторон и негативно влияет на индекс уютности уикенда.</p></article>
+      </div>
+    </section>
+
+    <section>
+      <div class="quote">
+        <p>Если коротко: <span class="accent-green">София + Настя + Лёша = выходные заметно лучше среднего по рынку.</span></p>
+      </div>
+    </section>
+
+    <section id="cases">
+      <div class="section-head">
+        <h2>Use cases: как это выглядит в реальной жизни</h2>
+      </div>
+      <div class="grid-2">
+        <article class="card">
+          <h3>Кейс 1. «Заеду ненадолго»</h3>
+          <p><strong>Что происходит:</strong> София приезжает «буквально на чуть-чуть».</p>
+          <ul class="clean">
+            <li>Через 20 минут уже нормальный вайб.</li>
+            <li>Через час все втянуты в разговор, еду, шутки и жизнь.</li>
+            <li>На выходе: настроение лучше, чем ожидалось.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Кейс 2. Полноценный выходной together mode</h3>
+          <p><strong>Что происходит:</strong> никто никуда не спешит, день собирается вокруг людей, а не вокруг дедлайнов.</p>
+          <ul class="clean">
+            <li>Есть время поговорить нормально, а не урывками.</li>
+            <li>Возникают спонтанные смешные эпизоды.</li>
+            <li>После этого ещё несколько дней остаётся тёплое послевкусие.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Кейс 3. Мини-перезагрузка</h3>
+          <p><strong>Что происходит:</strong> приезжаешь уставшая, а уезжаешь уже заметно живее.</p>
+          <ul class="clean">
+            <li>Мозг переключается с рутины на людей.</li>
+            <li>Тревожность теряет монополию на внимание.</li>
+            <li>Появляется ощущение «о, жизнь вообще-то классная».</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Кейс 4. Регулярная привычка</h3>
+          <p><strong>Что происходит:</strong> приезжать становится не редким событием, а хорошей доброй нормой.</p>
+          <ul class="clean">
+            <li>Меньше «ой, давно не виделись».</li>
+            <li>Больше близости без повода.</li>
+            <li>Больше общих воспоминаний, а это вообще актив с длинным сроком жизни.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Преимущества по пунктам, чтобы всё было официально</h2>
+      </div>
+      <div class="grid-2">
+        <article class="card">
+          <h3>Для Софии</h3>
+          <ul class="clean">
+            <li>живой отдых вместо пассивного «полежала и всё»;</li>
+            <li>ощущение тепла, близости и настоящего общения;</li>
+            <li>новые шутки, новые истории, новые любимые моменты;</li>
+            <li>эмоциональный recharge без лишнего пафоса.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Для Насти и Лёши</h3>
+          <ul class="clean">
+            <li>выходные становятся ярче и веселее;</li>
+            <li>появляется больше времени вместе, не только «на бегу»;</li>
+            <li>формируется красивая традиция, которую реально приятно повторять;</li>
+            <li>дом становится местом, куда хочется возвращаться всем троим.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>FAQ</h2>
+      </div>
+      <div class="grid-2">
+        <article class="card"><h3>«А если я устала?»</h3><p>Тем более приезжать. Это не корпоратив и не квест на выживание. Это мягкий уютный режим с людьми, рядом с которыми можно просто быть.</p></article>
+        <article class="card"><h3>«А если не хочется никуда ехать?»</h3><p>Понимаемо. Но практика показывает: часто именно после такого лёгкого внутреннего сопротивления и получаются самые тёплые выходные.</p></article>
+        <article class="card"><h3>«А вдруг будет лениво?»</h3><p>Прекрасно. Лениться вместе — это вообще underrated premium activity.</p></article>
+        <article class="card"><h3>«Это точно хорошая идея?»</h3><p>Да. По субъективной, объективной и очень уважаемой домашней аналитике — да.</p></article>
+      </div>
+    </section>
+
+    <section id="cta">
+      <div class="cta">
+        <h2>Итоговое предложение</h2>
+        <p class="lead">София, приезжай к Насте и Лёше <strong>почаще</strong>. Не потому что «надо», а потому что вместе реально лучше: теплее, смешнее, живее и просто по-человечески хорошо.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#top">Да, это sound decision</a>
+          <a class="btn secondary" href="#cases">Перечитать преимущества ещё раз</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="tiny">Сделано с уважением к выходным, уюту и стратегически важным встречам хороших людей.</p>
+    </footer>
+  </div>
+</body>
+</html>
