@@ -3,170 +3,178 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>София, ура, выходные! — спецсайт</title>
+  <title>Софа, приезжай! — футуристический манифест выходных</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#fff6a8;
-      --bg2:#ffd85a;
-      --panel:rgba(255,255,255,.56);
-      --panel-strong:rgba(255,255,255,.74);
-      --border:rgba(43,38,16,.12);
-      --text:#2c2208;
-      --muted:rgba(44,34,8,.72);
-      --red:#ef4d3e;
-      --blue:#4aa7ff;
-      --green:#44c46b;
-      --orange:#ff9f1c;
-      --shadow:0 20px 50px rgba(103,74,0,.14);
-      --radius:24px;
+      --bg:#070b16;
+      --bg2:#0f1630;
+      --panel:rgba(13,20,40,.64);
+      --panel-2:rgba(255,255,255,.06);
+      --border:rgba(145,194,255,.18);
+      --text:#f5f7ff;
+      --muted:rgba(245,247,255,.74);
+      --soft:rgba(245,247,255,.46);
+      --cyan:#50e6ff;
+      --blue:#5b8cff;
+      --violet:#9b5cff;
+      --pink:#ff5fd2;
+      --green:#7dffa1;
+      --shadow:0 24px 80px rgba(0,0,0,.38);
+      --radius:28px;
     }
     *{box-sizing:border-box;margin:0;padding:0}
     body{
       font-family:'Manrope',system-ui,sans-serif;
       color:var(--text);
       background:
-        radial-gradient(circle at 10% 10%, rgba(255,255,255,.55), transparent 28%),
-        radial-gradient(circle at 100% 0%, rgba(255,154,28,.24), transparent 28%),
+        radial-gradient(circle at 10% 10%, rgba(80,230,255,.14), transparent 24%),
+        radial-gradient(circle at 85% 15%, rgba(155,92,255,.18), transparent 28%),
+        radial-gradient(circle at 20% 100%, rgba(255,95,210,.12), transparent 24%),
         linear-gradient(180deg,var(--bg) 0%, var(--bg2) 100%);
       min-height:100vh;
+      overflow-x:hidden;
     }
-    .wrap{width:min(1160px,calc(100vw - 32px));margin:0 auto}
-    .hero{padding:36px 0 26px}
-    .hero-card,.card{
-      background:var(--panel);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(10px);
+    body::before{
+      content:'';position:fixed;inset:0;pointer-events:none;opacity:.25;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='white' stroke-opacity='.18'%3E%3Cpath d='M0 40h160M0 80h160M0 120h160M40 0v160M80 0v160M120 0v160'/%3E%3C/g%3E%3C/svg%3E");
+      background-size:160px 160px;
     }
-    .hero-card{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;padding:28px;align-items:center}
-    .eyebrow{display:inline-flex;gap:10px;align-items:center;padding:10px 14px;border-radius:999px;background:var(--panel-strong);border:1px solid var(--border);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
-    .eyebrow::before{content:'';width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--orange))}
-    h1,h2,h3{font-family:'Space Grotesk',sans-serif;line-height:1.02;letter-spacing:-.03em}
-    h1{font-size:clamp(2.6rem,6vw,5rem);margin:18px 0 14px}
-    h2{font-size:clamp(1.8rem,3.7vw,3rem);margin-bottom:14px}
-    h3{font-size:clamp(1.1rem,2vw,1.45rem);margin-bottom:10px}
-    p,li{font-size:clamp(1rem,1.6vw,1.12rem);line-height:1.6;color:var(--muted)}
-    .lead{font-size:clamp(1.1rem,1.9vw,1.3rem);max-width:60ch}
-    .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px}
-    .btn{display:inline-flex;padding:14px 20px;border-radius:999px;text-decoration:none;font-weight:800;border:1px solid var(--border);box-shadow:var(--shadow)}
-    .btn.primary{background:linear-gradient(135deg,var(--red),var(--orange));color:#fff}
-    .btn.secondary{background:rgba(255,255,255,.72);color:var(--text)}
-    .hero-image{position:relative;overflow:hidden;border-radius:22px;min-height:440px;border:1px solid var(--border);background:#ffe37b}
-    .hero-image img{width:100%;height:100%;object-fit:cover;display:block}
-    .hero-badge{position:absolute;left:18px;bottom:18px;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,.84);font-weight:800;border:1px solid var(--border)}
-    section{padding:12px 0}
+    .wrap{width:min(1180px,calc(100vw - 32px));margin:0 auto;padding:24px 0 56px}
+    .card,.hero-card,.quote,.cta{background:var(--panel);border:1px solid var(--border);backdrop-filter:blur(16px);box-shadow:var(--shadow)}
+    .hero-card{display:grid;grid-template-columns:1.04fr .96fr;gap:28px;align-items:center;border-radius:34px;padding:28px;position:relative;overflow:hidden}
+    .hero-card::after{content:'';position:absolute;inset:auto -10% -35% auto;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle, rgba(80,230,255,.24), transparent 70%);filter:blur(24px)}
+    .eyebrow{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.05);font-size:12px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+    .eyebrow::before{content:'';width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--pink));box-shadow:0 0 16px rgba(80,230,255,.6)}
+    h1,h2,h3{font-family:'Space Grotesk',sans-serif;line-height:1;letter-spacing:-.045em}
+    h1{font-size:clamp(2.7rem,6vw,5.5rem);margin:18px 0 16px;text-transform:uppercase}
+    h2{font-size:clamp(1.9rem,4vw,3.2rem);margin-bottom:14px;text-transform:uppercase}
+    h3{font-size:clamp(1.08rem,2vw,1.4rem);margin-bottom:10px;text-transform:uppercase}
+    p,li{font-size:clamp(1rem,1.5vw,1.1rem);line-height:1.62;color:var(--muted)}
+    .lead{font-size:clamp(1.1rem,1.9vw,1.34rem);max-width:60ch}
+    .accent-cyan{color:var(--cyan)} .accent-pink{color:var(--pink)} .accent-green{color:var(--green)} .accent-violet{color:#bca7ff}
+    .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:24px}
+    .btn{display:inline-flex;padding:14px 22px;border-radius:999px;text-decoration:none;font-weight:800;border:1px solid var(--border)}
+    .btn.primary{background:linear-gradient(135deg,var(--cyan),var(--violet));color:#06101f;box-shadow:0 12px 30px rgba(80,230,255,.24)}
+    .btn.secondary{background:rgba(255,255,255,.06);color:var(--text)}
+    .hero-image{position:relative;min-height:480px;border-radius:28px;overflow:hidden;border:1px solid var(--border);background:#0c1428}
+    .hero-image img{width:100%;height:100%;display:block;object-fit:cover;filter:saturate(1.05) contrast(1.02)}
+    .hero-chip{position:absolute;left:18px;bottom:18px;padding:10px 14px;border-radius:999px;background:rgba(7,11,22,.72);border:1px solid var(--border);font-weight:800;color:var(--text)}
+    section{padding:14px 0}
+    .section-head{margin:8px 0 18px}
     .grid-3,.grid-2{display:grid;gap:18px}
-    .grid-3{grid-template-columns:repeat(3,1fr)}
-    .grid-2{grid-template-columns:repeat(2,1fr)}
-    .card{padding:22px}
-    .icon{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;font-size:24px;font-weight:800;margin-bottom:14px;background:linear-gradient(135deg,rgba(239,77,62,.18),rgba(255,159,28,.22))}
-    .section-head{margin:18px 0 18px}
-    .quote{padding:28px;border-radius:26px;background:linear-gradient(135deg,rgba(255,255,255,.76),rgba(255,249,220,.72));border:1px solid var(--border);box-shadow:var(--shadow);text-align:center}
-    .quote p{font-size:clamp(1.35rem,3vw,2.1rem);line-height:1.2;color:var(--text);font-weight:800}
+    .grid-3{grid-template-columns:repeat(3,1fr)} .grid-2{grid-template-columns:repeat(2,1fr)}
+    .card{padding:22px;border-radius:26px;position:relative;overflow:hidden}
+    .card::before{content:'';position:absolute;inset:-20% auto auto -10%;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle, rgba(91,140,255,.18), transparent 70%);pointer-events:none}
+    .icon{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;margin-bottom:14px;font-size:24px;background:linear-gradient(135deg,rgba(80,230,255,.18),rgba(155,92,255,.18));border:1px solid var(--border)}
+    .quote{padding:30px;border-radius:28px;text-align:center}
+    .quote p{font-size:clamp(1.35rem,3vw,2.2rem);line-height:1.18;color:var(--text);font-weight:800}
     ul.clean{list-style:none;display:grid;gap:10px;margin-top:10px}
-    ul.clean li{padding-left:20px;position:relative}
-    ul.clean li::before{content:'•';position:absolute;left:0;top:0;color:var(--red);font-weight:800}
-    .cta{padding:28px;background:linear-gradient(135deg,rgba(239,77,62,.16),rgba(255,159,28,.18));border:1px solid rgba(239,77,62,.18);border-radius:28px;box-shadow:var(--shadow)}
-    .footer{padding:24px 0 40px;text-align:center}
-    .tiny{font-size:.92rem;color:rgba(44,34,8,.56)}
-    .accent-red{color:var(--red)}
-    .accent-blue{color:#277de0}
-    .accent-green{color:#229549}
-    @media (max-width:900px){.hero-card,.grid-3,.grid-2{grid-template-columns:1fr}.hero-image{min-height:320px}}
+    ul.clean li{position:relative;padding-left:20px}
+    ul.clean li::before{content:'▸';position:absolute;left:0;top:0;color:var(--cyan);font-weight:900}
+    .cta{padding:30px;border-radius:30px;background:linear-gradient(135deg,rgba(80,230,255,.11),rgba(155,92,255,.14))}
+    .footer{padding-top:26px;text-align:center}.tiny{font-size:.92rem;color:var(--soft)}
+    .manifesto{font-weight:800;color:var(--text);line-height:1.24;max-width:17ch;font-size:clamp(1.4rem,2.9vw,2.5rem);text-transform:uppercase}
+    @media(max-width:900px){.hero-card,.grid-3,.grid-2{grid-template-columns:1fr}.hero-image{min-height:320px}.manifesto{max-width:none}}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <header class="hero">
+    <header>
       <div class="hero-card">
         <div>
-          <div class="eyebrow">спецпроект выходного дня</div>
-          <h1>София, ура, выходные!</h1>
-          <p class="lead">Официально подтверждено независимыми экспертами: выходные с <span class="accent-red">Настей</span> и <span class="accent-blue">Лёшей</span> — это стратегически сильное решение, эмоционально выгодная инвестиция и просто очень смешной кейс на два дня.</p>
+          <div class="eyebrow">семейный футуризм • версия для софы</div>
+          <h1>Софа,<br><span class="accent-cyan">приезжай</span><br>чаще.</h1>
+          <p class="lead">Не вяло. Не когда-нибудь. Не по остаточному принципу. А <span class="accent-pink">по-настоящему</span>. Потому что выходные с <strong>Настей</strong>, <strong>Лёшей</strong>, <strong>Евой</strong> и собакой <strong>Шинджу</strong> — это не бытовая опция. Это <span class="accent-green">сильный жизненный апгрейд</span> для девушки семнадцати лет, которая уже учится на первом курсе и заслуживает не серый уикенд, а живой.</p>
           <div class="hero-actions">
-            <a class="btn primary" href="#cta">Приезжать почаще</a>
-            <a class="btn secondary" href="#cases">Сначала изучить кейсы</a>
+            <a class="btn primary" href="#cta">Даёшь семейный weekend</a>
+            <a class="btn secondary" href="#benefits">Разобрать преимущества</a>
           </div>
         </div>
         <div class="hero-image">
-          <img src="sofia-weekend-assets/hero.jpg" alt="София, ура, выходные!">
-          <div class="hero-badge">Weekend experience • версия 1.0</div>
+          <img src="sofia-weekend-assets/hero.jpg" alt="Софа, ура, выходные!">
+          <div class="hero-chip">Домашний космос • состав команды: Настя / Лёша / Ева / Шинджу</div>
         </div>
       </div>
     </header>
 
     <section>
       <div class="section-head">
-        <h2>В чём оффер</h2>
-        <p>Не абстрактное «ну приезжай как-нибудь», а чёткое value proposition: тёплая компания, живой юмор, совместные штуки, меньше скуки, больше историй, которые потом ещё долго вспоминаются.</p>
+        <h2>Манифест</h2>
+      </div>
+      <div class="grid-2">
+        <div class="quote"><p>Выходной — не дырка между буднями.<br>Выходной — это сцена.<br>И на этой сцене<br><span class="accent-cyan">Софа должна быть среди своих.</span></p></div>
+        <div class="card"><p class="manifesto">Чтоб смех — не в чате. Чтоб чай — не на бегу. Чтоб Ева рядом. Чтоб Шинджу носился. Чтоб Настя — мама. Чтоб Лёша — отчим. Чтоб дом — не адрес, а место, куда хочется.</p></div>
+      </div>
+    </section>
+
+    <section id="benefits">
+      <div class="section-head">
+        <h2>Преимущества<br><span class="accent-violet">по существу</span></h2>
+        <p>Сухим языком отчётов было бы скучно. Поэтому — прямо: почему приезжать к своим это круто, полезно и вообще красиво.</p>
       </div>
       <div class="grid-3">
-        <article class="card"><div class="icon">🎉</div><h3>Мгновенный апгрейд настроения</h3><p>Приезжаешь — и обычные выходные сразу становятся событием, а не фоном между делами и «потом как-нибудь отдохну».</p></article>
-        <article class="card"><div class="icon">🍳</div><h3>Контент лучше, чем дома одной</h3><p>Еда вкуснее, разговоры смешнее, чай теплее, мемы уместнее. Всё это уже многократно подтверждено практикой.</p></article>
-        <article class="card"><div class="icon">💛</div><h3>Редкая роскошь — быть среди своих</h3><p>Без пафоса, без напряжения, без необходимости «быть удобной». Просто хорошо, спокойно и по-настоящему вместе.</p></article>
+        <article class="card"><div class="icon">⚡</div><h3>Эмоциональная зарядка</h3><p>После учёбы, дедлайнов, людей и города нужен не просто отдых, а <strong>тёплый перезапуск</strong>. У своих это происходит быстрее и глубже.</p></article>
+        <article class="card"><div class="icon">🛸</div><h3>Футуризм по-домашнему</h3><p>Можно быть взрослой, учиться на первом курсе, тащить свой темп — и всё равно приезжать туда, где тебя любят без презентации достижений.</p></article>
+        <article class="card"><div class="icon">🐕</div><h3>Полный состав сильнее</h3><p>Настя, Лёша, Ева, Шинджу и Софа — это уже не просто семья, это почти маленькая вселенная. А вселенные лучше работают в полном комплекте.</p></article>
       </div>
     </section>
 
     <section>
       <div class="section-head">
-        <h2>Главные проблемы, если <span class="accent-red">не приезжать</span></h2>
+        <h2>Проблемы,<br><span class="accent-pink">если не приезжать</span></h2>
       </div>
       <div class="grid-3">
-        <article class="card"><div class="icon">😐</div><h3>Выходные проходят слишком обычно</h3><p>Сценарий «немножко отдохнула, немножко дела, немножко залипла» объективно проигрывает сценарию «было классно и есть что вспомнить».</p></article>
-        <article class="card"><div class="icon">📉</div><h3>Падает уровень смешных моментов</h3><p>А это уже серьёзный показатель. Без совместных встреч рынок внутренних шуток сжимается и теряет ликвидность.</p></article>
-        <article class="card"><div class="icon">🥲</div><h3>Настя и Лёша недополучают Софию</h3><p>Что, мягко говоря, обидно для всех заинтересованных сторон и негативно влияет на индекс уютности уикенда.</p></article>
+        <article class="card"><div class="icon">📉</div><h3>Падает индекс уютности</h3><p>Выходной без встречи рискует стать набором случайных часов. Вроде день был. А следа не оставил.</p></article>
+        <article class="card"><div class="icon">🫠</div><h3>Слишком много цифрового, мало живого</h3><p>Можно сколько угодно переписываться, но тёплый дом, смешной разговор и живая близость пока ещё не телепортируются через экран.</p></article>
+        <article class="card"><div class="icon">🌫️</div><h3>Истории не происходят сами</h3><p>Самые любимые семейные моменты не падают с неба. Их надо иногда просто прийти и прожить.</p></article>
       </div>
     </section>
 
     <section>
-      <div class="quote">
-        <p>Если коротко: <span class="accent-green">София + Настя + Лёша = выходные заметно лучше среднего по рынку.</span></p>
-      </div>
+      <div class="quote"><p>Софа — не гость. <span class="accent-green">Софа — важная часть сюжета.</span></p></div>
     </section>
 
-    <section id="cases">
+    <section>
       <div class="section-head">
-        <h2>Use cases: как это выглядит в реальной жизни</h2>
+        <h2>Кейсы реального применения выходных</h2>
       </div>
       <div class="grid-2">
         <article class="card">
-          <h3>Кейс 1. «Заеду ненадолго»</h3>
-          <p><strong>Что происходит:</strong> София приезжает «буквально на чуть-чуть».</p>
+          <h3>Кейс 01 — «приеду ненадолго»</h3>
           <ul class="clean">
-            <li>Через 20 минут уже нормальный вайб.</li>
-            <li>Через час все втянуты в разговор, еду, шутки и жизнь.</li>
-            <li>На выходе: настроение лучше, чем ожидалось.</li>
+            <li>Заезжает Софа.</li>
+            <li>Через двадцать минут — уже нормальный живой ритм.</li>
+            <li>Через час — разговоры, чай, шутки, собака, Ева, домашний космос.</li>
+            <li>Результат: «ненадолго» неожиданно становится очень правильно.</li>
           </ul>
         </article>
         <article class="card">
-          <h3>Кейс 2. Полноценный выходной together mode</h3>
-          <p><strong>Что происходит:</strong> никто никуда не спешит, день собирается вокруг людей, а не вокруг дедлайнов.</p>
+          <h3>Кейс 02 — «я устала»</h3>
           <ul class="clean">
-            <li>Есть время поговорить нормально, а не урывками.</li>
-            <li>Возникают спонтанные смешные эпизоды.</li>
-            <li>После этого ещё несколько дней остаётся тёплое послевкусие.</li>
+            <li>Первый курс утомляет. Мир шумит.</li>
+            <li>Но именно поэтому нужно приезжать не в пустоту, а к своим.</li>
+            <li>Там можно не играть роль. Можно просто быть.</li>
+            <li>Результат: усталость не исчезает магически, но сердце становится легче.</li>
           </ul>
         </article>
         <article class="card">
-          <h3>Кейс 3. Мини-перезагрузка</h3>
-          <p><strong>Что происходит:</strong> приезжаешь уставшая, а уезжаешь уже заметно живее.</p>
+          <h3>Кейс 03 — семейный состав в сборе</h3>
           <ul class="clean">
-            <li>Мозг переключается с рутины на людей.</li>
-            <li>Тревожность теряет монополию на внимание.</li>
-            <li>Появляется ощущение «о, жизнь вообще-то классная».</li>
+            <li>Настя даёт тепло.</li>
+            <li>Лёша добавляет опору и вайб.</li>
+            <li>Ева усиливает живость сцены.</li>
+            <li>Шинджу закрывает вопрос по радости окончательно.</li>
           </ul>
         </article>
         <article class="card">
-          <h3>Кейс 4. Регулярная привычка</h3>
-          <p><strong>Что происходит:</strong> приезжать становится не редким событием, а хорошей доброй нормой.</p>
+          <h3>Кейс 04 — регулярность, а не редкость</h3>
           <ul class="clean">
-            <li>Меньше «ой, давно не виделись».</li>
-            <li>Больше близости без повода.</li>
-            <li>Больше общих воспоминаний, а это вообще актив с длинным сроком жизни.</li>
+            <li>Когда встречи не случайны, а повторяются, семья становится ближе не теоретически, а реально.</li>
+            <li>Меньше «давно не виделись».</li>
+            <li>Больше общего воздуха, памяти и чувства дома.</li>
           </ul>
         </article>
       </div>
@@ -174,25 +182,25 @@
 
     <section>
       <div class="section-head">
-        <h2>Преимущества по пунктам, чтобы всё было официально</h2>
+        <h2>Преимущества для каждого участника системы</h2>
       </div>
       <div class="grid-2">
         <article class="card">
-          <h3>Для Софии</h3>
+          <h3>Для Софы</h3>
           <ul class="clean">
-            <li>живой отдых вместо пассивного «полежала и всё»;</li>
-            <li>ощущение тепла, близости и настоящего общения;</li>
-            <li>новые шутки, новые истории, новые любимые моменты;</li>
-            <li>эмоциональный recharge без лишнего пафоса.</li>
+            <li>перезагрузка после учёбы и ритма первого курса;</li>
+            <li>живое чувство семьи, а не абстрактное знание о ней;</li>
+            <li>дом, где тебя ждут не для отчёта, а по любви;</li>
+            <li>истории, которые потом будут вспоминаться годами.</li>
           </ul>
         </article>
         <article class="card">
-          <h3>Для Насти и Лёши</h3>
+          <h3>Для Насти, Лёши, Евы и Шинджу</h3>
           <ul class="clean">
-            <li>выходные становятся ярче и веселее;</li>
-            <li>появляется больше времени вместе, не только «на бегу»;</li>
-            <li>формируется красивая традиция, которую реально приятно повторять;</li>
-            <li>дом становится местом, куда хочется возвращаться всем троим.</li>
+            <li>дом становится полнее;</li>
+            <li>выходные ярче и теплее;</li>
+            <li>семья звучит не на половину голоса, а во весь рост;</li>
+            <li>Шинджу, вероятно, вообще в полном восторге.</li>
           </ul>
         </article>
       </div>
@@ -203,26 +211,26 @@
         <h2>FAQ</h2>
       </div>
       <div class="grid-2">
-        <article class="card"><h3>«А если я устала?»</h3><p>Тем более приезжать. Это не корпоратив и не квест на выживание. Это мягкий уютный режим с людьми, рядом с которыми можно просто быть.</p></article>
-        <article class="card"><h3>«А если не хочется никуда ехать?»</h3><p>Понимаемо. Но практика показывает: часто именно после такого лёгкого внутреннего сопротивления и получаются самые тёплые выходные.</p></article>
-        <article class="card"><h3>«А вдруг будет лениво?»</h3><p>Прекрасно. Лениться вместе — это вообще underrated premium activity.</p></article>
-        <article class="card"><h3>«Это точно хорошая идея?»</h3><p>Да. По субъективной, объективной и очень уважаемой домашней аналитике — да.</p></article>
+        <article class="card"><h3>«А если я хочу просто выдохнуть?»</h3><p>Так это и есть выдохнуть. Не в одиночку в стену, а рядом с теми, с кем тепло.</p></article>
+        <article class="card"><h3>«А если дел много?»</h3><p>Тем более нужен остров. Даже самым взрослым и занятым иногда надо приезжать туда, где они не функция, а любимый человек.</p></article>
+        <article class="card"><h3>«А если неудобно часто?»</h3><p>Часто — это не проблема. Часто — это вообще-то роскошь для семьи, которая хочет быть ближе.</p></article>
+        <article class="card"><h3>«Это не слишком пафосно?»</h3><p>Немного да. Но хорошие вещи иногда и должны звучать с размахом.</p></article>
       </div>
     </section>
 
     <section id="cta">
       <div class="cta">
-        <h2>Итоговое предложение</h2>
-        <p class="lead">София, приезжай к Насте и Лёше <strong>почаще</strong>. Не потому что «надо», а потому что вместе реально лучше: теплее, смешнее, живее и просто по-человечески хорошо.</p>
+        <h2>Финальный призыв</h2>
+        <p class="lead">Софа, приезжай к Насте, Лёше, Еве и Шинджу <span class="accent-cyan">почаще</span>. Не по формальности. Не «когда будет окно». А потому что это твои люди, твой смех, твой воздух, твой дом и твой правильный сценарий выходных.</p>
         <div class="hero-actions">
-          <a class="btn primary" href="#top">Да, это sound decision</a>
-          <a class="btn secondary" href="#cases">Перечитать преимущества ещё раз</a>
+          <a class="btn primary" href="#top">Принять как сильное решение</a>
+          <a class="btn secondary" href="#benefits">Перечитать аргументы</a>
         </div>
       </div>
     </section>
 
     <footer class="footer">
-      <p class="tiny">Сделано с уважением к выходным, уюту и стратегически важным встречам хороших людей.</p>
+      <p class="tiny">Сделано с футуризмом, любовью и уважением к великой силе семейного выходного.</p>
     </footer>
   </div>
 </body>
