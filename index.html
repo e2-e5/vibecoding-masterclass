@@ -7,11 +7,12 @@
   <meta name="description" content="Онлайн-вебинар для предпринимателей, которые раньше не видели Claude Code. Покажем, как использовать ИИ для лендингов, MVP, автоматизации и быстрых проверок идей." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <!-- GSAP CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <!-- GSAP CDN with SplitText -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/split-type"></script>
   
   <style>
     :root {
@@ -34,7 +35,10 @@
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { 
+      scroll-behavior: smooth;
+      cursor: none;
+    }
     body {
       margin: 0;
       font-family: 'Manrope', system-ui, sans-serif;
@@ -42,85 +46,65 @@
       color: var(--text);
       overflow-x: hidden;
       position: relative;
+      cursor: none;
     }
 
-    /* Animated Background */
-    .animated-bg {
+    /* Custom cursor */
+    .custom-cursor {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      background: rgba(0,255,183,0.6);
+      border-radius: 50%;
       pointer-events: none;
-      z-index: -2;
-      background: 
-        radial-gradient(circle at 10% 10%, rgba(0,102,255,.16), transparent 20%),
-        radial-gradient(circle at 85% 18%, rgba(123,47,255,.14), transparent 18%),
-        radial-gradient(circle at 75% 85%, rgba(0,255,183,.10), transparent 22%),
-        var(--bg);
-      animation: bgShift 20s ease-in-out infinite;
+      z-index: 9999;
+      transition: transform 0.2s ease, opacity 0.3s ease;
+      mix-blend-mode: difference;
+    }
+    
+    .custom-cursor.hover {
+      transform: scale(2);
+      background: rgba(0,102,255,0.8);
     }
 
-    @keyframes bgShift {
-      0%, 100% { background-position: 0% 0%, 100% 0%, 100% 100%; }
-      25% { background-position: 20% 10%, 90% 15%, 80% 90%; }
-      50% { background-position: 15% 20%, 95% 20%, 85% 95%; }
-      75% { background-position: 10% 15%, 85% 10%, 75% 85%; }
-    }
-
-    /* Floating Particles */
-    .particles-container {
+    /* Canvas background for organic blobs */
+    #blobCanvas {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: -1;
-      overflow: hidden;
+      opacity: 0.7;
     }
 
-    .particle {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: rgba(0, 255, 183, 0.3);
-      border-radius: 50%;
-      animation: float 20s infinite linear;
-    }
-
-    .particle:nth-child(2n) {
-      background: rgba(0, 102, 255, 0.2);
-      animation-duration: 25s;
-    }
-
-    .particle:nth-child(3n) {
-      background: rgba(123, 47, 255, 0.25);
-      animation-duration: 30s;
-    }
-
-    @keyframes float {
-      0% { 
-        transform: translateY(100vh) scale(0);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-        transform: scale(1);
-      }
-      90% {
-        opacity: 1;
-      }
-      100% { 
-        transform: translateY(-100vh) scale(0);
-        opacity: 0;
+    /* Fallback gradient for mobile */
+    @media (max-width: 768px) {
+      #blobCanvas { display: none; }
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+        background: 
+          radial-gradient(circle at 20% 30%, rgba(0,102,255,.12), transparent 40%),
+          radial-gradient(circle at 80% 70%, rgba(123,47,255,.10), transparent 35%),
+          radial-gradient(circle at 50% 90%, rgba(0,255,183,.08), transparent 30%),
+          var(--bg);
       }
     }
 
-    /* Grain Texture */
-    body::before {
+    /* Grain texture */
+    body::after {
       content: "";
       position: fixed;
       inset: 0;
       pointer-events: none;
-      opacity: .22;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+      opacity: .15;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.8'/%3E%3C/svg%3E");
       mix-blend-mode: soft-light;
-      z-index: -1;
+      z-index: 1;
     }
 
     a { color: inherit; text-decoration: none; }
@@ -130,7 +114,7 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 10px 14px;
+      padding: 12px 18px;
       border-radius: 999px;
       border: 1px solid var(--border);
       background: rgba(255,255,255,.04);
@@ -139,12 +123,14 @@
       text-transform: uppercase;
       color: var(--muted);
       font-weight: 700;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(8px);
     }
     
     .eyebrow:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0,255,183,.15);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 25px rgba(0,255,183,.2);
+      border-color: rgba(0,255,183,.3);
     }
     
     .dot {
@@ -152,25 +138,33 @@
       height: 8px;
       border-radius: 999px;
       background: var(--accent);
-      box-shadow: 0 0 18px rgba(0,255,183,.6);
+      box-shadow: 0 0 20px rgba(0,255,183,.8);
       animation: pulse 2s ease-in-out infinite;
     }
 
     @keyframes pulse {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 18px rgba(0,255,183,.6); }
-      50% { transform: scale(1.1); box-shadow: 0 0 25px rgba(0,255,183,.8); }
+      0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(0,255,183,.8); }
+      50% { transform: scale(1.2); box-shadow: 0 0 30px rgba(0,255,183,1); }
     }
 
+    /* Enhanced header with scroll effects */
     header {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 20;
-      backdrop-filter: blur(18px);
-      background: rgba(10,10,11,.58);
-      border-bottom: 1px solid rgba(255,255,255,.06);
-      transition: all 0.3s ease;
+      backdrop-filter: blur(0px);
+      background: rgba(10,10,11,0);
+      border-bottom: 1px solid rgba(255,255,255,0);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    header.scrolled {
+      backdrop-filter: blur(20px);
+      background: rgba(10,10,11,.85);
+      border-bottom-color: rgba(255,255,255,.1);
+      box-shadow: 0 10px 40px rgba(0,0,0,.3);
     }
     
     .nav {
@@ -188,7 +182,7 @@
       font-weight: 800;
       letter-spacing: -.03em;
       cursor: pointer;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .brand:hover {
@@ -201,41 +195,43 @@
       border-radius: 14px;
       background: linear-gradient(135deg, var(--primary), var(--accent));
       box-shadow: 0 10px 30px rgba(0,102,255,.35);
-      transition: all 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .brand-mark:hover {
-      transform: rotate(10deg) scale(1.05);
-      box-shadow: 0 15px 40px rgba(0,102,255,.5);
+      transform: rotate(15deg) scale(1.1);
+      box-shadow: 0 15px 40px rgba(0,102,255,.6);
     }
     
     .brand small { display: block; color: var(--soft); font-weight: 600; letter-spacing: 0; }
 
     .nav-actions { display: flex; align-items: center; gap: 12px; }
     
+    /* Enhanced buttons with micro-interactions */
     .button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
       min-height: 52px;
-      padding: 0 20px;
+      padding: 0 24px;
       border-radius: 18px;
       font-weight: 800;
-      transition: all .25s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
       border: 1px solid transparent;
       cursor: pointer;
       position: relative;
       overflow: hidden;
+      backdrop-filter: blur(8px);
     }
     
     .button::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+      background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%);
       transform: translateX(-100%);
-      transition: transform 0.6s ease;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .button:hover::before {
@@ -245,28 +241,30 @@
     .button-primary {
       background: linear-gradient(135deg, var(--primary), #1e7bff);
       color: white;
-      box-shadow: 0 18px 40px rgba(0,102,255,.28);
+      box-shadow: 0 18px 40px rgba(0,102,255,.3);
     }
     
     .button-secondary {
-      background: rgba(255,255,255,.05);
+      background: rgba(255,255,255,.06);
       border-color: var(--border);
       color: var(--text);
     }
     
     .button:hover { 
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 25px 50px rgba(0,102,255,.4);
+      transform: translateY(-3px) scale(1.03);
+    }
+    
+    .button-primary:hover {
+      box-shadow: 0 25px 50px rgba(0,102,255,.5);
+    }
+    
+    .button:active {
+      transform: translateY(-1px) scale(0.97);
     }
 
-    /* Parallax Sections */
-    .parallax-section {
-      position: relative;
-      transform-style: preserve-3d;
-    }
-
+    /* Hero section with advanced animations */
     .hero {
-      padding: 140px 0 60px;
+      padding: 140px 0 80px;
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -274,47 +272,21 @@
       overflow: hidden;
     }
     
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: conic-gradient(from 0deg at 50% 50%, 
-        transparent 0deg, 
-        rgba(0,102,255,0.03) 45deg, 
-        transparent 90deg, 
-        rgba(123,47,255,0.02) 135deg, 
-        transparent 180deg,
-        rgba(0,255,183,0.03) 225deg,
-        transparent 270deg,
-        rgba(0,102,255,0.02) 315deg,
-        transparent 360deg
-      );
-      animation: rotate 60s linear infinite;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    
     .hero-grid {
       display: grid;
       grid-template-columns: 1.08fr .92fr;
-      gap: 28px;
+      gap: 40px;
       align-items: stretch;
     }
     
     .hero-copy {
       padding: 12px 0;
+      z-index: 2;
+      position: relative;
     }
     
     h1 {
-      margin: 18px 0 18px;
+      margin: 24px 0 24px;
       font-family: 'Space Grotesk', sans-serif;
       font-size: clamp(42px, 7vw, 84px);
       line-height: .95;
@@ -323,8 +295,8 @@
     }
     
     .gradient {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      background-size: 200% 200%;
+      background: linear-gradient(135deg, var(--primary), var(--accent), var(--secondary));
+      background-size: 300% 300%;
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -333,7 +305,8 @@
 
     @keyframes gradientShift {
       0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
+      33% { background-position: 100% 50%; }
+      66% { background-position: 50% 100%; }
     }
     
     .hero-lead {
@@ -341,6 +314,7 @@
       font-size: clamp(18px, 2.1vw, 24px);
       line-height: 1.45;
       color: var(--muted);
+      margin: 24px 0;
     }
     
     .hero-meta {
@@ -351,62 +325,70 @@
     }
     
     .meta-pill {
-      padding: 12px 14px;
+      padding: 12px 16px;
       border-radius: 16px;
       background: rgba(255,255,255,.05);
       border: 1px solid var(--border);
       color: var(--text);
       font-weight: 700;
-      transition: all 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
+      backdrop-filter: blur(8px);
     }
     
     .meta-pill:hover {
-      background: rgba(255,255,255,.08);
-      transform: translateY(-2px);
-      border-color: rgba(0,255,183,.3);
+      background: rgba(255,255,255,.1);
+      transform: translateY(-3px) scale(1.02);
+      border-color: rgba(0,255,183,.4);
+      box-shadow: 0 10px 25px rgba(0,255,183,.15);
     }
     
     .hero-cta {
       display: flex;
       flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 28px;
+      gap: 16px;
+      margin-top: 32px;
     }
 
+    /* Hero card with 3D perspective */
     .hero-card {
       position: relative;
-      padding: 28px;
-      border-radius: 34px;
-      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
-      border: 1px solid rgba(255,255,255,.1);
+      padding: 32px;
+      border-radius: 36px;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.12);
       box-shadow: var(--shadow);
       overflow: hidden;
       min-height: 100%;
-      transition: all 0.3s ease;
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(12px);
+      transform-style: preserve-3d;
+      perspective: 1000px;
     }
     
     .hero-card::before {
       content: "";
       position: absolute;
-      inset: auto -15% -35% auto;
-      width: 240px;
-      height: 240px;
-      background: radial-gradient(circle, rgba(0,255,183,.28), transparent 62%);
-      filter: blur(8px);
+      inset: auto -20% -40% auto;
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle, rgba(0,255,183,.25), transparent 70%);
+      filter: blur(40px);
       pointer-events: none;
-      animation: float-card 6s ease-in-out infinite;
+      animation: float-glow 8s ease-in-out infinite;
     }
 
-    @keyframes float-card {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-10px) rotate(2deg); }
+    @keyframes float-glow {
+      0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); opacity: 0.7; }
+      25% { transform: translateY(-15px) translateX(10px) rotate(2deg); opacity: 0.9; }
+      50% { transform: translateY(-8px) translateX(-8px) rotate(-1deg); opacity: 0.8; }
+      75% { transform: translateY(-12px) translateX(5px) rotate(1deg); opacity: 0.85; }
     }
     
     .hero-card:hover {
-      transform: translateY(-5px) scale(1.01);
-      box-shadow: 0 30px 80px rgba(0,0,0,.4);
-      border-color: rgba(0,255,183,.2);
+      transform: rotateY(5deg) rotateX(2deg) translateY(-8px) scale(1.02);
+      box-shadow: 0 40px 100px rgba(0,0,0,.4);
+      border-color: rgba(0,255,183,.3);
     }
     
     .hero-card .label {
@@ -418,7 +400,7 @@
     }
     
     .hero-card h3 {
-      margin: 14px 0 16px;
+      margin: 16px 0 20px;
       font-size: clamp(24px, 3vw, 38px);
       line-height: 1;
       letter-spacing: -.05em;
@@ -426,42 +408,51 @@
     
     .stack {
       display: grid;
-      gap: 14px;
-      margin-top: 22px;
+      gap: 16px;
+      margin-top: 24px;
     }
     
     .stack-item {
-      padding: 16px 18px;
+      padding: 18px 20px;
       border-radius: 20px;
-      background: rgba(255,255,255,.045);
-      border: 1px solid rgba(255,255,255,.08);
-      transition: all 0.3s ease;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(4px);
     }
     
     .stack-item:hover {
-      background: rgba(255,255,255,.08);
-      transform: translateX(5px);
-      border-color: rgba(0,102,255,.3);
+      background: rgba(255,255,255,.12);
+      transform: translateX(8px) scale(1.01);
+      border-color: rgba(0,102,255,.4);
+      box-shadow: 0 8px 25px rgba(0,102,255,.15);
     }
     
-    .stack-item strong { display: block; margin-bottom: 6px; font-size: 18px; }
+    .stack-item strong { 
+      display: block; 
+      margin-bottom: 8px; 
+      font-size: 18px; 
+      transition: color 0.3s ease;
+    }
+    .stack-item:hover strong { color: var(--accent); }
     .stack-item span { color: var(--muted); line-height: 1.45; }
 
+    /* Section styling */
     section.block {
-      padding: 80px 0 40px;
+      padding: 100px 0 60px;
       position: relative;
     }
     
     .section-head {
       display: grid;
       grid-template-columns: .92fr 1.08fr;
-      gap: 24px;
+      gap: 32px;
       align-items: end;
-      margin-bottom: 40px;
+      margin-bottom: 60px;
     }
     
     .section-head h2 {
-      margin: 14px 0 0;
+      margin: 16px 0 0;
       font-family: 'Space Grotesk', sans-serif;
       font-size: clamp(30px, 5vw, 56px);
       line-height: .95;
@@ -470,7 +461,7 @@
     
     .section-head p {
       color: var(--muted);
-      font-size: 18px;
+      font-size: 20px;
       line-height: 1.5;
       max-width: 720px;
       margin: 0;
@@ -478,133 +469,169 @@
 
     .grid-3, .grid-4, .grid-2 {
       display: grid;
-      gap: 24px;
+      gap: 28px;
     }
     .grid-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
     .grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
     .grid-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
 
+    /* Enhanced card animations */
     .card {
       position: relative;
-      padding: 24px;
+      padding: 28px;
       border-radius: 28px;
       background: var(--panel);
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
       overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(8px);
     }
     
     .card::after {
       content: '';
       position: absolute;
-      inset: 0;
-      background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.03) 50%, transparent 60%);
-      transform: translateX(-100%);
-      transition: transform 0.6s ease;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+      transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .card:hover::after {
-      transform: translateX(100%);
+      left: 100%;
     }
     
     .card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 40px 80px rgba(0,0,0,.3);
-      border-color: rgba(255,255,255,.2);
+      transform: translateY(-12px) scale(1.02) rotate(1deg);
+      box-shadow: 0 30px 80px rgba(0,0,0,.35), 0 0 50px rgba(255,255,255,.1);
+      border-color: rgba(255,255,255,.25);
     }
     
-    .card h3, .card h4 { margin: 0 0 12px; letter-spacing: -.04em; }
-    .card p { margin: 0; color: var(--muted); line-height: 1.55; }
+    .card h3, .card h4 { margin: 0 0 14px; letter-spacing: -.04em; }
+    .card p { margin: 0; color: var(--muted); line-height: 1.6; }
     
     .card-number {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--soft);
       text-transform: uppercase;
       letter-spacing: .14em;
       font-weight: 800;
-      margin-bottom: 12px;
-      transition: color 0.3s ease;
+      margin-bottom: 14px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .card:hover .card-number {
       color: var(--accent);
+      transform: scale(1.1);
     }
     
     .icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 18px;
+      width: 56px;
+      height: 56px;
+      border-radius: 20px;
       display: grid;
       place-items: center;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.09);
-      margin-bottom: 16px;
-      font-size: 24px;
-      transition: all 0.3s ease;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      margin-bottom: 18px;
+      font-size: 26px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .card:hover .icon {
-      transform: scale(1.1) rotate(5deg);
-      background: rgba(255,255,255,.1);
+      transform: scale(1.15) rotate(10deg);
+      background: rgba(255,255,255,.15);
+      box-shadow: 0 10px 30px rgba(0,0,0,.2);
     }
 
-    .problem-card { min-height: 220px; }
+    .problem-card { min-height: 240px; }
     .problem-card:nth-child(1) .icon { color: var(--danger); }
     .problem-card:nth-child(2) .icon { color: var(--warning); }
     .problem-card:nth-child(3) .icon { color: var(--primary); }
 
-    .use-card { min-height: 240px; }
+    .use-card { min-height: 260px; }
     .use-card strong { color: var(--accent); }
 
+    /* Split sections with parallax */
     .split-highlight {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 24px;
+      gap: 32px;
     }
     
     .good, .bad {
-      padding: 28px;
-      border-radius: 28px;
+      padding: 32px;
+      border-radius: 32px;
       min-height: 100%;
-      transition: all 0.4s ease;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(8px);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .good::before, .bad::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+    
+    .good::before {
+      background: radial-gradient(circle at 50% 50%, rgba(0,255,183,.1), transparent 70%);
+    }
+    
+    .bad::before {
+      background: radial-gradient(circle at 50% 50%, rgba(255,107,107,.1), transparent 70%);
+    }
+    
+    .good:hover::before, .bad:hover::before {
+      opacity: 1;
     }
     
     .good {
-      background: linear-gradient(180deg, rgba(0,255,183,.1), rgba(0,255,183,.04));
-      border: 1px solid rgba(0,255,183,.18);
+      background: linear-gradient(180deg, rgba(0,255,183,.12), rgba(0,255,183,.05));
+      border: 1px solid rgba(0,255,183,.2);
     }
     
     .bad {
-      background: linear-gradient(180deg, rgba(255,107,107,.09), rgba(255,107,107,.03));
-      border: 1px solid rgba(255,107,107,.16);
+      background: linear-gradient(180deg, rgba(255,107,107,.1), rgba(255,107,107,.04));
+      border: 1px solid rgba(255,107,107,.18);
     }
     
     .good:hover, .bad:hover {
-      transform: translateY(-5px);
+      transform: translateY(-8px) scale(1.02);
     }
     
-    .good h3, .bad h3 { margin-top: 0; font-size: 28px; }
-    .list { display: grid; gap: 16px; margin-top: 20px; }
+    .good h3, .bad h3 { margin-top: 0; font-size: 30px; line-height: 1.1; }
+    
+    .list { display: grid; gap: 18px; margin-top: 24px; }
     
     .list-item {
       display: grid;
-      grid-template-columns: 18px 1fr;
-      gap: 12px;
+      grid-template-columns: 20px 1fr;
+      gap: 14px;
       align-items: start;
       color: var(--muted);
-      line-height: 1.5;
-      opacity: 0;
-      transform: translateX(-20px);
-      transition: all 0.3s ease;
+      line-height: 1.55;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .list-item:hover {
+      transform: translateX(5px);
+      color: var(--text);
     }
     
     .tick, .cross {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       border-radius: 999px;
       margin-top: 3px;
-      transition: transform 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      position: relative;
     }
     
     .tick { background: linear-gradient(135deg, var(--accent), #44e4b9); }
@@ -612,24 +639,29 @@
     
     .list-item:hover .tick,
     .list-item:hover .cross {
-      transform: scale(1.2);
+      transform: scale(1.3) rotate(10deg);
+      box-shadow: 0 5px 15px rgba(0,0,0,.3);
     }
 
+    /* Demo section with terminal effects */
     .demo-box {
       display: grid;
       grid-template-columns: .9fr 1.1fr;
-      gap: 24px;
+      gap: 32px;
       align-items: stretch;
     }
     
     .terminal {
-      padding: 28px;
-      border-radius: 28px;
-      background: #0b1220;
-      border: 1px solid rgba(77,163,255,.18);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 20px 60px rgba(0,0,0,.35);
+      padding: 32px;
+      border-radius: 32px;
+      background: linear-gradient(180deg, #0b1220, #081018);
+      border: 1px solid rgba(77,163,255,.2);
+      box-shadow: 
+        inset 0 1px 0 rgba(255,255,255,.05), 
+        0 30px 80px rgba(0,0,0,.4),
+        0 0 50px rgba(77,163,255,.15);
       min-height: 100%;
-      transition: all 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       overflow: hidden;
     }
@@ -637,127 +669,168 @@
     .terminal::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(77,163,255,0.05), transparent);
-      animation: scan 4s ease-in-out infinite;
+      top: -50%;
+      left: -10%;
+      width: 120%;
+      height: 200%;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(77,163,255,0.03) 30%, 
+        rgba(77,163,255,0.06) 50%, 
+        rgba(77,163,255,0.03) 70%, 
+        transparent
+      );
+      animation: scan 6s ease-in-out infinite;
+      pointer-events: none;
     }
 
     @keyframes scan {
-      0%, 100% { left: -100%; }
-      50% { left: 100%; }
+      0%, 100% { transform: translateX(-100%) skewX(-10deg); opacity: 0; }
+      50% { transform: translateX(0%) skewX(-10deg); opacity: 1; }
     }
     
     .terminal:hover {
-      transform: scale(1.01);
-      border-color: rgba(77,163,255,.3);
+      transform: scale(1.02) rotateY(2deg);
+      border-color: rgba(77,163,255,.4);
+      box-shadow: 
+        inset 0 1px 0 rgba(255,255,255,.1), 
+        0 40px 100px rgba(0,0,0,.5),
+        0 0 80px rgba(77,163,255,.25);
     }
     
     .terminal-top {
       display: flex;
-      gap: 8px;
-      margin-bottom: 18px;
+      gap: 10px;
+      margin-bottom: 24px;
     }
     
     .terminal-top span {
-      width: 10px;
-      height: 10px;
+      width: 12px;
+      height: 12px;
       border-radius: 999px;
-      background: rgba(255,255,255,.22);
+      background: rgba(255,255,255,.25);
+      transition: all 0.3s ease;
     }
+    
+    .terminal-top span:nth-child(1) { background: #ff5f56; }
+    .terminal-top span:nth-child(2) { background: #ffbd2e; }
+    .terminal-top span:nth-child(3) { background: #27ca3f; }
     
     .prompt-line {
       color: var(--accent);
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 15px;
-      margin-bottom: 14px;
+      font-size: 16px;
+      margin-bottom: 16px;
       white-space: pre-wrap;
+      line-height: 1.6;
     }
     
-    .result-list { display: grid; gap: 12px; }
+    .result-list { display: grid; gap: 14px; margin-top: 20px; }
     
     .result-item {
-      padding: 14px 16px;
-      border-radius: 18px;
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.06);
+      padding: 16px 20px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
       color: var(--muted);
-      transition: all 0.3s ease;
-      opacity: 0;
-      transform: translateY(10px);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .result-item:hover {
-      background: rgba(255,255,255,.08);
-      transform: translateY(-2px);
+      background: rgba(255,255,255,.12);
+      transform: translateY(-2px) scale(1.01);
+      color: var(--text);
     }
 
+    /* Timeline with enhanced counters */
     .timeline {
       display: grid;
-      gap: 20px;
+      gap: 24px;
     }
     
     .step {
       display: grid;
-      grid-template-columns: 58px 1fr;
-      gap: 16px;
+      grid-template-columns: 64px 1fr;
+      gap: 20px;
       align-items: start;
-      padding: 24px 28px;
-      border-radius: 22px;
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.08);
-      transition: all 0.3s ease;
+      padding: 28px 32px;
+      border-radius: 24px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(8px);
     }
     
     .step:hover {
       background: rgba(255,255,255,.08);
-      transform: translateX(10px);
-      border-color: rgba(0,102,255,.3);
+      transform: translateX(15px) scale(1.01);
+      border-color: rgba(0,102,255,.4);
+      box-shadow: 0 15px 40px rgba(0,102,255,.2);
     }
     
     .step-no {
-      width: 58px;
-      height: 58px;
-      border-radius: 18px;
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
       display: grid;
       place-items: center;
       font-weight: 800;
-      font-size: 20px;
+      font-size: 24px;
       color: white;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
-      box-shadow: 0 14px 28px rgba(0,102,255,.25);
-      transition: all 0.3s ease;
+      box-shadow: 0 15px 30px rgba(0,102,255,.3);
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .step-no::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+    
+    .step:hover .step-no::before {
+      transform: translateX(100%);
     }
     
     .step:hover .step-no {
-      transform: scale(1.1) rotate(-5deg);
+      transform: scale(1.15) rotate(-8deg);
+      box-shadow: 0 20px 40px rgba(0,102,255,.5);
     }
     
-    .step h4 { margin: 0 0 8px; font-size: 22px; letter-spacing: -.03em; }
+    .step h4 { margin: 0 0 10px; font-size: 24px; letter-spacing: -.03em; }
+    .step p { margin: 0; color: var(--muted); line-height: 1.6; }
 
+    /* Final CTA with mesh gradient */
     .final-cta {
-      padding: 120px 0 140px;
+      padding: 140px 0 160px;
       position: relative;
+      overflow: hidden;
     }
     
     .final-cta::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at center, rgba(0,102,255,0.08), transparent 70%);
+      background: radial-gradient(circle at center, rgba(0,102,255,0.1), transparent 70%);
       pointer-events: none;
     }
     
     .cta-wrap {
-      padding: 48px;
-      border-radius: 36px;
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
-      border: 1px solid rgba(255,255,255,.1);
-      box-shadow: var(--shadow);
+      padding: 56px;
+      border-radius: 40px;
+      background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.05));
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 
+        var(--shadow),
+        0 0 100px rgba(0,102,255,.1);
       position: relative;
       overflow: hidden;
+      backdrop-filter: blur(16px);
     }
     
     .cta-wrap::before {
@@ -766,54 +839,79 @@
       inset: -50%;
       background: conic-gradient(from 0deg, 
         transparent 0deg,
-        rgba(0,255,183,0.1) 90deg,
+        rgba(0,255,183,0.08) 90deg,
         transparent 180deg,
-        rgba(0,102,255,0.1) 270deg,
+        rgba(0,102,255,0.06) 270deg,
+        rgba(123,47,255,0.04) 315deg,
         transparent 360deg
       );
-      animation: rotate 20s linear infinite;
+      animation: rotate 25s linear infinite;
       z-index: -1;
     }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
     
-    .cta-wrap h2 { margin: 16px 0 14px; font-size: clamp(34px, 5vw, 62px); line-height: .95; letter-spacing: -.05em; }
-    .cta-wrap p { max-width: 760px; color: var(--muted); font-size: 20px; }
-    .cta-grid { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; margin-top: 28px; }
+    .cta-wrap h2 { 
+      margin: 20px 0 16px; 
+      font-size: clamp(36px, 5vw, 64px); 
+      line-height: .95; 
+      letter-spacing: -.05em; 
+    }
+    .cta-wrap p { 
+      max-width: 760px; 
+      color: var(--muted); 
+      font-size: 22px; 
+      line-height: 1.5;
+    }
+    .cta-grid { 
+      display: grid; 
+      grid-template-columns: 1fr auto; 
+      gap: 32px; 
+      align-items: end; 
+      margin-top: 36px; 
+    }
 
     #calendarToggle {
       font-size: 24px;
       font-weight: 800;
       min-height: 64px;
-      padding: 0 28px;
+      padding: 0 32px;
+      background: linear-gradient(135deg, var(--primary), #1e7bff);
+      box-shadow: 0 20px 50px rgba(0,102,255,.4);
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { 
+        box-shadow: 0 20px 50px rgba(0,102,255,.4);
+        transform: scale(1);
+      }
+      50% { 
+        box-shadow: 0 25px 60px rgba(0,102,255,.6);
+        transform: scale(1.02);
+      }
     }
 
     footer {
-      padding: 0 0 56px;
+      padding: 0 0 60px;
       color: var(--soft);
-      font-size: 15px;
+      font-size: 16px;
     }
 
-    /* Animation Classes */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
+    /* Reduced motion preferences */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      #blobCanvas { display: none !important; }
     }
 
-    .reveal-scale {
-      opacity: 0;
-      transform: scale(0.9) translateY(20px);
-    }
-
-    .reveal-slide-right {
-      opacity: 0;
-      transform: translateX(-50px);
-    }
-
-    .reveal-slide-left {
-      opacity: 0;
-      transform: translateX(50px);
-    }
-
-    /* Mobile Responsive */
+    /* Mobile responsive */
     @media (max-width: 1024px) {
       .hero-grid, .section-head, .grid-4, .grid-3, .grid-2, .split-highlight, .demo-box, .timeline, .cta-grid {
         grid-template-columns: 1fr;
@@ -821,28 +919,31 @@
       .hero { padding-top: 120px; min-height: auto; }
       .nav { min-height: auto; padding: 16px 0; align-items: flex-start; flex-direction: column; }
       .nav-actions { width: 100%; flex-wrap: wrap; }
-      .particle { display: none; }
+      #blobCanvas { display: none; }
     }
 
     @media (max-width: 640px) {
       .container { width: min(var(--container), calc(100% - 24px)); }
       .hero-cta, .nav-actions { flex-direction: column; align-items: stretch; }
       .button { width: 100%; }
-      .hero-card, .card, .good, .bad, .terminal, .cta-wrap { padding: 22px; }
-      .step { grid-template-columns: 52px 1fr; }
-      .step-no { width: 52px; height: 52px; }
-      section.block { padding: 60px 0 30px; }
-      .final-cta { padding: 80px 0 100px; }
+      .hero-card, .card, .good, .bad, .terminal, .cta-wrap { padding: 24px; }
+      .step { grid-template-columns: 56px 1fr; gap: 16px; padding: 24px; }
+      .step-no { width: 56px; height: 56px; font-size: 20px; }
+      section.block { padding: 80px 0 40px; }
+      .final-cta { padding: 100px 0 120px; }
+      html, body { cursor: auto; }
+      .custom-cursor { display: none; }
     }
   </style>
 </head>
 <body>
-  <div class="animated-bg"></div>
+  <!-- Custom cursor -->
+  <div class="custom-cursor"></div>
   
-  <!-- Floating Particles -->
-  <div class="particles-container" id="particles"></div>
+  <!-- Canvas for organic blobs -->
+  <canvas id="blobCanvas"></canvas>
 
-  <header>
+  <header id="header">
     <div class="container nav">
       <div class="brand">
         <div class="brand-mark"></div>
@@ -855,37 +956,37 @@
   </header>
 
   <main>
-    <section class="hero parallax-section">
+    <section class="hero">
       <div class="container">
         <div class="hero-grid">
           <div class="hero-copy">
-            <div class="eyebrow reveal"><span class="dot"></span> Пятница · 11:00 · Онлайн</div>
-            <h1 class="reveal"><span class="gradient">Claude Code</span><br>для предпринимателей</h1>
-            <p class="hero-lead reveal">Если вы ни разу не видели Claude Code, это нормально. На вебинаре разберём по-человечески: что это вообще такое, где это даёт деньги в бизнесе и как использовать это без айтишной боли.</p>
-            <div class="hero-meta reveal">
+            <div class="eyebrow hero-eyebrow"><span class="dot"></span> Пятница · 11:00 · Онлайн</div>
+            <h1 class="hero-title"><span class="gradient">Claude Code</span><br>для предпринимателей</h1>
+            <p class="hero-lead">Если вы ни разу не видели Claude Code, это нормально. На вебинаре разберём по-человечески: что это вообще такое, где это даёт деньги в бизнесе и как использовать это без айтишной боли.</p>
+            <div class="hero-meta">
               <div class="meta-pill">Для предпринимателей и CEO</div>
               <div class="meta-pill">Новички welcome</div>
               <div class="meta-pill">Без техно-жаргона</div>
             </div>
-            <div class="hero-cta reveal">
+            <div class="hero-cta">
               <a class="button button-secondary" id="googleCalendarLink" href="#" target="_blank" rel="noopener">Напомнить</a>
               <a class="button button-primary" href="https://telemost.yandex.ru/j/94314520240781" target="_blank" rel="noopener">Зайти на эфир</a>
             </div>
           </div>
 
-          <div class="hero-card reveal-scale">
+          <div class="hero-card">
             <div class="label">Что будет на выходе</div>
             <h3>Не хайп. <br>А рабочая рамка.</h3>
             <div class="stack">
-              <div class="stack-item reveal">
+              <div class="stack-item">
                 <strong>Поймёте, где Claude Code реально полезен</strong>
                 <span>Лендинги, MVP, внутренние инструменты, автоматизация, быстрые проверки идей.</span>
               </div>
-              <div class="stack-item reveal">
+              <div class="stack-item">
                 <strong>Увидите живой сценарий</strong>
                 <span>Не презентацию про ИИ, а нормальную демонстрацию: задача → результат.</span>
               </div>
-              <div class="stack-item reveal">
+              <div class="stack-item">
                 <strong>Сможете начать в тот же день</strong>
                 <span>Без "сначала выучите программирование" и прочей тоски.</span>
               </div>
@@ -895,28 +996,28 @@
       </div>
     </section>
 
-    <section class="block parallax-section" id="why">
+    <section class="block" id="why">
       <div class="container">
         <div class="section-head">
           <div>
-            <div class="eyebrow reveal">Почему это важно</div>
-            <h2 class="reveal">Идеи умирают<br>ещё до старта</h2>
+            <div class="eyebrow">Почему это важно</div>
+            <h2>Идеи умирают<br>ещё до старта</h2>
           </div>
-          <p class="reveal">У большинства предпринимателей проблема не в отсутствии идей. Проблема в том, что путь от идеи до проверки слишком длинный, дорогой и завязан на чужих руках.</p>
+          <p>У большинства предпринимателей проблема не в отсутствии идей. Проблема в том, что путь от идеи до проверки слишком длинный, дорогой и завязан на чужих руках.</p>
         </div>
 
-        <div class="grid-3">
-          <div class="card problem-card reveal">
+        <div class="grid-3 problem-cards">
+          <div class="card problem-card problem-1">
             <div class="icon">⏳</div>
             <h3>Слишком долго</h3>
             <p>Идея превращается в цепочку из ТЗ, созвонов, правок и "вернёмся на следующей неделе".</p>
           </div>
-          <div class="card problem-card reveal">
+          <div class="card problem-card problem-2">
             <div class="icon">💸</div>
             <h3>Слишком дорого</h3>
             <p>Чтобы проверить простую гипотезу, часто нужно тратить деньги так, как будто вы уже строите полноценный продукт.</p>
           </div>
-          <div class="card problem-card reveal">
+          <div class="card problem-card problem-3">
             <div class="icon">🧱</div>
             <h3>Слишком много зависимости</h3>
             <p>Подрядчик, разработчик, дизайнер, аналитик — и всё это ещё до того, как стало понятно, нужна ли вообще эта идея рынку.</p>
@@ -925,18 +1026,18 @@
       </div>
     </section>
 
-    <section class="block parallax-section" id="what">
+    <section class="block" id="what">
       <div class="container">
         <div class="section-head">
           <div>
-            <div class="eyebrow reveal">Что это вообще</div>
-            <h2 class="reveal">Не программист.<br>Не чатик.<br>Не магия.</h2>
+            <div class="eyebrow">Что это вообще</div>
+            <h2>Не программист.<br>Не чатик.<br>Не магия.</h2>
           </div>
-          <p class="reveal">Claude Code — это инструмент, который помогает через нормальный язык быстрее собирать рабочие штуки: страницы, прототипы, сервисные куски, автоматизации и внутренние инструменты.</p>
+          <p>Claude Code — это инструмент, который помогает через нормальный язык быстрее собирать рабочие штуки: страницы, прототипы, сервисные куски, автоматизации и внутренние инструменты.</p>
         </div>
 
         <div class="split-highlight">
-          <div class="good reveal-slide-right">
+          <div class="good split-left">
             <h3>Что это на самом деле</h3>
             <div class="list">
               <div class="list-item"><div class="tick"></div><div>Вы объясняете задачу обычными словами.</div></div>
@@ -944,7 +1045,7 @@
               <div class="list-item"><div class="tick"></div><div>Докручиваете это в диалоге короткими итерациями.</div></div>
             </div>
           </div>
-          <div class="bad reveal-slide-left">
+          <div class="bad split-right">
             <h3>Чем это не является</h3>
             <div class="list">
               <div class="list-item"><div class="cross"></div><div>Это не волшебная кнопка "сделай мне бизнес".</div></div>
@@ -956,33 +1057,33 @@
       </div>
     </section>
 
-    <section class="block parallax-section" id="use-cases">
+    <section class="block" id="use-cases">
       <div class="container">
         <div class="section-head">
           <div>
-            <div class="eyebrow reveal">Под ваши задачи</div>
-            <h2 class="reveal">Где это уже даёт пользу предпринимателю</h2>
+            <div class="eyebrow">Под ваши задачи</div>
+            <h2>Где это уже даёт пользу предпринимателю</h2>
           </div>
-          <p class="reveal">Без айтишной романтики. Только вещи, которые помогают быстрее проверять идеи, разгружать себя и не вязнуть в бесконечных согласованиях.</p>
+          <p>Без айтишной романтики. Только вещи, которые помогают быстрее проверять идеи, разгружать себя и не вязнуть в бесконечных согласованиях.</p>
         </div>
 
-        <div class="grid-4">
-          <div class="card use-card reveal">
+        <div class="grid-4 use-case-cards">
+          <div class="card use-card">
             <div class="card-number">01</div>
             <h3>Лендинг под новый оффер</h3>
             <p>Не ждать дизайнера и верстальщика неделями, а собрать первую версию за вечер и показать её миру.</p>
           </div>
-          <div class="card use-card reveal">
+          <div class="card use-card">
             <div class="card-number">02</div>
             <h3>MVP для проверки идеи</h3>
             <p>Сделать не "большой продукт", а достаточно живую версию, чтобы проверить, нужен ли он вообще.</p>
           </div>
-          <div class="card use-card reveal">
+          <div class="card use-card">
             <div class="card-number">03</div>
             <h3>Внутренние инструменты</h3>
             <p>Калькуляторы, мини-сервисы, рабочие страницы, быстрые интерфейсы под свою команду.</p>
           </div>
-          <div class="card use-card reveal">
+          <div class="card use-card">
             <div class="card-number">04</div>
             <h3>Автоматизация рутины</h3>
             <p>Отчёты, сводки, обработка входящих, сбор данных — всё, что жрёт время, но не даёт жизни.</p>
@@ -991,20 +1092,20 @@
       </div>
     </section>
 
-    <section class="block parallax-section" id="program">
+    <section class="block" id="program">
       <div class="container">
         <div class="section-head">
           <div>
-            <div class="eyebrow reveal">Что будет на вебинаре</div>
-            <h2 class="reveal">Покажем, а не просто поговорим</h2>
+            <div class="eyebrow">Что будет на вебинаре</div>
+            <h2>Покажем, а не просто поговорим</h2>
           </div>
-          <p class="reveal">Сделаем это так, чтобы было понятно человеку, который раньше не видел Claude Code вообще. Цель — не впечатлить сложностью, а дать ясность.</p>
+          <p>Сделаем это так, чтобы было понятно человеку, который раньше не видел Claude Code вообще. Цель — не впечатлить сложностью, а дать ясность.</p>
         </div>
 
         <div class="demo-box">
-          <div class="terminal reveal-scale">
+          <div class="terminal">
             <div class="terminal-top"><span></span><span></span><span></span></div>
-            <div class="prompt-line">&gt; Сделай простую страницу под оффер для предпринимателей,
+            <div class="prompt-line typing-text">&gt; Сделай простую страницу под оффер для предпринимателей,
 &gt; объясни пользу без техно-жаргона,
 &gt; добавь CTA и выведи рабочую версию.</div>
             <div class="result-list">
@@ -1015,21 +1116,21 @@
           </div>
 
           <div class="timeline">
-            <div class="step reveal">
+            <div class="step">
               <div class="step-no">1</div>
               <div>
                 <h4>Объясним простым языком, что это вообще такое</h4>
                 <p>Без разговора сверху вниз и без ощущения, что вы опоздали в цифровой поезд.</p>
               </div>
             </div>
-            <div class="step reveal">
+            <div class="step">
               <div class="step-no">2</div>
               <div>
                 <h4>Покажем живой сценарий</h4>
                 <p>Одна понятная задача. От запроса до рабочего результата, который уже можно применять.</p>
               </div>
             </div>
-            <div class="step reveal">
+            <div class="step">
               <div class="step-no">3</div>
               <div>
                 <h4>Разберём, как начать новичку без боли</h4>
@@ -1041,18 +1142,18 @@
       </div>
     </section>
 
-    <section class="block parallax-section" id="fit">
+    <section class="block" id="fit">
       <div class="container">
         <div class="section-head">
           <div>
-            <div class="eyebrow reveal">Для кого</div>
-            <h2 class="reveal">Если вы предприниматель-новичок — вам сюда</h2>
+            <div class="eyebrow">Для кого</div>
+            <h2>Если вы предприниматель-новичок — вам сюда</h2>
           </div>
-          <p class="reveal">Не надо уже уметь кодить. Не надо "быть технарём". Нужно только одно: желание быстрее проверять свои идеи и меньше зависеть от очередей, согласований и магии подрядчиков.</p>
+          <p>Не надо уже уметь кодить. Не надо "быть технарём". Нужно только одно: желание быстрее проверять свои идеи и меньше зависеть от очередей, согласований и магии подрядчиков.</p>
         </div>
 
         <div class="grid-2">
-          <div class="card reveal-slide-right">
+          <div class="card fit-left">
             <h3>Вам точно подойдёт, если:</h3>
             <div class="list">
               <div class="list-item"><div class="tick"></div><div>У вас постоянно есть идеи, но до проверки доезжают единицы.</div></div>
@@ -1060,18 +1161,18 @@
               <div class="list-item"><div class="tick"></div><div>Хотите за один вечер почувствовать механику, а не слушать очередную лекцию про будущее.</div></div>
             </div>
           </div>
-          <div class="card reveal-slide-left">
+          <div class="card fit-right">
             <h3>Главная мысль</h3>
             <p style="font-size: clamp(24px, 3vw, 38px); line-height: 1.12; letter-spacing: -.04em; color: var(--text); margin-top: 6px;">Claude Code нужен не тем, кто хочет выглядеть современно.</p>
-            <p style="font-size: clamp(24px, 3vw, 38px); line-height: 1.12; letter-spacing: -.04em; color: var(--accent); margin-top: 14px;">Он нужен тем, кто реально что-то строит.</p>
+            <p class="accent-quote" style="font-size: clamp(24px, 3vw, 38px); line-height: 1.12; letter-spacing: -.04em; color: var(--accent); margin-top: 14px;">Он нужен тем, кто реально что-то строит.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="final-cta parallax-section" id="cta">
+    <section class="final-cta" id="cta">
       <div class="container">
-        <div class="cta-wrap reveal-scale">
+        <div class="cta-wrap">
           <div class="eyebrow"><span class="dot"></span> Присоединяйтесь завтра</div>
           <h2>Пятница · 11:00</h2>
           <div class="cta-grid">
@@ -1097,192 +1198,237 @@
     // Register GSAP plugin
     gsap.registerPlugin(ScrollTrigger);
 
-    // Create floating particles
-    function createParticles() {
-      const container = document.getElementById('particles');
-      const particleCount = window.innerWidth > 768 ? 50 : 20;
+    // Custom cursor
+    function initCustomCursor() {
+      if (window.innerWidth <= 640) return; // Disable on mobile
       
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 20 + 's';
-        particle.style.animationDuration = (20 + Math.random() * 10) + 's';
-        container.appendChild(particle);
+      const cursor = document.querySelector('.custom-cursor');
+      let mouseX = 0, mouseY = 0;
+      let cursorX = 0, cursorY = 0;
+
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      function updateCursor() {
+        cursorX += (mouseX - cursorX) * 0.1;
+        cursorY += (mouseY - cursorY) * 0.1;
+        cursor.style.transform = `translate(${cursorX - 10}px, ${cursorY - 10}px)`;
+        requestAnimationFrame(updateCursor);
       }
+      updateCursor();
+
+      // Add hover effects
+      const interactiveElements = document.querySelectorAll('a, button, .card, .meta-pill, .brand');
+      interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+      });
     }
 
-    // Initialize particles
-    createParticles();
-
-    // GSAP Animations
-    function initAnimations() {
-      // Hero section animations
-      gsap.set('.hero .reveal', { y: 50, opacity: 0 });
-      gsap.set('.hero .reveal-scale', { scale: 0.8, y: 30, opacity: 0 });
+    // Organic blob canvas animation
+    function initBlobCanvas() {
+      if (window.innerWidth <= 768) return; // Disable on mobile
       
-      const heroTimeline = gsap.timeline();
-      heroTimeline
-        .to('.hero .reveal', {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          stagger: 0.1,
-          ease: 'power2.out'
-        })
-        .to('.hero .reveal-scale', {
-          scale: 1,
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: 'back.out(1.7)'
-        }, '-=0.5')
-        .to('.hero .stack-item', {
-          x: 0,
-          opacity: 1,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: 'power2.out'
-        }, '-=0.3');
-
-      // Parallax effects for sections
-      gsap.utils.toArray('.parallax-section').forEach((section, index) => {
-        gsap.to(section, {
-          yPercent: -50,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: section,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true
-          }
-        });
-      });
-
-      // Section reveals
-      gsap.utils.toArray('section:not(.hero)').forEach(section => {
-        const reveals = section.querySelectorAll('.reveal');
-        const revealScales = section.querySelectorAll('.reveal-scale');
-        const slideRights = section.querySelectorAll('.reveal-slide-right');
-        const slideLefts = section.querySelectorAll('.reveal-slide-left');
-        
-        if (reveals.length > 0) {
-          gsap.set(reveals, { y: 40, opacity: 0 });
-          ScrollTrigger.create({
-            trigger: section,
-            start: 'top 80%',
-            onEnter: () => {
-              gsap.to(reveals, {
-                y: 0,
-                opacity: 1,
-                duration: 0.8,
-                stagger: 0.1,
-                ease: 'power2.out'
-              });
-            }
-          });
-        }
-        
-        if (revealScales.length > 0) {
-          gsap.set(revealScales, { scale: 0.8, y: 30, opacity: 0 });
-          ScrollTrigger.create({
-            trigger: section,
-            start: 'top 80%',
-            onEnter: () => {
-              gsap.to(revealScales, {
-                scale: 1,
-                y: 0,
-                opacity: 1,
-                duration: 0.8,
-                stagger: 0.1,
-                ease: 'back.out(1.7)'
-              });
-            }
-          });
-        }
-        
-        if (slideRights.length > 0) {
-          gsap.set(slideRights, { x: -60, opacity: 0 });
-          ScrollTrigger.create({
-            trigger: section,
-            start: 'top 80%',
-            onEnter: () => {
-              gsap.to(slideRights, {
-                x: 0,
-                opacity: 1,
-                duration: 0.8,
-                stagger: 0.1,
-                ease: 'power2.out'
-              });
-            }
-          });
-        }
-        
-        if (slideLefts.length > 0) {
-          gsap.set(slideLefts, { x: 60, opacity: 0 });
-          ScrollTrigger.create({
-            trigger: section,
-            start: 'top 80%',
-            onEnter: () => {
-              gsap.to(slideLefts, {
-                x: 0,
-                opacity: 1,
-                duration: 0.8,
-                stagger: 0.1,
-                ease: 'power2.out'
-              });
-            }
-          });
-        }
-      });
-
-      // List items animation
-      gsap.utils.toArray('.list').forEach(list => {
-        const items = list.querySelectorAll('.list-item');
-        gsap.set(items, { x: -30, opacity: 0 });
-        
-        ScrollTrigger.create({
-          trigger: list,
-          start: 'top 85%',
-          onEnter: () => {
-            gsap.to(items, {
-              x: 0,
-              opacity: 1,
-              duration: 0.6,
-              stagger: 0.1,
-              ease: 'power2.out'
-            });
-          }
-        });
-      });
-
-      // Result items animation
-      const resultItems = document.querySelectorAll('.result-item');
-      if (resultItems.length > 0) {
-        gsap.set(resultItems, { y: 20, opacity: 0 });
-        
-        ScrollTrigger.create({
-          trigger: '.terminal',
-          start: 'top 70%',
-          onEnter: () => {
-            gsap.to(resultItems, {
-              y: 0,
-              opacity: 1,
-              duration: 0.6,
-              stagger: 0.2,
-              ease: 'power2.out',
-              delay: 1
-            });
-          }
-        });
+      const canvas = document.getElementById('blobCanvas');
+      const ctx = canvas.getContext('2d');
+      
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
       }
+      
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
 
-      // Cards hover animations
-      gsap.utils.toArray('.card').forEach(card => {
+      const blobs = [
+        { x: 20, y: 30, size: 300, color: 'rgba(0,102,255,0.12)', speed: 0.002 },
+        { x: 80, y: 70, size: 250, color: 'rgba(123,47,255,0.10)', speed: 0.003 },
+        { x: 50, y: 90, size: 200, color: 'rgba(0,255,183,0.08)', speed: 0.001 },
+        { x: 70, y: 20, size: 180, color: 'rgba(0,102,255,0.06)', speed: 0.0025 }
+      ];
+
+      let time = 0;
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        blobs.forEach((blob, i) => {
+          const noise1 = Math.sin(time * blob.speed + i) * 50;
+          const noise2 = Math.cos(time * blob.speed * 1.3 + i) * 30;
+          
+          const x = (blob.x + noise1 / 100) * canvas.width / 100;
+          const y = (blob.y + noise2 / 100) * canvas.height / 100;
+          
+          const gradient = ctx.createRadialGradient(x, y, 0, x, y, blob.size);
+          gradient.addColorStop(0, blob.color);
+          gradient.addColorStop(1, 'transparent');
+          
+          ctx.fillStyle = gradient;
+          ctx.filter = 'blur(80px)';
+          ctx.fillRect(x - blob.size, y - blob.size, blob.size * 2, blob.size * 2);
+        });
+        
+        time++;
+        requestAnimationFrame(animate);
+      }
+      
+      animate();
+    }
+
+    // Split text animation for hero title
+    function initHeroAnimations() {
+      const heroTitle = document.querySelector('.hero-title');
+      const split = new SplitType(heroTitle, { types: 'words,chars' });
+      
+      gsap.set(split.chars, { 
+        opacity: 0,
+        y: 100,
+        rotateX: -90,
+        transformOrigin: '0% 50% -50px'
+      });
+
+      const tl = gsap.timeline({ delay: 0.5 });
+      
+      // Animate characters with stagger
+      tl.to(split.chars, {
+        opacity: 1,
+        y: 0,
+        rotateX: 0,
+        duration: 1.2,
+        ease: 'back.out(1.7)',
+        stagger: {
+          amount: 0.8,
+          from: 'start'
+        }
+      });
+
+      // Animate other hero elements
+      tl.fromTo('.hero-eyebrow', 
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' },
+        '-=0.8'
+      );
+      
+      tl.fromTo('.hero-lead', 
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' },
+        '-=0.6'
+      );
+      
+      tl.fromTo('.hero-meta .meta-pill', 
+        { opacity: 0, y: 20, scale: 0.8 },
+        { 
+          opacity: 1, 
+          y: 0, 
+          scale: 1,
+          duration: 0.6, 
+          ease: 'back.out(1.7)',
+          stagger: 0.1 
+        },
+        '-=0.4'
+      );
+      
+      tl.fromTo('.hero-cta .button', 
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', stagger: 0.1 },
+        '-=0.3'
+      );
+
+      // Hero card 3D entrance
+      tl.fromTo('.hero-card',
+        { 
+          opacity: 0,
+          rotateY: -25,
+          rotateX: 15,
+          z: -100,
+          scale: 0.8
+        },
+        { 
+          opacity: 1,
+          rotateY: 0,
+          rotateX: 0,
+          z: 0,
+          scale: 1,
+          duration: 1.2,
+          ease: 'back.out(1.7)'
+        },
+        '-=1'
+      );
+
+      tl.fromTo('.stack-item',
+        { opacity: 0, x: 30, rotateY: 15 },
+        { 
+          opacity: 1, 
+          x: 0, 
+          rotateY: 0,
+          duration: 0.8, 
+          ease: 'power2.out',
+          stagger: 0.15 
+        },
+        '-=0.6'
+      );
+    }
+
+    // Problem cards - different entrance animations
+    function initProblemCards() {
+      const cards = document.querySelectorAll('.problem-card');
+      
+      // Set initial states
+      gsap.set('.problem-1', { opacity: 0, x: -100, rotateY: -15 });
+      gsap.set('.problem-2', { opacity: 0, scale: 0.5, rotateZ: 10 });
+      gsap.set('.problem-3', { opacity: 0, x: 100, rotateY: 15 });
+
+      ScrollTrigger.create({
+        trigger: '.problem-cards',
+        start: 'top 70%',
+        onEnter: () => {
+          const tl = gsap.timeline();
+          
+          tl.to('.problem-1', {
+            opacity: 1,
+            x: 0,
+            rotateY: 0,
+            duration: 0.8,
+            ease: 'back.out(1.7)'
+          })
+          .to('.problem-2', {
+            opacity: 1,
+            scale: 1,
+            rotateZ: 0,
+            duration: 0.8,
+            ease: 'back.out(1.7)'
+          }, '-=0.4')
+          .to('.problem-3', {
+            opacity: 1,
+            x: 0,
+            rotateY: 0,
+            duration: 0.8,
+            ease: 'back.out(1.7)'
+          }, '-=0.4');
+
+          // Icon pulse animation
+          tl.fromTo('.problem-card .icon', 
+            { scale: 1 },
+            { 
+              scale: 1.2,
+              duration: 0.3,
+              ease: 'power2.out',
+              yoyo: true,
+              repeat: 1,
+              stagger: 0.1
+            },
+            '-=0.2'
+          );
+        }
+      });
+
+      // Add hover glow effects
+      cards.forEach(card => {
         card.addEventListener('mouseenter', () => {
           gsap.to(card, {
-            y: -10,
-            scale: 1.02,
+            boxShadow: '0 30px 80px rgba(0,0,0,.4), 0 0 50px rgba(255,255,255,.1)',
             duration: 0.3,
             ease: 'power2.out'
           });
@@ -1290,62 +1436,325 @@
         
         card.addEventListener('mouseleave', () => {
           gsap.to(card, {
-            y: 0,
-            scale: 1,
+            boxShadow: '0 20px 60px rgba(0,0,0,.28)',
             duration: 0.3,
             ease: 'power2.out'
           });
         });
       });
+    }
 
-      // Hero card floating animation
-      gsap.to('.hero-card', {
-        y: -10,
-        duration: 3,
-        repeat: -1,
-        yoyo: true,
-        ease: 'power1.inOut'
+    // Split sections with parallax
+    function initSplitSections() {
+      gsap.set('.split-left', { opacity: 0, x: -80 });
+      gsap.set('.split-right', { opacity: 0, x: 80 });
+      
+      ScrollTrigger.create({
+        trigger: '.split-highlight',
+        start: 'top 70%',
+        onEnter: () => {
+          gsap.to('.split-left', {
+            opacity: 1,
+            x: 0,
+            duration: 1,
+            ease: 'power2.out'
+          });
+          
+          gsap.to('.split-right', {
+            opacity: 1,
+            x: 0,
+            duration: 1,
+            ease: 'power2.out',
+            delay: 0.2
+          });
+        }
       });
 
-      // Brand mark rotation on hover
-      const brandMark = document.querySelector('.brand-mark');
-      if (brandMark) {
-        brandMark.parentElement.addEventListener('mouseenter', () => {
-          gsap.to(brandMark, {
-            rotation: 360,
+      // List items spring animation
+      const listItems = document.querySelectorAll('.list-item');
+      gsap.set(listItems, { opacity: 0, x: -20, scale: 0.8 });
+      
+      ScrollTrigger.create({
+        trigger: '.split-highlight',
+        start: 'top 60%',
+        onEnter: () => {
+          gsap.to(listItems, {
+            opacity: 1,
+            x: 0,
+            scale: 1,
+            duration: 0.6,
+            ease: 'back.out(1.7)',
+            stagger: 0.1
+          });
+        }
+      });
+
+      // Subtle parallax
+      gsap.to('.split-left', {
+        y: -20,
+        scrollTrigger: {
+          trigger: '.split-highlight',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1
+        }
+      });
+
+      gsap.to('.split-right', {
+        y: 20,
+        scrollTrigger: {
+          trigger: '.split-highlight',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1
+        }
+      });
+    }
+
+    // Use case cards - horizontal cascade
+    function initUseCaseCards() {
+      const cards = document.querySelectorAll('.use-card');
+      
+      gsap.set(cards, { opacity: 0, x: -100, rotateY: -15 });
+      
+      ScrollTrigger.create({
+        trigger: '.use-case-cards',
+        start: 'top 70%',
+        onEnter: () => {
+          gsap.to(cards, {
+            opacity: 1,
+            x: 0,
+            rotateY: 0,
             duration: 0.8,
+            ease: 'power2.out',
+            stagger: 0.15
+          });
+
+          // Counter animation
+          cards.forEach((card, i) => {
+            const number = card.querySelector('.card-number');
+            const targetNumber = String(i + 1).padStart(2, '0');
+            
+            gsap.fromTo(number, 
+              { innerText: '00' },
+              { 
+                innerText: targetNumber,
+                duration: 1.5,
+                ease: 'power2.out',
+                delay: i * 0.15,
+                snap: { innerText: 1 },
+                onUpdate: function() {
+                  number.innerText = String(Math.round(this.targets()[0].innerText)).padStart(2, '0');
+                }
+              }
+            );
+          });
+        }
+      });
+
+      // Hover tilt effect with shine
+      cards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          gsap.to(card, {
+            rotateZ: 2,
+            rotateY: 3,
+            duration: 0.3,
             ease: 'power2.out'
           });
         });
-      }
-
-      // Button shine effect
-      gsap.utils.toArray('.button').forEach(button => {
-        button.addEventListener('click', (e) => {
-          const shine = document.createElement('div');
-          shine.style.cssText = `
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 1;
-          `;
-          button.appendChild(shine);
-          
-          gsap.to(shine, {
-            width: 100,
-            height: 100,
-            x: -50,
-            y: -50,
-            opacity: 0,
-            duration: 0.6,
-            ease: 'power2.out',
-            onComplete: () => shine.remove()
+        
+        card.addEventListener('mouseleave', () => {
+          gsap.to(card, {
+            rotateZ: 0,
+            rotateY: 0,
+            duration: 0.3,
+            ease: 'power2.out'
           });
+        });
+      });
+    }
+
+    // Terminal typing animation
+    function initTerminalAnimation() {
+      const promptLine = document.querySelector('.typing-text');
+      const originalText = promptLine.textContent;
+      promptLine.textContent = '';
+      
+      ScrollTrigger.create({
+        trigger: '.terminal',
+        start: 'top 70%',
+        onEnter: () => {
+          // Typing effect
+          let i = 0;
+          const typeInterval = setInterval(() => {
+            promptLine.textContent = originalText.slice(0, i);
+            i++;
+            if (i > originalText.length) {
+              clearInterval(typeInterval);
+              
+              // Animate result items after typing
+              gsap.fromTo('.result-item', 
+                { opacity: 0, y: 20 },
+                { 
+                  opacity: 1, 
+                  y: 0, 
+                  duration: 0.6, 
+                  ease: 'power2.out',
+                  stagger: 0.3,
+                  delay: 0.5
+                }
+              );
+            }
+          }, 50);
+        }
+      });
+    }
+
+    // Timeline with counter animations
+    function initTimelineAnimations() {
+      const steps = document.querySelectorAll('.step');
+      
+      gsap.set(steps, { opacity: 0, x: -50 });
+      
+      ScrollTrigger.create({
+        trigger: '.timeline',
+        start: 'top 70%',
+        onEnter: () => {
+          gsap.to(steps, {
+            opacity: 1,
+            x: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+            stagger: 0.2
+          });
+
+          // Counter bounce animation
+          steps.forEach((step, i) => {
+            const number = step.querySelector('.step-no');
+            gsap.fromTo(number,
+              { scale: 0, rotation: -180 },
+              { 
+                scale: 1,
+                rotation: 0,
+                duration: 0.8,
+                ease: 'back.out(1.7)',
+                delay: i * 0.2 + 0.3
+              }
+            );
+          });
+        }
+      });
+    }
+
+    // Fit section with morphing animation
+    function initFitSection() {
+      gsap.set('.fit-left', { opacity: 0, clipPath: 'circle(0% at 50% 50%)' });
+      gsap.set('.fit-right', { opacity: 0 });
+      
+      ScrollTrigger.create({
+        trigger: '#fit',
+        start: 'top 70%',
+        onEnter: () => {
+          // Morphing circle reveal for left card
+          gsap.to('.fit-left', {
+            opacity: 1,
+            clipPath: 'circle(100% at 50% 50%)',
+            duration: 1.2,
+            ease: 'power2.out'
+          });
+
+          // Text reveal line by line for right card
+          const rightCard = document.querySelector('.fit-right');
+          const lines = rightCard.querySelectorAll('h3, p');
+          
+          gsap.set(lines, { opacity: 0, y: 30 });
+          
+          gsap.to(rightCard, {
+            opacity: 1,
+            duration: 0.1,
+            delay: 0.3
+          });
+          
+          gsap.to(lines, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+            stagger: 0.2,
+            delay: 0.5
+          });
+
+          // Accent quote glow pulse
+          gsap.to('.accent-quote', {
+            textShadow: '0 0 20px rgba(0,255,183,0.6)',
+            duration: 1,
+            ease: 'power2.out',
+            yoyo: true,
+            repeat: 3,
+            delay: 1
+          });
+        }
+      });
+    }
+
+    // Final CTA with depth animation
+    function initCTAAnimation() {
+      gsap.set('.cta-wrap', { 
+        opacity: 0, 
+        scale: 0.9, 
+        y: 100,
+        rotateX: 15
+      });
+      
+      ScrollTrigger.create({
+        trigger: '.final-cta',
+        start: 'top 70%',
+        onEnter: () => {
+          gsap.to('.cta-wrap', {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            rotateX: 0,
+            duration: 1.2,
+            ease: 'back.out(1.7)'
+          });
+        }
+      });
+    }
+
+    // Header scroll effect
+    function initHeaderScroll() {
+      const header = document.getElementById('header');
+      
+      ScrollTrigger.create({
+        start: 'top -80',
+        end: 99999,
+        onUpdate: self => {
+          if (self.direction === 1) {
+            header.classList.add('scrolled');
+          } else if (self.progress < 0.1) {
+            header.classList.remove('scrolled');
+          }
+        }
+      });
+    }
+
+    // Smooth scroll with custom easing
+    function initSmoothScroll() {
+      document.documentElement.style.scrollBehavior = 'auto';
+      
+      // Override default scroll behavior
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            gsap.to(window, {
+              duration: 1.5,
+              scrollTo: { y: target.offsetTop - 80 },
+              ease: 'power2.inOut'
+            });
+          }
         });
       });
     }
@@ -1399,23 +1808,40 @@
       }
     }
 
-    // Header scroll effect
-    function initHeaderScroll() {
-      ScrollTrigger.create({
-        start: 'top -80',
-        end: 99999,
-        toggleClass: {
-          className: 'scrolled',
-          targets: 'header'
-        }
-      });
-    }
-
     // Initialize everything
     document.addEventListener('DOMContentLoaded', () => {
-      initAnimations();
-      setupCalendarLinks();
+      // Check for reduced motion preference
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      
+      if (!prefersReducedMotion) {
+        initCustomCursor();
+        initBlobCanvas();
+        initHeroAnimations();
+        initProblemCards();
+        initSplitSections();
+        initUseCaseCards();
+        initTerminalAnimation();
+        initTimelineAnimations();
+        initFitSection();
+        initCTAAnimation();
+      } else {
+        // Simple fade-in animations for reduced motion
+        gsap.set('section > *', { opacity: 0 });
+        gsap.to('section > *', {
+          opacity: 1,
+          duration: 0.3,
+          stagger: 0.1,
+          scrollTrigger: {
+            trigger: 'section',
+            start: 'top 80%',
+            toggleActions: 'play none none reverse'
+          }
+        });
+      }
+      
       initHeaderScroll();
+      initSmoothScroll();
+      setupCalendarLinks();
     });
 
     // Refresh ScrollTrigger on window resize
