@@ -8,6 +8,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  
   <style>
     :root {
       --bg: #0A0A0B;
@@ -33,15 +38,80 @@
     body {
       margin: 0;
       font-family: 'Manrope', system-ui, sans-serif;
-      background:
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Animated Background */
+    .animated-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -2;
+      background: 
         radial-gradient(circle at 10% 10%, rgba(0,102,255,.16), transparent 20%),
         radial-gradient(circle at 85% 18%, rgba(123,47,255,.14), transparent 18%),
         radial-gradient(circle at 75% 85%, rgba(0,255,183,.10), transparent 22%),
         var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
+      animation: bgShift 20s ease-in-out infinite;
     }
 
+    @keyframes bgShift {
+      0%, 100% { background-position: 0% 0%, 100% 0%, 100% 100%; }
+      25% { background-position: 20% 10%, 90% 15%, 80% 90%; }
+      50% { background-position: 15% 20%, 95% 20%, 85% 95%; }
+      75% { background-position: 10% 15%, 85% 10%, 75% 85%; }
+    }
+
+    /* Floating Particles */
+    .particles-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(0, 255, 183, 0.3);
+      border-radius: 50%;
+      animation: float 20s infinite linear;
+    }
+
+    .particle:nth-child(2n) {
+      background: rgba(0, 102, 255, 0.2);
+      animation-duration: 25s;
+    }
+
+    .particle:nth-child(3n) {
+      background: rgba(123, 47, 255, 0.25);
+      animation-duration: 30s;
+    }
+
+    @keyframes float {
+      0% { 
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      90% {
+        opacity: 1;
+      }
+      100% { 
+        transform: translateY(-100vh) scale(0);
+        opacity: 0;
+      }
+    }
+
+    /* Grain Texture */
     body::before {
       content: "";
       position: fixed;
@@ -50,10 +120,12 @@
       opacity: .22;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
       mix-blend-mode: soft-light;
+      z-index: -1;
     }
 
     a { color: inherit; text-decoration: none; }
     .container { width: min(var(--container), calc(100% - 40px)); margin: 0 auto; }
+    
     .eyebrow {
       display: inline-flex;
       align-items: center;
@@ -67,23 +139,40 @@
       text-transform: uppercase;
       color: var(--muted);
       font-weight: 700;
+      transition: all 0.3s ease;
     }
+    
+    .eyebrow:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,255,183,.15);
+    }
+    
     .dot {
       width: 8px;
       height: 8px;
       border-radius: 999px;
       background: var(--accent);
       box-shadow: 0 0 18px rgba(0,255,183,.6);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 18px rgba(0,255,183,.6); }
+      50% { transform: scale(1.1); box-shadow: 0 0 25px rgba(0,255,183,.8); }
     }
 
     header {
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
       z-index: 20;
       backdrop-filter: blur(18px);
       background: rgba(10,10,11,.58);
       border-bottom: 1px solid rgba(255,255,255,.06);
+      transition: all 0.3s ease;
     }
+    
     .nav {
       min-height: 76px;
       display: flex;
@@ -91,23 +180,39 @@
       align-items: center;
       gap: 20px;
     }
+    
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
       font-weight: 800;
       letter-spacing: -.03em;
+      cursor: pointer;
+      transition: transform 0.3s ease;
     }
+    
+    .brand:hover {
+      transform: scale(1.02);
+    }
+    
     .brand-mark {
       width: 38px;
       height: 38px;
       border-radius: 14px;
       background: linear-gradient(135deg, var(--primary), var(--accent));
       box-shadow: 0 10px 30px rgba(0,102,255,.35);
+      transition: all 0.3s ease;
     }
+    
+    .brand-mark:hover {
+      transform: rotate(10deg) scale(1.05);
+      box-shadow: 0 15px 40px rgba(0,102,255,.5);
+    }
+    
     .brand small { display: block; color: var(--soft); font-weight: 600; letter-spacing: 0; }
 
     .nav-actions { display: flex; align-items: center; gap: 12px; }
+    
     .button {
       display: inline-flex;
       align-items: center;
@@ -117,34 +222,97 @@
       padding: 0 20px;
       border-radius: 18px;
       font-weight: 800;
-      transition: .25s ease;
+      transition: all .25s cubic-bezier(0.4, 0, 0.2, 1);
       border: 1px solid transparent;
       cursor: pointer;
+      position: relative;
+      overflow: hidden;
     }
+    
+    .button::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+    
+    .button:hover::before {
+      transform: translateX(100%);
+    }
+    
     .button-primary {
       background: linear-gradient(135deg, var(--primary), #1e7bff);
       color: white;
       box-shadow: 0 18px 40px rgba(0,102,255,.28);
     }
+    
     .button-secondary {
       background: rgba(255,255,255,.05);
       border-color: var(--border);
       color: var(--text);
     }
-    .button:hover { transform: translateY(-2px); }
+    
+    .button:hover { 
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 25px 50px rgba(0,102,255,.4);
+    }
+
+    /* Parallax Sections */
+    .parallax-section {
+      position: relative;
+      transform-style: preserve-3d;
+    }
 
     .hero {
-      padding: 80px 0 46px;
+      padding: 140px 0 60px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
     }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg at 50% 50%, 
+        transparent 0deg, 
+        rgba(0,102,255,0.03) 45deg, 
+        transparent 90deg, 
+        rgba(123,47,255,0.02) 135deg, 
+        transparent 180deg,
+        rgba(0,255,183,0.03) 225deg,
+        transparent 270deg,
+        rgba(0,102,255,0.02) 315deg,
+        transparent 360deg
+      );
+      animation: rotate 60s linear infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
     .hero-grid {
       display: grid;
       grid-template-columns: 1.08fr .92fr;
       gap: 28px;
       align-items: stretch;
     }
+    
     .hero-copy {
       padding: 12px 0;
     }
+    
     h1 {
       margin: 18px 0 18px;
       font-family: 'Space Grotesk', sans-serif;
@@ -153,24 +321,35 @@
       letter-spacing: -.06em;
       max-width: 760px;
     }
+    
     .gradient {
       background: linear-gradient(135deg, var(--primary), var(--accent));
+      background-size: 200% 200%;
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
+      animation: gradientShift 8s ease-in-out infinite;
     }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    
     .hero-lead {
       max-width: 680px;
       font-size: clamp(18px, 2.1vw, 24px);
       line-height: 1.45;
       color: var(--muted);
     }
+    
     .hero-meta {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
       margin-top: 26px;
     }
+    
     .meta-pill {
       padding: 12px 14px;
       border-radius: 16px;
@@ -178,7 +357,16 @@
       border: 1px solid var(--border);
       color: var(--text);
       font-weight: 700;
+      transition: all 0.3s ease;
+      cursor: pointer;
     }
+    
+    .meta-pill:hover {
+      background: rgba(255,255,255,.08);
+      transform: translateY(-2px);
+      border-color: rgba(0,255,183,.3);
+    }
+    
     .hero-cta {
       display: flex;
       flex-wrap: wrap;
@@ -195,7 +383,9 @@
       box-shadow: var(--shadow);
       overflow: hidden;
       min-height: 100%;
+      transition: all 0.3s ease;
     }
+    
     .hero-card::before {
       content: "";
       position: absolute;
@@ -205,7 +395,20 @@
       background: radial-gradient(circle, rgba(0,255,183,.28), transparent 62%);
       filter: blur(8px);
       pointer-events: none;
+      animation: float-card 6s ease-in-out infinite;
     }
+
+    @keyframes float-card {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(2deg); }
+    }
+    
+    .hero-card:hover {
+      transform: translateY(-5px) scale(1.01);
+      box-shadow: 0 30px 80px rgba(0,0,0,.4);
+      border-color: rgba(0,255,183,.2);
+    }
+    
     .hero-card .label {
       color: var(--soft);
       font-size: 13px;
@@ -213,36 +416,50 @@
       letter-spacing: .14em;
       font-weight: 700;
     }
+    
     .hero-card h3 {
       margin: 14px 0 16px;
       font-size: clamp(24px, 3vw, 38px);
       line-height: 1;
       letter-spacing: -.05em;
     }
+    
     .stack {
       display: grid;
       gap: 14px;
       margin-top: 22px;
     }
+    
     .stack-item {
       padding: 16px 18px;
       border-radius: 20px;
       background: rgba(255,255,255,.045);
       border: 1px solid rgba(255,255,255,.08);
+      transition: all 0.3s ease;
     }
+    
+    .stack-item:hover {
+      background: rgba(255,255,255,.08);
+      transform: translateX(5px);
+      border-color: rgba(0,102,255,.3);
+    }
+    
     .stack-item strong { display: block; margin-bottom: 6px; font-size: 18px; }
     .stack-item span { color: var(--muted); line-height: 1.45; }
 
     section.block {
-      padding: 28px 0 10px;
+      padding: 80px 0 40px;
+      position: relative;
     }
+    
     .section-head {
       display: grid;
       grid-template-columns: .92fr 1.08fr;
       gap: 24px;
       align-items: end;
-      margin-bottom: 22px;
+      margin-bottom: 40px;
     }
+    
     .section-head h2 {
       margin: 14px 0 0;
       font-family: 'Space Grotesk', sans-serif;
@@ -250,6 +467,7 @@
       line-height: .95;
       letter-spacing: -.05em;
     }
+    
     .section-head p {
       color: var(--muted);
       font-size: 18px;
@@ -260,7 +478,7 @@
 
     .grid-3, .grid-4, .grid-2 {
       display: grid;
-      gap: 18px;
+      gap: 24px;
     }
     .grid-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
     .grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
@@ -274,9 +492,31 @@
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
       overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
+    
+    .card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.03) 50%, transparent 60%);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+    
+    .card:hover::after {
+      transform: translateX(100%);
+    }
+    
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 40px 80px rgba(0,0,0,.3);
+      border-color: rgba(255,255,255,.2);
+    }
+    
     .card h3, .card h4 { margin: 0 0 12px; letter-spacing: -.04em; }
     .card p { margin: 0; color: var(--muted); line-height: 1.55; }
+    
     .card-number {
       font-size: 13px;
       color: var(--soft);
@@ -284,7 +524,13 @@
       letter-spacing: .14em;
       font-weight: 800;
       margin-bottom: 12px;
+      transition: color 0.3s ease;
     }
+    
+    .card:hover .card-number {
+      color: var(--accent);
+    }
+    
     .icon {
       width: 52px;
       height: 52px;
@@ -295,6 +541,12 @@
       border: 1px solid rgba(255,255,255,.09);
       margin-bottom: 16px;
       font-size: 24px;
+      transition: all 0.3s ease;
+    }
+    
+    .card:hover .icon {
+      transform: scale(1.1) rotate(5deg);
+      background: rgba(255,255,255,.1);
     }
 
     .problem-card { min-height: 220px; }
@@ -308,23 +560,33 @@
     .split-highlight {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 18px;
+      gap: 24px;
     }
+    
     .good, .bad {
-      padding: 24px;
+      padding: 28px;
       border-radius: 28px;
       min-height: 100%;
+      transition: all 0.4s ease;
     }
+    
     .good {
       background: linear-gradient(180deg, rgba(0,255,183,.1), rgba(0,255,183,.04));
       border: 1px solid rgba(0,255,183,.18);
     }
+    
     .bad {
       background: linear-gradient(180deg, rgba(255,107,107,.09), rgba(255,107,107,.03));
       border: 1px solid rgba(255,107,107,.16);
     }
+    
+    .good:hover, .bad:hover {
+      transform: translateY(-5px);
+    }
+    
     .good h3, .bad h3 { margin-top: 0; font-size: 28px; }
-    .list { display: grid; gap: 12px; margin-top: 14px; }
+    .list { display: grid; gap: 16px; margin-top: 20px; }
+    
     .list-item {
       display: grid;
       grid-template-columns: 18px 1fr;
@@ -332,41 +594,80 @@
       align-items: start;
       color: var(--muted);
       line-height: 1.5;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: all 0.3s ease;
     }
+    
     .tick, .cross {
       width: 18px;
       height: 18px;
       border-radius: 999px;
       margin-top: 3px;
+      transition: transform 0.3s ease;
     }
+    
     .tick { background: linear-gradient(135deg, var(--accent), #44e4b9); }
     .cross { background: linear-gradient(135deg, var(--danger), #ff8b8b); }
+    
+    .list-item:hover .tick,
+    .list-item:hover .cross {
+      transform: scale(1.2);
+    }
 
     .demo-box {
       display: grid;
       grid-template-columns: .9fr 1.1fr;
-      gap: 18px;
+      gap: 24px;
       align-items: stretch;
     }
+    
     .terminal {
-      padding: 24px;
+      padding: 28px;
       border-radius: 28px;
       background: #0b1220;
       border: 1px solid rgba(77,163,255,.18);
       box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 20px 60px rgba(0,0,0,.35);
       min-height: 100%;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
+    
+    .terminal::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(77,163,255,0.05), transparent);
+      animation: scan 4s ease-in-out infinite;
+    }
+
+    @keyframes scan {
+      0%, 100% { left: -100%; }
+      50% { left: 100%; }
+    }
+    
+    .terminal:hover {
+      transform: scale(1.01);
+      border-color: rgba(77,163,255,.3);
+    }
+    
     .terminal-top {
       display: flex;
       gap: 8px;
       margin-bottom: 18px;
     }
+    
     .terminal-top span {
       width: 10px;
       height: 10px;
       border-radius: 999px;
       background: rgba(255,255,255,.22);
     }
+    
     .prompt-line {
       color: var(--accent);
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -374,29 +675,48 @@
       margin-bottom: 14px;
       white-space: pre-wrap;
     }
+    
     .result-list { display: grid; gap: 12px; }
+    
     .result-item {
       padding: 14px 16px;
       border-radius: 18px;
       background: rgba(255,255,255,.04);
       border: 1px solid rgba(255,255,255,.06);
       color: var(--muted);
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    
+    .result-item:hover {
+      background: rgba(255,255,255,.08);
+      transform: translateY(-2px);
     }
 
     .timeline {
       display: grid;
-      gap: 14px;
+      gap: 20px;
     }
+    
     .step {
       display: grid;
       grid-template-columns: 58px 1fr;
       gap: 16px;
       align-items: start;
-      padding: 18px 20px;
+      padding: 24px 28px;
       border-radius: 22px;
       background: rgba(255,255,255,.04);
       border: 1px solid rgba(255,255,255,.08);
+      transition: all 0.3s ease;
     }
+    
+    .step:hover {
+      background: rgba(255,255,255,.08);
+      transform: translateX(10px);
+      border-color: rgba(0,102,255,.3);
+    }
+    
     .step-no {
       width: 58px;
       height: 58px;
@@ -408,23 +728,56 @@
       color: white;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       box-shadow: 0 14px 28px rgba(0,102,255,.25);
+      transition: all 0.3s ease;
     }
+    
+    .step:hover .step-no {
+      transform: scale(1.1) rotate(-5deg);
+    }
+    
     .step h4 { margin: 0 0 8px; font-size: 22px; letter-spacing: -.03em; }
 
     .final-cta {
-      padding: 90px 0 110px;
+      padding: 120px 0 140px;
+      position: relative;
     }
+    
+    .final-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(0,102,255,0.08), transparent 70%);
+      pointer-events: none;
+    }
+    
     .cta-wrap {
-      padding: 36px;
+      padding: 48px;
       border-radius: 36px;
       background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
       border: 1px solid rgba(255,255,255,.1);
       box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
     }
+    
+    .cta-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      background: conic-gradient(from 0deg, 
+        transparent 0deg,
+        rgba(0,255,183,0.1) 90deg,
+        transparent 180deg,
+        rgba(0,102,255,0.1) 270deg,
+        transparent 360deg
+      );
+      animation: rotate 20s linear infinite;
+      z-index: -1;
+    }
+    
     .cta-wrap h2 { margin: 16px 0 14px; font-size: clamp(34px, 5vw, 62px); line-height: .95; letter-spacing: -.05em; }
     .cta-wrap p { max-width: 760px; color: var(--muted); font-size: 20px; }
     .cta-grid { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; margin-top: 28px; }
-
 
     #calendarToggle {
       font-size: 24px;
@@ -439,24 +792,36 @@
       font-size: 15px;
     }
 
+    /* Animation Classes */
     .reveal {
       opacity: 0;
-      transform: translateY(18px);
-      transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
-    }
-    .visible .reveal {
-      opacity: 1;
-      transform: translateY(0);
+      transform: translateY(30px);
     }
 
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.9) translateY(20px);
+    }
+
+    .reveal-slide-right {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+
+    .reveal-slide-left {
+      opacity: 0;
+      transform: translateX(50px);
+    }
+
+    /* Mobile Responsive */
     @media (max-width: 1024px) {
       .hero-grid, .section-head, .grid-4, .grid-3, .grid-2, .split-highlight, .demo-box, .timeline, .cta-grid {
         grid-template-columns: 1fr;
       }
-      .hero { padding-top: 56px; }
-      header { position: relative; }
+      .hero { padding-top: 120px; min-height: auto; }
       .nav { min-height: auto; padding: 16px 0; align-items: flex-start; flex-direction: column; }
       .nav-actions { width: 100%; flex-wrap: wrap; }
+      .particle { display: none; }
     }
 
     @media (max-width: 640px) {
@@ -466,10 +831,17 @@
       .hero-card, .card, .good, .bad, .terminal, .cta-wrap { padding: 22px; }
       .step { grid-template-columns: 52px 1fr; }
       .step-no { width: 52px; height: 52px; }
+      section.block { padding: 60px 0 30px; }
+      .final-cta { padding: 80px 0 100px; }
     }
   </style>
 </head>
 <body>
+  <div class="animated-bg"></div>
+  
+  <!-- Floating Particles -->
+  <div class="particles-container" id="particles"></div>
+
   <header>
     <div class="container nav">
       <div class="brand">
@@ -483,43 +855,49 @@
   </header>
 
   <main>
-    <section class="hero">
-      <div class="container hero-grid visible">
-        <div class="hero-copy">
-          <div class="eyebrow reveal"><span class="dot"></span> Пятница · 11:00 · Онлайн</div>
-          <h1 class="reveal"><span class="gradient">Claude Code</span><br>для предпринимателей</h1>
-          <p class="hero-lead reveal">Если вы ни разу не видели Claude Code, это нормально. На вебинаре разберём по-человечески: что это вообще такое, где это даёт деньги в бизнесе и как использовать это без айтишной боли.</p>
-          <div class="hero-meta reveal">
-            <div class="meta-pill">Для предпринимателей и CEO</div>
-            <div class="meta-pill">Новички welcome</div>
-            <div class="meta-pill">Без техно-жаргона</div>
+    <section class="hero parallax-section">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <div class="eyebrow reveal"><span class="dot"></span> Пятница · 11:00 · Онлайн</div>
+            <h1 class="reveal"><span class="gradient">Claude Code</span><br>для предпринимателей</h1>
+            <p class="hero-lead reveal">Если вы ни разу не видели Claude Code, это нормально. На вебинаре разберём по-человечески: что это вообще такое, где это даёт деньги в бизнесе и как использовать это без айтишной боли.</p>
+            <div class="hero-meta reveal">
+              <div class="meta-pill">Для предпринимателей и CEO</div>
+              <div class="meta-pill">Новички welcome</div>
+              <div class="meta-pill">Без техно-жаргона</div>
+            </div>
+            <div class="hero-cta reveal">
+              <a class="button button-secondary" id="googleCalendarLink" href="#" target="_blank" rel="noopener">Напомнить</a>
+              <a class="button button-primary" href="https://telemost.yandex.ru/j/94314520240781" target="_blank" rel="noopener">Зайти на эфир</a>
+            </div>
           </div>
-</div>
 
-        <div class="hero-card reveal">
-          <div class="label">Что будет на выходе</div>
-          <h3>Не хайп. <br>А рабочая рамка.</h3>
-          <div class="stack">
-            <div class="stack-item">
-              <strong>Поймёте, где Claude Code реально полезен</strong>
-              <span>Лендинги, MVP, внутренние инструменты, автоматизация, быстрые проверки идей.</span>
-            </div>
-            <div class="stack-item">
-              <strong>Увидите живой сценарий</strong>
-              <span>Не презентацию про ИИ, а нормальную демонстрацию: задача → результат.</span>
-            </div>
-            <div class="stack-item">
-              <strong>Сможете начать в тот же день</strong>
-              <span>Без “сначала выучите программирование” и прочей тоски.</span>
+          <div class="hero-card reveal-scale">
+            <div class="label">Что будет на выходе</div>
+            <h3>Не хайп. <br>А рабочая рамка.</h3>
+            <div class="stack">
+              <div class="stack-item reveal">
+                <strong>Поймёте, где Claude Code реально полезен</strong>
+                <span>Лендинги, MVP, внутренние инструменты, автоматизация, быстрые проверки идей.</span>
+              </div>
+              <div class="stack-item reveal">
+                <strong>Увидите живой сценарий</strong>
+                <span>Не презентацию про ИИ, а нормальную демонстрацию: задача → результат.</span>
+              </div>
+              <div class="stack-item reveal">
+                <strong>Сможете начать в тот же день</strong>
+                <span>Без "сначала выучите программирование" и прочей тоски.</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="block" id="why">
+    <section class="block parallax-section" id="why">
       <div class="container">
-        <div class="section-head visible">
+        <div class="section-head">
           <div>
             <div class="eyebrow reveal">Почему это важно</div>
             <h2 class="reveal">Идеи умирают<br>ещё до старта</h2>
@@ -527,11 +905,11 @@
           <p class="reveal">У большинства предпринимателей проблема не в отсутствии идей. Проблема в том, что путь от идеи до проверки слишком длинный, дорогой и завязан на чужих руках.</p>
         </div>
 
-        <div class="grid-3 visible">
+        <div class="grid-3">
           <div class="card problem-card reveal">
             <div class="icon">⏳</div>
             <h3>Слишком долго</h3>
-            <p>Идея превращается в цепочку из ТЗ, созвонов, правок и “вернёмся на следующей неделе”.</p>
+            <p>Идея превращается в цепочку из ТЗ, созвонов, правок и "вернёмся на следующей неделе".</p>
           </div>
           <div class="card problem-card reveal">
             <div class="icon">💸</div>
@@ -547,9 +925,9 @@
       </div>
     </section>
 
-    <section class="block" id="what">
+    <section class="block parallax-section" id="what">
       <div class="container">
-        <div class="section-head visible">
+        <div class="section-head">
           <div>
             <div class="eyebrow reveal">Что это вообще</div>
             <h2 class="reveal">Не программист.<br>Не чатик.<br>Не магия.</h2>
@@ -557,19 +935,19 @@
           <p class="reveal">Claude Code — это инструмент, который помогает через нормальный язык быстрее собирать рабочие штуки: страницы, прототипы, сервисные куски, автоматизации и внутренние инструменты.</p>
         </div>
 
-        <div class="split-highlight visible">
-          <div class="good reveal">
+        <div class="split-highlight">
+          <div class="good reveal-slide-right">
             <h3>Что это на самом деле</h3>
             <div class="list">
               <div class="list-item"><div class="tick"></div><div>Вы объясняете задачу обычными словами.</div></div>
-              <div class="list-item"><div class="tick"></div><div>Получаете первый рабочий результат, а не только текст “как было бы классно”.</div></div>
+              <div class="list-item"><div class="tick"></div><div>Получаете первый рабочий результат, а не только текст "как было бы классно".</div></div>
               <div class="list-item"><div class="tick"></div><div>Докручиваете это в диалоге короткими итерациями.</div></div>
             </div>
           </div>
-          <div class="bad reveal">
+          <div class="bad reveal-slide-left">
             <h3>Чем это не является</h3>
             <div class="list">
-              <div class="list-item"><div class="cross"></div><div>Это не волшебная кнопка “сделай мне бизнес”.</div></div>
+              <div class="list-item"><div class="cross"></div><div>Это не волшебная кнопка "сделай мне бизнес".</div></div>
               <div class="list-item"><div class="cross"></div><div>Это не замена мышлению, продуктовой логике и здравому смыслу.</div></div>
               <div class="list-item"><div class="cross"></div><div>Это не игрушка, если вы правда что-то строите.</div></div>
             </div>
@@ -578,9 +956,9 @@
       </div>
     </section>
 
-    <section class="block" id="use-cases">
+    <section class="block parallax-section" id="use-cases">
       <div class="container">
-        <div class="section-head visible">
+        <div class="section-head">
           <div>
             <div class="eyebrow reveal">Под ваши задачи</div>
             <h2 class="reveal">Где это уже даёт пользу предпринимателю</h2>
@@ -588,7 +966,7 @@
           <p class="reveal">Без айтишной романтики. Только вещи, которые помогают быстрее проверять идеи, разгружать себя и не вязнуть в бесконечных согласованиях.</p>
         </div>
 
-        <div class="grid-4 visible">
+        <div class="grid-4">
           <div class="card use-card reveal">
             <div class="card-number">01</div>
             <h3>Лендинг под новый оффер</h3>
@@ -597,7 +975,7 @@
           <div class="card use-card reveal">
             <div class="card-number">02</div>
             <h3>MVP для проверки идеи</h3>
-            <p>Сделать не “большой продукт”, а достаточно живую версию, чтобы проверить, нужен ли он вообще.</p>
+            <p>Сделать не "большой продукт", а достаточно живую версию, чтобы проверить, нужен ли он вообще.</p>
           </div>
           <div class="card use-card reveal">
             <div class="card-number">03</div>
@@ -613,9 +991,9 @@
       </div>
     </section>
 
-    <section class="block" id="program">
+    <section class="block parallax-section" id="program">
       <div class="container">
-        <div class="section-head visible">
+        <div class="section-head">
           <div>
             <div class="eyebrow reveal">Что будет на вебинаре</div>
             <h2 class="reveal">Покажем, а не просто поговорим</h2>
@@ -623,8 +1001,8 @@
           <p class="reveal">Сделаем это так, чтобы было понятно человеку, который раньше не видел Claude Code вообще. Цель — не впечатлить сложностью, а дать ясность.</p>
         </div>
 
-        <div class="demo-box visible">
-          <div class="terminal reveal">
+        <div class="demo-box">
+          <div class="terminal reveal-scale">
             <div class="terminal-top"><span></span><span></span><span></span></div>
             <div class="prompt-line">&gt; Сделай простую страницу под оффер для предпринимателей,
 &gt; объясни пользу без техно-жаргона,
@@ -663,18 +1041,18 @@
       </div>
     </section>
 
-    <section class="block" id="fit">
+    <section class="block parallax-section" id="fit">
       <div class="container">
-        <div class="section-head visible">
+        <div class="section-head">
           <div>
             <div class="eyebrow reveal">Для кого</div>
             <h2 class="reveal">Если вы предприниматель-новичок — вам сюда</h2>
           </div>
-          <p class="reveal">Не надо уже уметь кодить. Не надо “быть технарём”. Нужно только одно: желание быстрее проверять свои идеи и меньше зависеть от очередей, согласований и магии подрядчиков.</p>
+          <p class="reveal">Не надо уже уметь кодить. Не надо "быть технарём". Нужно только одно: желание быстрее проверять свои идеи и меньше зависеть от очередей, согласований и магии подрядчиков.</p>
         </div>
 
-        <div class="grid-2 visible">
-          <div class="card reveal">
+        <div class="grid-2">
+          <div class="card reveal-slide-right">
             <h3>Вам точно подойдёт, если:</h3>
             <div class="list">
               <div class="list-item"><div class="tick"></div><div>У вас постоянно есть идеи, но до проверки доезжают единицы.</div></div>
@@ -682,7 +1060,7 @@
               <div class="list-item"><div class="tick"></div><div>Хотите за один вечер почувствовать механику, а не слушать очередную лекцию про будущее.</div></div>
             </div>
           </div>
-          <div class="card reveal">
+          <div class="card reveal-slide-left">
             <h3>Главная мысль</h3>
             <p style="font-size: clamp(24px, 3vw, 38px); line-height: 1.12; letter-spacing: -.04em; color: var(--text); margin-top: 6px;">Claude Code нужен не тем, кто хочет выглядеть современно.</p>
             <p style="font-size: clamp(24px, 3vw, 38px); line-height: 1.12; letter-spacing: -.04em; color: var(--accent); margin-top: 14px;">Он нужен тем, кто реально что-то строит.</p>
@@ -691,15 +1069,15 @@
       </div>
     </section>
 
-    <section class="final-cta" id="cta">
-      <div class="container visible">
-        <div class="cta-wrap reveal">
+    <section class="final-cta parallax-section" id="cta">
+      <div class="container">
+        <div class="cta-wrap reveal-scale">
           <div class="eyebrow"><span class="dot"></span> Присоединяйтесь завтра</div>
           <h2>Пятница · 11:00</h2>
           <div class="cta-grid">
             <div></div>
             <div class="hero-cta" style="margin-top: 0; justify-content: flex-end;">
-              <a class="button button-secondary" id="googleCalendarLink" href="#" target="_blank" rel="noopener">Напомнить</a>
+              <a class="button button-secondary" id="googleCalendarLinkBottom" href="#" target="_blank" rel="noopener">Напомнить</a>
               <a class="button button-primary" href="https://telemost.yandex.ru/j/94314520240781" target="_blank" rel="noopener">Зайти на эфир</a>
             </div>
           </div>
@@ -716,16 +1094,263 @@
   </footer>
 
   <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
+    // Register GSAP plugin
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Create floating particles
+    function createParticles() {
+      const container = document.getElementById('particles');
+      const particleCount = window.innerWidth > 768 ? 50 : 20;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 20 + 's';
+        particle.style.animationDuration = (20 + Math.random() * 10) + 's';
+        container.appendChild(particle);
+      }
+    }
+
+    // Initialize particles
+    createParticles();
+
+    // GSAP Animations
+    function initAnimations() {
+      // Hero section animations
+      gsap.set('.hero .reveal', { y: 50, opacity: 0 });
+      gsap.set('.hero .reveal-scale', { scale: 0.8, y: 30, opacity: 0 });
+      
+      const heroTimeline = gsap.timeline();
+      heroTimeline
+        .to('.hero .reveal', {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          stagger: 0.1,
+          ease: 'power2.out'
+        })
+        .to('.hero .reveal-scale', {
+          scale: 1,
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: 'back.out(1.7)'
+        }, '-=0.5')
+        .to('.hero .stack-item', {
+          x: 0,
+          opacity: 1,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: 'power2.out'
+        }, '-=0.3');
+
+      // Parallax effects for sections
+      gsap.utils.toArray('.parallax-section').forEach((section, index) => {
+        gsap.to(section, {
+          yPercent: -50,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true
+          }
+        });
       });
-    }, { threshold: 0.14 });
 
-    document.querySelectorAll('.hero-grid, .section-head, .grid-2, .grid-3, .grid-4, .split-highlight, .demo-box, .timeline, .cta-wrap').forEach(el => {
-      observer.observe(el);
-    });
+      // Section reveals
+      gsap.utils.toArray('section:not(.hero)').forEach(section => {
+        const reveals = section.querySelectorAll('.reveal');
+        const revealScales = section.querySelectorAll('.reveal-scale');
+        const slideRights = section.querySelectorAll('.reveal-slide-right');
+        const slideLefts = section.querySelectorAll('.reveal-slide-left');
+        
+        if (reveals.length > 0) {
+          gsap.set(reveals, { y: 40, opacity: 0 });
+          ScrollTrigger.create({
+            trigger: section,
+            start: 'top 80%',
+            onEnter: () => {
+              gsap.to(reveals, {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: 'power2.out'
+              });
+            }
+          });
+        }
+        
+        if (revealScales.length > 0) {
+          gsap.set(revealScales, { scale: 0.8, y: 30, opacity: 0 });
+          ScrollTrigger.create({
+            trigger: section,
+            start: 'top 80%',
+            onEnter: () => {
+              gsap.to(revealScales, {
+                scale: 1,
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: 'back.out(1.7)'
+              });
+            }
+          });
+        }
+        
+        if (slideRights.length > 0) {
+          gsap.set(slideRights, { x: -60, opacity: 0 });
+          ScrollTrigger.create({
+            trigger: section,
+            start: 'top 80%',
+            onEnter: () => {
+              gsap.to(slideRights, {
+                x: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: 'power2.out'
+              });
+            }
+          });
+        }
+        
+        if (slideLefts.length > 0) {
+          gsap.set(slideLefts, { x: 60, opacity: 0 });
+          ScrollTrigger.create({
+            trigger: section,
+            start: 'top 80%',
+            onEnter: () => {
+              gsap.to(slideLefts, {
+                x: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: 'power2.out'
+              });
+            }
+          });
+        }
+      });
 
+      // List items animation
+      gsap.utils.toArray('.list').forEach(list => {
+        const items = list.querySelectorAll('.list-item');
+        gsap.set(items, { x: -30, opacity: 0 });
+        
+        ScrollTrigger.create({
+          trigger: list,
+          start: 'top 85%',
+          onEnter: () => {
+            gsap.to(items, {
+              x: 0,
+              opacity: 1,
+              duration: 0.6,
+              stagger: 0.1,
+              ease: 'power2.out'
+            });
+          }
+        });
+      });
+
+      // Result items animation
+      const resultItems = document.querySelectorAll('.result-item');
+      if (resultItems.length > 0) {
+        gsap.set(resultItems, { y: 20, opacity: 0 });
+        
+        ScrollTrigger.create({
+          trigger: '.terminal',
+          start: 'top 70%',
+          onEnter: () => {
+            gsap.to(resultItems, {
+              y: 0,
+              opacity: 1,
+              duration: 0.6,
+              stagger: 0.2,
+              ease: 'power2.out',
+              delay: 1
+            });
+          }
+        });
+      }
+
+      // Cards hover animations
+      gsap.utils.toArray('.card').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          gsap.to(card, {
+            y: -10,
+            scale: 1.02,
+            duration: 0.3,
+            ease: 'power2.out'
+          });
+        });
+        
+        card.addEventListener('mouseleave', () => {
+          gsap.to(card, {
+            y: 0,
+            scale: 1,
+            duration: 0.3,
+            ease: 'power2.out'
+          });
+        });
+      });
+
+      // Hero card floating animation
+      gsap.to('.hero-card', {
+        y: -10,
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: 'power1.inOut'
+      });
+
+      // Brand mark rotation on hover
+      const brandMark = document.querySelector('.brand-mark');
+      if (brandMark) {
+        brandMark.parentElement.addEventListener('mouseenter', () => {
+          gsap.to(brandMark, {
+            rotation: 360,
+            duration: 0.8,
+            ease: 'power2.out'
+          });
+        });
+      }
+
+      // Button shine effect
+      gsap.utils.toArray('.button').forEach(button => {
+        button.addEventListener('click', (e) => {
+          const shine = document.createElement('div');
+          shine.style.cssText = `
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+          `;
+          button.appendChild(shine);
+          
+          gsap.to(shine, {
+            width: 100,
+            height: 100,
+            x: -50,
+            y: -50,
+            opacity: 0,
+            duration: 0.6,
+            ease: 'power2.out',
+            onComplete: () => shine.remove()
+          });
+        });
+      });
+    }
+
+    // Calendar functionality
     function setupCalendarLinks() {
       const eventTitle = 'Claude Code для предпринимателей — мастер-класс AI First';
       const eventDetails = [
@@ -761,17 +1386,42 @@
         'END:VCALENDAR'
       ].join('\r\n');
 
-      const googleLink = document.getElementById('googleCalendarLink');
+      const googleLinks = document.querySelectorAll('#googleCalendarLink, #googleCalendarLinkBottom');
       const icsLink = document.getElementById('icsDownloadLink');
-      if (googleLink) googleLink.href = googleUrl;
+      
+      googleLinks.forEach(link => {
+        if (link) link.href = googleUrl;
+      });
+      
       if (icsLink) {
         const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
         icsLink.href = URL.createObjectURL(blob);
       }
-
     }
 
-    setupCalendarLinks();
+    // Header scroll effect
+    function initHeaderScroll() {
+      ScrollTrigger.create({
+        start: 'top -80',
+        end: 99999,
+        toggleClass: {
+          className: 'scrolled',
+          targets: 'header'
+        }
+      });
+    }
+
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', () => {
+      initAnimations();
+      setupCalendarLinks();
+      initHeaderScroll();
+    });
+
+    // Refresh ScrollTrigger on window resize
+    window.addEventListener('resize', () => {
+      ScrollTrigger.refresh();
+    });
   </script>
 </body>
 </html>
